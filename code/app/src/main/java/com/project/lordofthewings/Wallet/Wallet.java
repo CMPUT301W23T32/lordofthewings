@@ -20,8 +20,8 @@ public class Wallet {
 
     public Wallet(Player player){
         this.player = player;
-        this.qrCodesScanned = 0;
-        this.score = 0;
+        this.qrCodesScanned = updateCodesScanned();
+        this.score = getCodesScanned();
     }
 
     public void editPlayerContact(String newContact){
@@ -38,24 +38,19 @@ public class Wallet {
     }
 
     public void deleteQrCodeFromWallet(QrCode code){
-        //use firebase API to add to delete from qrcode collection
-        //call updateCodesScanned
-        //call updateScore
+        //use firebase API to delete from qrcode collection
+        //call updateCodesScanned()
+        //call updateScore()
 
     }
 
     public void addQrCodeToWallet(QrCode code){
-
         //use firebase API to add to qrcode collection
-        //call updateCodesScanned
-        //call updateScore
-
-
-
+        //call updateCodesScanned()
+        //call updateScore()
     }
 
-    public int getRanking(){
-        //?
+    public int Ranking(){
         return 0;
 
     }
