@@ -8,79 +8,64 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-
 public class Wallet {
-    private Player player;
 
-    private int qrCodesScanned;
     private int score;
+    private ArrayList<QRCode> qrCodes;
+    private int qrCodesCount;
+    private FirebaseInstance db;
+    private String user;
 
-    //will be in activity, so user can click and go to that Qrcode using the listview
-    private ArrayList <QrCode> qrCodes;
 
-    public Wallet(Player player){
-        this.player = player;
-        this.qrCodesScanned = updateCodesScanned();
-        this.score = getCodesScanned();
-    }
-
-    public void editPlayerContact(String newContact){
-        player.setContact(newContact);
-    }
-
-    public void editPlayerName(String newName){
-        player.setname(newName);
+    public Wallet(){
+        this.qrCodes = getUserQrCodes();
+        this.db = FirebaseController.instance;
+        this.user = FireBaseController.UserId;
+        this.qrCodesCount = qrCodes.size();
+        this.score = getUserScore();
 
     }
 
-    public void editPlayerImage(String newImage) {
-        //Not needed
-    }
 
-    public void deleteQrCodeFromWallet(QrCode code){
-        //use firebase API to delete from qrcode collection
-        //call updateCodesScanned()
-        //call updateScore()
+    public void addQRCode(QRCode qr){
+        //firebase and camera stuff
+
 
     }
 
-    public void addQrCodeToWallet(QrCode code){
-        //use firebase API to add to qrcode collection
-        //call updateCodesScanned()
-        //call updateScore()
-    }
-
-    public int Ranking(){
-        return 0;
-
-    }
-    public void updateCodesScanned(){
-        //use count() aggregation for collection of user QR codes;
-        //add value in the firestore( WILL OVERRIDE IF document key already there)
-        this.qrCodesScanned = use count() aggregation for collection of user QR codes;
-
-
+    public void deleteQRCode(QRCode qr){
+        this.qrCodesCount -=1;
+        qrCodes.remove(qr);
+        //firebase stuff goes here
+        updateScore();
     }
 
     public void updateScore(){
-        int temp;
-        //user firebase api to get the value of each qr code. Add add to temp variable.
-        //add value in the firestore( WILL OVERRIDE IF document key already there)
+        int temp = 0;
+        for( int i = 0; i < this.qrCodesCount; i++){
+            temp +=  (this.qrCodes.get(i)).getScore();
+        }
+        //firebase stuff goes here. Override score value
+    }
 
-        this.score = temp;
+    public int getUserScore(){
+        //firebase stuff to get the score of the user
+    }
 
-
+    public ArrayList<QRCode> getUserQrCodes(){
+        //firebase stuff to get the users QRCodes
 
     }
 
-    public int getCodesScanned(){
+    public boolean checkExistingQrCode(QRCode qr){
+        if (this.qrCodes.contains(qr)){
+            return true;
 
-        return this.qrCodesScanned;
-    }
+        }
+        else {
+            return false;
+        }
 
-
-    public int getScore() {
-        return this.score;
     }
 
 }
