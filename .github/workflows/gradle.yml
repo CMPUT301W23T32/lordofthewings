@@ -3,11 +3,11 @@ on:
   push:
     branches: [develop]
     paths:
-      - "app/src/**"
+      - "code/app/src/**"
   pull_request:
     branches: [develop]
     paths:
-      - "app/src/**"
+      - "code/app/src/**"
 
 jobs:
   test:
