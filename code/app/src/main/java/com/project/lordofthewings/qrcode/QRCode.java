@@ -1,9 +1,29 @@
 package com.project.lordofthewings.qrcode;
 
+import android.media.Image;
+
 import org.apache.commons.codec.digest.DigestUtils;
 
+import java.util.Collection;
+
 public class QRCode {
-    public final String QRContent;
+    private final String QRContent;
+
+    //placeholder again
+    private String Location;
+
+    private String VisualRepr;
+
+    private String QRName;
+
+    private Collection<String> Comments;
+
+    //will create image attribute later
+
+    private Integer QRScore;
+
+    private final String QRHash;
+
 
     //placeholder in case we change it
     private String id;
@@ -15,6 +35,9 @@ public class QRCode {
      */
     public QRCode(String QRContent){
         this.QRContent = QRContent;
+        this.QRHash = this.calculateHash();
+        this.VisualRepr = this.getVisualRepresentation();
+        this.QRName = this.createName();
     }
 
     /**
@@ -33,16 +56,20 @@ public class QRCode {
      * @return
      *  Hashed value of that String
      */
-    public String getHash(){
+    public String calculateHash(){
         return DigestUtils.sha256Hex(this.QRContent);
     }
 
-    public String getName(){
+    public String getHash(){
+        return QRHash;
+    }
+
+    public String getHashBits(){
         return getHash().substring(0,6);
     }
 
     public String getVisualRepresentation() {
-        String name = getName();
+        String name = getHashBits();
         String visual = " ------- \n" +
                         " |i   i| \n" +
                         "e|     |e\n" +
@@ -118,5 +145,22 @@ public class QRCode {
         }
 
         return visual;
+    }
+
+    public String createName(){
+        // dict can be expanded later, or outright changed
+        String[] names = {"Vex", "Kron", "Zax", "Hex", "Nyx", "Onyx", "Pyro", "Cyro",
+                "Volt", "Zolt", "Kinet", "Lumin", "Aero", "Crim", "Nebu", "Plasm"};
+        String hashbit = getHashBits();
+        StringBuilder qrNameBuilder = new StringBuilder();
+        for (int i = 0;i<hashbit.length();i++){
+            char bit = hashbit.charAt(i);
+            qrNameBuilder.append(names[Character.getNumericValue(bit)]);
+        }
+        return qrNameBuilder.toString();
+    }
+
+    public String getQRName(){
+        return this.QRName;
     }
 }
