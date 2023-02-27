@@ -37,10 +37,20 @@ public class QRCode {
         return DigestUtils.sha256Hex(this.QRContent);
     }
 
+    /**
+     * Function that takes in the SHA256 Hash value and gives out a name for the QR code
+     * @return
+     * Name for the QR code
+     */
     public String getName(){
         return getHash().substring(0,6);
     }
 
+    /**
+     * Function that takes in the Hash value and gives out a visual representation for the QR code
+     * @return
+     * Visual Representation for the QR code
+     */
     public String getVisualRepresentation() {
         String name = getName();
         String visual = " ------- \n" +
