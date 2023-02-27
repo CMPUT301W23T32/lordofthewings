@@ -1,7 +1,13 @@
 name: Android CI
 on:
+  push:
+    branches: [develop]
+    paths:
+      - "app/src/**"
   pull_request:
     branches: [develop]
+    paths:
+      - "app/src/**"
 
 jobs:
   test:
