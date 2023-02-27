@@ -1,6 +1,5 @@
 package com.project.lordofthewings.qrcode;
 
-import android.media.Image;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -68,6 +67,11 @@ public class QRCode {
         return getHash().substring(0,6);
     }
 
+    /**
+     * Function that takes in the Hash value and gives out a visual representation for the QR code
+     * @return
+     * Visual Representation for the QR code
+     */
     public String getVisualRepresentation() {
         String name = getHashBits();
         String visual = " ------- \n" +
