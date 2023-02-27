@@ -20,11 +20,13 @@ public class QRCodeTest {
         System.out.println(QR1.getQRName());
         System.out.println(QR2.getQRName());
         assertNotEquals(QR1.getHash(),QR2.getHash());
-//        System.out.println(QR1.getHash());
+//        System.out.println(QR2.getHash());
 //        assertEquals(QR1.getHash(),QR1.CalculateHash());
 //        System.out.println("Hash Value Native: " +QR2.getHash());
 //        System.out.println("Hash Value Calculated: " +QR2.CalculateHash());
 //        //System.out.println(QR1.getName());
 //        System.out.println(QR2.getVisualRepresentation());
+//        System.out.println(QR2.calculateScore());
+
     }
 }
