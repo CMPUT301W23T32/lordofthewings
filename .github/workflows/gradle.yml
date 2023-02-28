@@ -24,9 +24,5 @@ jobs:
         run: chmod +x gradlew
       
       # Execute unit tests
-      - name: Unit Test
-        run: ./gradlew testDebugUnitTest
-
-      - name: Android Test Report
-        uses: asadmansr/android-test-report-action@v1.2.0
-        if: ${{ always() }} # IMPORTANT: run Android Test Report regardless
+      - name: Build with Gradle
+        run: ./gradlew build
