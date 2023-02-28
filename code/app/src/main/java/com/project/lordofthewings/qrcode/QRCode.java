@@ -46,7 +46,7 @@ public class QRCode {
     /**
      * Getter function for QRCode ID
      * @return
-     * Returns the ID
+     * Returns the String of the ID
      *
      */
     public String getId(){
@@ -58,10 +58,10 @@ public class QRCode {
     }
 
     /**
-     *  Function that takes in the QRCode Content and sends out a SHA256 Hash
+     *  Function that takes in the QRCode Content and Calculates a SHA256 Hash
      *
      * @return
-     *  Hashed value of that String
+     *  SHA256-Hash Value of that QRCode
      */
     public String calculateHash(){
         return DigestUtils.sha256Hex(this.QRContent);
@@ -71,14 +71,17 @@ public class QRCode {
         return QRHash;
     }
 
+
+
     public String getHashBits(){
         return getHash().substring(0,6);
     }
 
     /**
      * Function that takes in the Hash value and gives out a visual representation for the QR code
+     * Uses the first 6 values of the Hash value and makes a visual representation based on that
      * @return
-     * Visual Representation for the QR code
+     * Visual Representation for the QR code in a String
      */
     public String getVisualRepresentation() {
         String name = getHashBits();
@@ -159,6 +162,14 @@ public class QRCode {
         return visual;
     }
 
+    /**
+     *  Function to provide every QRCode to have a Human Readable Identifier.
+     *  Takes the first 6 bits of the Hash Value and assigns every QR a name based on the
+     *  hash value of those bits.
+     * @return
+     *  String with a generated Human-Readable Name
+     */
+
     public String createName(){
         // dict can be expanded later, or outright changed
         String[] names = {"Vex", "Kron", "Zax", "Hex", "Nyx", "Onyx", "Pyro", "Cyro",
@@ -176,6 +187,11 @@ public class QRCode {
         return this.QRName;
     }
 
+    /**
+     * Method to calculate the Score associated with a QRCode based on the provided system.
+     * @return
+     * Integer value based on the corresponding score of the QR Hash
+     */
     public Integer calculateScore(){
         int score = 0;
         int prev = 0;

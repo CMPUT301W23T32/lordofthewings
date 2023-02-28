@@ -17,9 +17,11 @@ public class QRCodeTest {
         QRCode QR2 = new QRCode("testing2");
         QRCode QR3 = new QRCode("testing");
         assertEquals(QR1.getHash(),QR3.getHash());
-        System.out.println(QR1.getQRName());
-        System.out.println(QR2.getQRName());
+//        System.out.println(QR1.getQRName());
+//        System.out.println(QR2.getQRName());
         assertNotEquals(QR1.getHash(),QR2.getHash());
+        assertEquals(QR1.getQRScore(),QR3.getQRScore());
+        assertNotEquals(QR1.getQRScore(),QR2.getQRScore());
 //        System.out.println(QR2.getHash());
 //        assertEquals(QR1.getHash(),QR1.CalculateHash());
 //        System.out.println("Hash Value Native: " +QR2.getHash());
