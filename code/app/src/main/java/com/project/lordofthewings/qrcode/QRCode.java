@@ -10,25 +10,20 @@ import java.util.HashMap;
 
 public class QRCode {
     private final String QRContent;
-
-    //placeholder again
-    private String Location;
-
     private String VisualRepr;
-
     private String QRName;
 
-    private Collection<String> Comments;
-
-    //will create image attribute later
-
+    //will create an image attribute later with the proper type
     private Integer QRScore;
-
     private final String QRHash;
 
 
-    //placeholder in case we change it
+    //placeholders to be changed based on their types and uses
     private String id;
+
+    private Collection<String> Comments;
+
+    private String Location;
 
     /**
      * Constructor for the Object
@@ -186,6 +181,10 @@ public class QRCode {
     public String getQRName(){
         return this.QRName;
     }
+
+
+    //returns the Integer type, got confused with primitive during testing, will have to be careful
+
 
     /**
      * Method to calculate the Score associated with a QRCode based on the provided system.
