@@ -48,9 +48,6 @@ public class QRCode {
         return this.id;
     }
 
-    public String getVisualRepr(){
-        return this.VisualRepr;
-    }
 
     /**
      *  Function that takes in the QRCode Content and Calculates a SHA256 Hash
@@ -155,6 +152,10 @@ public class QRCode {
         }
 
         return visual;
+    }
+
+    public String getVisualRepr(){
+        return this.VisualRepr;
     }
 
     /**

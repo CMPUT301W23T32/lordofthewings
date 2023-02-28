@@ -50,6 +50,16 @@ public class QRCodeTest {
         assertEquals(QR1.getQRName(),QR3.getQRName());
         assertNotEquals(QR1.getQRName(),QR2.getQRName());
     }
+    @Test
+    void testGetVisualRepr(){
+        QRCode QR1 = new QRCode("testing");
+        QRCode QR2 = new QRCode("testing2");
+        QRCode QR3 = new QRCode("testing");
+
+        //testing visual representations between QRCodes
+        assertEquals(QR1.getVisualRepr(),QR3.getVisualRepr());
+        assertNotEquals(QR1.getVisualRepr(),QR2.getVisualRepr());
+    }
 }
 
 
