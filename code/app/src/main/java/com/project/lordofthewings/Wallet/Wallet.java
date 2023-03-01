@@ -19,8 +19,8 @@ public class Wallet {
 
     public Wallet(){
         this.qrCodes = getUserQrCodes();
-        this.db = FirebaseController.instance;
-        this.user = FireBaseController.UserId;
+        this.db = new FirebaseController().instance;
+        this.user = FireBaseController().UserId;
         this.qrCodesCount = qrCodes.size();
         this.score = getUserScore();
 
