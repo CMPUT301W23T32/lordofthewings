@@ -7,43 +7,48 @@ import java.util.Map;
 
 public class Player {
     private String userName;
+    private String fullName;
     private String id;
-    //private String Name;
 
-    //private int score;
-
-    //private String email;
     //private ArrayList<QRCode>  QRList;
-    private Wallet QRWallet;
+    //private Wallet QRWallet;
     //private Leaderboard leaderboard;
-    //public QRcode scan(){
-        //return  QRcode;
-    //};
 
-//    public Map dis playMap(){
-//
-//    };
+    /*
+    @return: return the full Name of the player
+     */
+    public  String getFullName(){
+        return this.fullName;
+    }
+    /*
+    set the full Name of the player
+    */
+    public void setFUllName(String newName){
+        this.fullName = newName;
+    }
 
-//    public Player SearchPlayer(){
-//        return player;
-//    }
-
-    public  String getName(){
+    /*
+    @return: return the useName of the player
+     */
+    public String getUserName(){
         return this.userName;
     }
-
-    public void setName (String Name){
-        this.userName = Name;
+    public void setUserName (String newUserName){
+        this.userName = newUserName;
     }
 
-
-    public String getUserName(String Name){}
-
-//   public scan(Camera camera){
-//        //add to
-//   }
-
-
+    /*
+     set the player ID
+     */
+    private void setId(String newID){
+        this.id = newID;
+    }
+    /*
+    @return: return the player ID
+     */
+    public String getId(){
+        return this.id;
+    }
 
 
 }
