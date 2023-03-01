@@ -3,6 +3,7 @@
 misc.xml
 deploymentTargetDropDown.xml
 render.experimental.xml
+.gradle
 
 # Local configuration file (sdk path, etc)
 local.properties

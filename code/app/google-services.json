@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "342909816058",
+    "project_id": "lordofthewings-3746e",
+    "storage_bucket": "lordofthewings-3746e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:342909816058:android:ba54f220c8ee854ded4d43",
+        "android_client_info": {
+          "package_name": "com.project.lordofthewings"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "342909816058-ajokatoqq7jc2kmhn0jotv2eq4p79rhn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkHsiyGoMGgLQooaknr6W6lAVEBZOwwOs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "342909816058-ajokatoqq7jc2kmhn0jotv2eq4p79rhn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
