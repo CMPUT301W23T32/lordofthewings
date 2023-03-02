@@ -1,4 +1,4 @@
-package com.project.lordofthewings.qrcode;
+package com.project.lordofthewings.Models.QRcode;
 
 
 import static java.lang.Math.pow;

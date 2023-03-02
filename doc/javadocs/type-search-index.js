@@ -1,1 +1,0 @@
-typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"com.project.lordofthewings","l":"ExampleUnitTest"},{"p":"com.project.lordofthewings.Controllers","l":"FirebaseController"}]
