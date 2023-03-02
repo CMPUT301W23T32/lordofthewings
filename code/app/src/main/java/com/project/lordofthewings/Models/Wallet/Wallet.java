@@ -1,4 +1,4 @@
-package com.project.lordofthewings.Wallet;
+package com.project.lordofthewings.Models.Wallet;
 
 import android.util.Log;
 
