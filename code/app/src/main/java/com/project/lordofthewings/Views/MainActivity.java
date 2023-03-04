@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 //        FirebaseController fbcontroller = new FirebaseController();
 //        FirebaseFirestore db = fbcontroller.getDb();
-        SharedPreferences sh = getSharedPreferences("MySharedPref", Context.MODE_PRIVATE);
+        SharedPreferences sh = getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE);
         if (sh.getString("username", "").equals("")) {
             Intent intent = new Intent(MainActivity.this, StartUpPage.class);
             startActivity(intent);

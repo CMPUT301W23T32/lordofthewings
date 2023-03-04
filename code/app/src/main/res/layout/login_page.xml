@@ -31,6 +31,7 @@
         android:orientation="vertical">
 
         <EditText
+            android:id="@+id/username"
             android:layout_width="300dp"
             android:layout_height="40dp"
             android:layout_gravity="center"
@@ -41,6 +42,7 @@
 
 
         <EditText
+            android:id="@+id/password"
             android:layout_width="300dp"
             android:layout_height="40dp"
             android:layout_gravity="center"
@@ -59,13 +61,14 @@
         android:textStyle="bold"
         android:text="Don't have an account? Sign up"/>
     <Button
+        android:id="@+id/login_button"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="7dp"
         android:padding="10dp"
         android:backgroundTint="#EE8D71"
-        android:text="Sign Up"
+        android:text="Sign In"
         android:textColor="#FFFFFF"
         android:textSize="20dp"
         app:cornerRadius="10dp"

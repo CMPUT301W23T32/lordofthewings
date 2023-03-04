@@ -17,7 +17,7 @@ public class StartUpPage extends AppCompatActivity {
         Button signup = findViewById(R.id.startup_signup_button);
 
         login.setOnClickListener(v -> {
-            Intent intent = new Intent(StartUpPage.this, LoginPage.class);
+            Intent intent = new Intent(StartUpPage.this, LogInPage.class);
             startActivity(intent);
         });
 

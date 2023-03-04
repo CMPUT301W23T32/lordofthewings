@@ -31,6 +31,7 @@
         android:orientation="vertical">
 
         <EditText
+            android:id="@+id/username"
             android:layout_width="300dp"
             android:layout_height="40dp"
             android:layout_gravity="center"
@@ -40,6 +41,7 @@
             android:paddingLeft="10dp" />
 
         <EditText
+            android:id="@+id/email"
             android:layout_width="300dp"
             android:layout_height="40dp"
             android:layout_gravity="center"
@@ -51,6 +53,7 @@
             android:paddingLeft="10dp" />
 
         <EditText
+            android:id="@+id/password"
             android:layout_width="300dp"
             android:layout_height="40dp"
             android:layout_gravity="center"
@@ -62,6 +65,7 @@
             android:paddingLeft="10dp" />
 
         <EditText
+            android:id="@+id/confirmPassword"
             android:layout_width="300dp"
             android:layout_height="40dp"
             android:layout_gravity="center"
@@ -80,6 +84,7 @@
         android:textStyle="bold"
         android:text="Already have an account? Sign in"/>
     <Button
+        android:id="@+id/signUpButton"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

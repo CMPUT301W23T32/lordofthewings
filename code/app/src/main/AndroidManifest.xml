@@ -34,7 +34,7 @@
             android:label="HomePage"
             android:exported="true"
             />
-        <activity android:name=".Views.StartUpPages.LoginPage"
+        <activity android:name=".Views.StartUpPages.LogInPage"
             android:label="LoginPage"
             android:exported="true"
             />
