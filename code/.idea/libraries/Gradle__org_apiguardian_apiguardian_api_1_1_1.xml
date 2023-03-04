@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: org.apiguardian:apiguardian-api:1.1.1">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apiguardian/apiguardian-api/1.1.1/7ea550039f115fcc40990925490b8ebd4b93024a/apiguardian-api-1.1.1.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apiguardian/apiguardian-api/1.1.1/4234e2b9339eb32c153f6a60f73aa0aa8528d068/apiguardian-api-1.1.1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apiguardian/apiguardian-api/1.1.1/f69264a564e8bf11729b029906d24592be3a3432/apiguardian-api-1.1.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
