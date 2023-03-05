@@ -25,6 +25,23 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+        <activity android:name=".Views.StartUpPages.StartUpPage"
+            android:label="StartUpPage"
+            android:exported="true"
+            >
+        </activity>
+        <activity android:name=".Views.HomePage"
+            android:label="HomePage"
+            android:exported="true"
+            />
+        <activity android:name=".Views.StartUpPages.LogInPage"
+            android:label="LoginPage"
+            android:exported="true"
+            />
+        <activity android:name=".Views.StartUpPages.SignUpPage"
+            android:label="SignUpPage"
+            android:exported="true"
+            />
     </application>
 
 </manifest>
