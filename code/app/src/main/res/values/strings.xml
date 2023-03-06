@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">lordofthewings</string>
+    <string name="title_activity_maps">MapsActivity</string>
 </resources>

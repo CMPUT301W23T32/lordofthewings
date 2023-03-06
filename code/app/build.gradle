@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'com.google.gms.google-services'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
 
 android {
@@ -32,6 +33,11 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    buildFeatures {
+        viewBinding true
+        dataBinding true
+    }
+
 }
 dependencies {
     // https://mvnrepository.com/artifact/commons-codec/commons-codec
@@ -55,6 +61,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:21.1.0'
     implementation 'com.google.firebase:firebase-firestore:24.4.3'
     implementation platform('com.google.firebase:firebase-bom:31.2.2')
+
+    // google maps libraries
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
 
 }
 apply plugin: 'com.google.gms.google-services'
