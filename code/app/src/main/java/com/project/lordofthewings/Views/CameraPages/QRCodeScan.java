@@ -86,7 +86,9 @@ public class QRCodeScan extends AppCompatActivity implements LocationListener {
             locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 locationPermissionRequest.launch(new String[]{
-                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                });
+                locationPermissionRequest.launch(new String[]{
                         Manifest.permission.ACCESS_COARSE_LOCATION
                 });
                 return;
