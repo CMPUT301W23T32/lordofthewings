@@ -34,9 +34,9 @@
     <View
         android:id="@+id/separatorView"
         android:layout_width="match_parent"
-        android:layout_height="2dp"
+        android:layout_height="1dp"
         android:layout_below="@id/topLayout"
-        android:background="@color/black" />
+        android:background="#9B9B9B" />
 
     <!-- QR code scanner button -->
     <Button
