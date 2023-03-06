@@ -1,8 +1,10 @@
 package com.project.lordofthewings.Views;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,5 +24,10 @@ public class HomePage extends AppCompatActivity {
         //hometext.setText("Welcome " + username + "!");
         usernametext = findViewById(R.id.usernameTextView);
         usernametext.setText("Welcome " +  username + "!");
+        ImageButton mapButton= findViewById(R.id.mapButton);
+        mapButton.setOnClickListener(v -> {
+            Intent intent = new Intent(HomePage.this, MapsActivity.class);
+            startActivity(intent);
+        });
     }
 }
