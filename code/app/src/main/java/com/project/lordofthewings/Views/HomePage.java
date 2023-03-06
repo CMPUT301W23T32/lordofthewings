@@ -26,6 +26,7 @@ public class HomePage extends AppCompatActivity {
         //TextView hometext = findViewById(R.id.TextView01);
         SharedPreferences sh = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
         String username = sh.getString("username", "");
+        usernametext = findViewById(R.id.usernameTextView);
         usernametext.setText("Welcome " + username + "!");
         Button scan_qr_code = findViewById(R.id.scanButton);
         scan_qr_code.setOnClickListener(c -> {
