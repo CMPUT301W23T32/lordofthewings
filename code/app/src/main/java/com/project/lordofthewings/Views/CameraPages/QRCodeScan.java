@@ -20,6 +20,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.project.lordofthewings.Models.QRcode.QRCode;
 import com.project.lordofthewings.R;
 
 public class QRCodeScan extends AppCompatActivity implements LocationListener {
@@ -54,6 +55,16 @@ public class QRCodeScan extends AppCompatActivity implements LocationListener {
         remove_location = findViewById(R.id.remove_location_button);
         location_text.setText("Location Not Added");
         location_text.setVisibility(TextView.VISIBLE);
+
+        // using the QRCode Class
+        QRCode qr = new QRCode(qr_code);
+        TextView visual_rep = findViewById(R.id.qr_code_visual_representation);
+        visual_rep.setText(qr.getVisualRepresentation());
+        TextView points = findViewById(R.id.points);
+        points.setText('+' + qr.getQRScore().toString() + " Points");
+        TextView qr_code_name = findViewById(R.id.qr_code_name);
+        qr_code_name.setText(qr.getQRName());
+
         remove_location.setOnClickListener(c -> {
             location_text.setText("Location Not Added");
             latitude = "";
