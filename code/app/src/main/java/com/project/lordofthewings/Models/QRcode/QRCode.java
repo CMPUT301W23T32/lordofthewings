@@ -180,7 +180,6 @@ public class QRCode {
     }
 
     public String getQRName(){
-        this.createName();
         return this.QRName;
     }
 
@@ -231,7 +230,6 @@ public class QRCode {
     }
 
     public Integer getQRScore(){
-        this.calculateScore();
         return this.QRScore;
     }
 }
