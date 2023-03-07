@@ -38,7 +38,6 @@ public class LogInPage extends AppCompatActivity {
 
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             DocumentReference docRef = db.collection("Users").document(username.getText().toString());
-            Log.e("usernamerr", usernameRes);
             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
