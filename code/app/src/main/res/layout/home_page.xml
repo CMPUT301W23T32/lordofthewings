@@ -9,7 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp">
-
 <!--        add a new user image here whenever we let them upload one-->
         <ImageView
             android:id="@+id/userIcon"
@@ -24,9 +23,19 @@
             android:id="@+id/usernameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/userIcon"
+            android:layout_toEndOf="@id/userIcon"
+            android:layout_centerVertical="true"
             android:text="Username"
             android:textSize="18sp" />
+
+        <ImageButton
+            android:id="@+id/settingsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/settings_icon"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true" />
+
 
     </RelativeLayout>
 
@@ -96,3 +105,4 @@
     </LinearLayout>
 
 </RelativeLayout>
+
