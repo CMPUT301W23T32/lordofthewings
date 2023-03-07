@@ -3,6 +3,7 @@ package com.project.lordofthewings.Models.QRcode;
 
 import static java.lang.Math.pow;
 
+import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.util.Collection;
@@ -56,7 +57,8 @@ public class QRCode {
      *  SHA256-Hash Value of that QRCode
      */
     public String calculateHash(){
-        return DigestUtils.sha256Hex(this.QRContent);
+        String pass = new String(Hex.encodeHex(DigestUtils.sha256(this.QRContent)));
+        return pass;
     }
 
     public String getHash(){

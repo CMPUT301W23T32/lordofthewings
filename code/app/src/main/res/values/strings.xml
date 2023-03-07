@@ -1,10 +1,7 @@
 <resources>
     <string name="app_name">lordofthewings</string>
-<<<<<<< HEAD
     <string name="title_activity_maps">MapsActivity</string>
-=======
     <string name="settings_title">Settings</string>
     <string name="logout_title">Logout</string>
 
->>>>>>> 91139f47f900c33d17e5c8d6615e3605a67ecde8
 </resources>
