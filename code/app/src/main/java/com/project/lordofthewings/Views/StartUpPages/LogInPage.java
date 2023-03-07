@@ -53,7 +53,6 @@ public class LogInPage extends AppCompatActivity {
                                 editor.putString("username", usernameRes);
                                 editor.apply();
                                 startActivity(intent);
-                                //inish();
                             } else {
                                 Log.d("TAG", "Password is incorrect");
                             }

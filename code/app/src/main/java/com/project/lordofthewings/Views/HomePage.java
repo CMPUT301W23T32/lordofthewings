@@ -22,7 +22,6 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.project.lordofthewings.R;
 import com.project.lordofthewings.Views.CameraPages.QRCodeScan;
-import com.project.lordofthewings.Views.StartUpPages.StartUpPage;
 
 public class HomePage extends AppCompatActivity {
     TextView usernametext;
@@ -56,14 +55,11 @@ public class HomePage extends AppCompatActivity {
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         int menuItemId = menuItem.getItemId();
                         if (menuItemId == R.id.logoutMenuItem){
-                            clearSharedPreferences();
-                            Intent intent = new Intent(HomePage.this, MainActivity.class);
-                            startActivity(intent);
-                            finish();
+                            //add stuff here for logout
                             return true;
                         }
                         else if (menuItemId == R.id.settingsMenuItem) {
-                            //placeholder stuff in case we ever add a settings option
+                            //placeholder stuff incase we ever add a settings option
                             return true;
                         }
                         else{
@@ -98,9 +94,8 @@ public class HomePage extends AppCompatActivity {
     private void clearSharedPreferences() {
         SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("username", "");
-        editor.apply();
         editor.clear();
         editor.apply();
     }
+
 }
