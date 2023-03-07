@@ -51,6 +51,7 @@ public class LogInPage extends AppCompatActivity {
                                 SharedPreferences.Editor editor = sharedPreferences.edit();
                                 editor.putString("username", usernameRes);
                                 editor.apply();
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
                             } else {
                                 Log.d("TAG", "Password is incorrect");
