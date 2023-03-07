@@ -95,8 +95,6 @@ public class HomePage extends AppCompatActivity {
         }
     }
 
-
-
     private void clearSharedPreferences() {
         SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
