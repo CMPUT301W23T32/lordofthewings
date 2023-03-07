@@ -46,8 +46,7 @@ public class SignUpPage extends AppCompatActivity {
                 user.put("password", DigestUtils.sha256Hex(passwordRes));
                 user.put("email", emailRes);
 
-                FirebaseController fbcontroller = new FirebaseController();
-                FirebaseFirestore db = fbcontroller.getDb();
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
                 db.collection("Users").document(usernameRes).set(user)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

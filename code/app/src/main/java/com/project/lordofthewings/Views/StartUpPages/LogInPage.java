@@ -31,13 +31,13 @@ public class LogInPage extends AppCompatActivity {
         loginButton.setOnClickListener(v -> {
             EditText username = findViewById(R.id.username);
             EditText password = findViewById(R.id.password);
+            //Log.e("usernamerr", username.getText().toString());
 
             String usernameRes = username.getText().toString();
             String passwordRes = password.getText().toString();
-            
-            FirebaseController fbcontroller = new FirebaseController();
-            FirebaseFirestore db = fbcontroller.getDb();
-            DocumentReference docRef = db.collection("Users").document(usernameRes);
+
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            DocumentReference docRef = db.collection("Users").document(username.getText().toString());
             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -51,6 +51,7 @@ public class LogInPage extends AppCompatActivity {
                                 SharedPreferences.Editor editor = sharedPreferences.edit();
                                 editor.putString("username", usernameRes);
                                 editor.apply();
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
                             } else {
                                 Log.d("TAG", "Password is incorrect");
