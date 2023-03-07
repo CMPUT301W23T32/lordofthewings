@@ -7,6 +7,8 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -24,7 +26,7 @@ public class Wallet {
 
     private String username;
     private int score;
-    private ArrayList<String> qrCodes;
+    private ArrayList<QRCode> qrCodes;
     private int qrCodesCount;
 
     FirebaseController fbController = new FirebaseController();
@@ -43,7 +45,7 @@ public class Wallet {
                         username = Objects.requireNonNull(document.get("username")).toString();
                         score = Integer.parseInt(Objects.requireNonNull(document.get("Score")).toString());
                         qrCodesCount = Integer.parseInt(Objects.requireNonNull(document.get("numberOfQRCodes")).toString());
-                        qrCodes = (ArrayList<String>) document.get("QRCodes");
+                        qrCodes = (ArrayList<QRCode>) document.get("QRCodes");
                     } else {
                         Log.d(TAG, "No such document");
                     }
@@ -70,21 +72,35 @@ public class Wallet {
     public void deleteQRCode(QRCode qr){
         this.qrCodesCount -=1;
         qrCodes.remove(qr);
-        //firebase stuff goes here
+        Map<String, ArrayList<QRCode>> newData = new HashMap<>();
+        newData.put("name", this.qrCodes);
+
+
+        db.collection("Users").document(username)
+                .set(newData)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error writing document", e);
+                    }
+                });
     }
 
 
-//    public int getUserScore(){
-//        //firebase stuff to get the score of the user
-//    }
+    public void updateUserScore(String qr){
 
-//    public ArrayList<QRCode> getUserQrCodes(){
-//        //firebase stuff to get the users QRCodes
-//
-//    }
 
-    public boolean checkExistingQrCode(String qr){
-        if (this.qrCodes.contains(qr)){
+
+    }
+
+    public boolean checkExistingQrCode(QRCode qr){
+        if ((this.qrCodes).contains(qr)){
             return true;
         }
         else {
