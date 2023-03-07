@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add New QRCode"
+        android:textSize="27dp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:padding="14dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="The Code you scanned is: "
+            android:paddingLeft="10dp"
+            android:textSize="18dp"/>
+        <TextView
+            android:id="@+id/qr_code_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No Code Scanned"
+            android:padding="10dp"
+            android:textSize="20dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="The Name of the Code is: "
+            android:paddingLeft="10dp"
+            android:textSize="18dp"/>
+        <TextView
+            android:id="@+id/qr_code_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No Name Scanned"
+            android:padding="10dp"
+            android:textSize="20dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Visual Representation of the Code: "
+            android:paddingLeft="10dp"
+            android:textSize="18dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/qr_code_visual_representation"
+            android:textSize="20dp"
+            android:padding="10dp"
+            android:text="No Visual Representation Scanned"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/points"
+            android:textSize="20dp"
+            android:padding="10dp"
+            android:text="No Points Scanned"/>
+        <Button
+            android:id="@+id/add_image_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add an image where you found this code"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            />
+        <ImageView
+            android:id="@+id/location_image"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:visibility="gone" />
+        <Button
+            android:id="@+id/remove_image_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Remove Image"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:visibility="gone"
+            />
+        <Button
+            android:id="@+id/add_location_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add location of this QR code"
+            android:layout_marginTop="1dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            />
+        <TextView
+            android:id="@+id/location_added"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Location added!"
+            android:layout_margin="10dp"
+            android:textSize="20dp"
+            android:visibility="gone"/>
+        <Button
+            android:id="@+id/remove_location_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Remove Location"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:visibility="gone"
+
+            />
+
+    </LinearLayout>
+
+</LinearLayout>
