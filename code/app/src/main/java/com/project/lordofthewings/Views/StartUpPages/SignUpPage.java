@@ -18,6 +18,7 @@ import com.project.lordofthewings.Controllers.FirebaseController;
 import com.project.lordofthewings.R;
 import com.project.lordofthewings.Views.HomePage;
 
+import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.util.HashMap;
@@ -42,8 +43,9 @@ public class SignUpPage extends AppCompatActivity {
 
             if (passwordRes.equals(confirmPasswordRes) && !usernameRes.equals("") && !passwordRes.equals("") && !emailRes.equals("")) {
                 Map<String, Object> user = new HashMap<>();
+                String pass = new String(Hex.encodeHex(DigestUtils.sha256(passwordRes)));
                 user.put("username", usernameRes);
-                user.put("password", DigestUtils.sha256Hex(passwordRes));
+                user.put("password", pass);
                 user.put("email", emailRes);
 
                 FirebaseController fbcontroller = new FirebaseController();
