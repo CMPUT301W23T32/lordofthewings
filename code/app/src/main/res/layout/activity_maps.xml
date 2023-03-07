@@ -5,14 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".Views.MapsActivity"
-    android:layout_weight="2">
-
-    <fragment
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1.99" />
+    android:weightSum="2">
 
     <LinearLayout
         android:id="@+id/navbarLayout"
@@ -22,41 +15,31 @@
         android:background="@color/white"
         android:orientation="horizontal"
         android:padding="8dp"
-        android:layout_weight=".01">
+        android:layout_weight=".01"
+        android:weightSum="3">
 
         <ImageButton
-            android:id="@+id/walletButton"
+            android:id="@+id/back_button_map"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_weight="1"
             android:background="@android:color/transparent"
-            android:src="@drawable/wallet_icon" />
+            android:src="@drawable/back_arrow" />
 
-        <ImageButton
-            android:id="@+id/searchButton"
+        <TextView
+            android:id="@+id/central_title_map"
             android:layout_width="0dp"
             android:layout_height="48dp"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:src="@drawable/search_icon" />
-
-        <ImageButton
-            android:id="@+id/profileButton"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:src="@drawable/user_icon" />
-
-
-        <ImageButton
-            android:id="@+id/mapButton"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:src="@drawable/map_icon" />
+            android:layout_weight="2"
+            android:text="MAP"/>
 
     </LinearLayout>
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.99" />
 
 </LinearLayout>
