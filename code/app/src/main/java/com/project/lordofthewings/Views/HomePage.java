@@ -49,19 +49,22 @@ public class HomePage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 PopupMenu popupMenuSettings = new PopupMenu(HomePage.this, settingsButton);
-                MenuItem logoutMenuItem = findViewById(R.id.logoutMenuItem);
-                MenuItem settingsMenuItem = findViewById(R.id.settingsMenuItem);
                 popupMenuSettings.getMenuInflater().inflate(R.menu.settings_menu, popupMenuSettings.getMenu());
-                popupMenuSettings.setOnMenuItemClickListener(menuItem -> {
-                    switch (menuItem.getItemId()) {
-                        case R.id.logoutMenuItem:
-                            // handle logout click
+                popupMenuSettings.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        int menuItemId = menuItem.getItemId();
+                        if (menuItemId == R.id.logoutMenuItem){
+                            //add stuff here for logout
                             return true;
-                        case R.id.settingsMenuItem:
-                            // handle settings click
+                        }
+                        else if (menuItemId == R.id.settingsMenuItem) {
+                            //placeholder stuff incase we ever add a settings option
                             return true;
-                        default:
+                        }
+                        else{
                             return false;
+                        }
                     }
                 });
                 popupMenuSettings.show();
