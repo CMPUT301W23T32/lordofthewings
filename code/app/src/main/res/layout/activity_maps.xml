@@ -12,7 +12,7 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1.75" />
+        android:layout_weight="1.99" />
 
     <LinearLayout
         android:id="@+id/navbarLayout"
@@ -22,7 +22,7 @@
         android:background="@color/white"
         android:orientation="horizontal"
         android:padding="8dp"
-        android:layout_weight=".25">
+        android:layout_weight=".01">
 
         <ImageButton
             android:id="@+id/walletButton"
