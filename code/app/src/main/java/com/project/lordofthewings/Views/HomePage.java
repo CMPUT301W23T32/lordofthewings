@@ -1,10 +1,17 @@
 package com.project.lordofthewings.Views;
+import android.app.Dialog;
 import android.content.Intent;
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.PopupMenu;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +41,31 @@ public class HomePage extends AppCompatActivity {
             integrator.setPrompt("Scan a QR Code");
             integrator.setOrientationLocked(false);
             integrator.initiateScan();
+        });
+
+
+        ImageButton settingsButton = findViewById(R.id.settingsButton);
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu popupMenuSettings = new PopupMenu(HomePage.this, settingsButton);
+                MenuItem logoutMenuItem = findViewById(R.id.logoutMenuItem);
+                MenuItem settingsMenuItem = findViewById(R.id.settingsMenuItem);
+                popupMenuSettings.getMenuInflater().inflate(R.menu.settings_menu, popupMenuSettings.getMenu());
+                popupMenuSettings.setOnMenuItemClickListener(menuItem -> {
+                    switch (menuItem.getItemId()) {
+                        case R.id.logoutMenuItem:
+                            // handle logout click
+                            return true;
+                        case R.id.settingsMenuItem:
+                            // handle settings click
+                            return true;
+                        default:
+                            return false;
+                    }
+                });
+                popupMenuSettings.show();
+            }
         });
     }
     @Override
