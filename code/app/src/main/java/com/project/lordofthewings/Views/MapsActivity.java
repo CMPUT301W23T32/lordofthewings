@@ -23,11 +23,16 @@ import com.google.android.gms.tasks.Task;
 import com.project.lordofthewings.R;
 import com.project.lordofthewings.databinding.ActivityMapsBinding;
 
+import java.util.ArrayList;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
     FusedLocationProviderClient fusedLocationProviderClient;
+
+    private ArrayList<LatLng> latLngs = new ArrayList<>();
+    private ArrayList<String> qr_names = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +47,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
+        latLngs.add(new LatLng(53.523427, -113.505638));
+        qr_names.add("ssk drive");
+
+        latLngs.add(new LatLng(53.520191,-113.5082895));
+        qr_names.add("earls");
+
+        latLngs.add(new LatLng(53.5233646,-113.491241));
+        qr_names.add("home");
+
+        latLngs.add(new LatLng(53.5220423,-113.5247204));
+        qr_names.add("uni");
+
         ImageButton back_button = findViewById(R.id.back_button_map);
         back_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,6 +81,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
+        for (int i = 0; i < latLngs.size(); i++) {
+            mMap.addMarker(new MarkerOptions().position(latLngs.get(i)).title(qr_names.get(i)));
+        }
 
         // checks if permission is granted or not
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -127,5 +149,4 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         }
     }
-
 }
