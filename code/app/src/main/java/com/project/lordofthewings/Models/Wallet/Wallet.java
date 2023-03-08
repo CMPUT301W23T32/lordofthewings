@@ -54,6 +54,8 @@ public class Wallet {
                 }
             }
         });
+
+        qrCodesCount = getQRCodeCount();
     }
 
 
@@ -73,7 +75,7 @@ public class Wallet {
         this.qrCodesCount -=1;
         qrCodes.remove(qr);
         Map<String, ArrayList<QRCode>> newData = new HashMap<>();
-        newData.put("name", this.qrCodes);
+        newData.put("userQRCodes", this.qrCodes);
 
 
         db.collection("Users").document(username)
@@ -92,6 +94,12 @@ public class Wallet {
                 });
     }
 
+    public int getQRCodeCount(){
+        return qrCodes.size();
+
+
+    }
+
 
     public void updateUserScore(String qr){
 
@@ -100,12 +108,15 @@ public class Wallet {
     }
 
     public boolean checkExistingQrCode(QRCode qr){
-        if ((this.qrCodes).contains(qr)){
-            return true;
+        for (int i =0; i < qrCodesCount; i++){
+            if (((qrCodes.get(i)).getHash()) == qr.getHash()){
+                return false;
+            }
+
         }
-        else {
-            return false;
-        }
+        return true;
+
+
 
     }
 
