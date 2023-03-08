@@ -7,13 +7,11 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firestore.v1.WriteResult;
+import com.google.firebase.firestore.auth.User;
 import com.project.lordofthewings.Controllers.FirebaseController;
 import com.project.lordofthewings.Models.Player.Player;
 import com.project.lordofthewings.Models.QRcode.QRCode;
@@ -30,11 +28,14 @@ public class Wallet {
     private ArrayList<QRCode> qrCodes;
     private int qrCodesCount;
 
+    private Player user;
+
     FirebaseController fbController = new FirebaseController();
     FirebaseFirestore db = fbController.getDb();
 
 
     public Wallet(Player user){
+        this.user = user;
         DocumentReference docRef = db.collection("Users").document(user.getUserName());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -58,19 +59,36 @@ public class Wallet {
 
         qrCodesCount = getInitialQRCodeCount();
         score = getInitialScore();
+
     }
 
 
-    public boolean addQRCode(QRCode qr){
-        if (checkExistingQrCode(qr)){
-            return false;
-        }
-        else {
+    public void addQRCode(String qr){
+        //GET STRING NEEDED TO CREATE QR OBJECT
+        //INITIALIZE QR OBJECT, null will be the string we recieve from camera controller
+        QRCode whatWeInitialize = new QRCode(null);
+        if (haveQRCode(whatWeInitialize) == false){
             this.qrCodesCount +=1;
-            qrCodes.add(qr);
-            //firebase stuff goes here
-            return true;
+            this.score += whatWeInitialize.getQRScore();
+            qrCodes.add(whatWeInitialize);
+            Map<String, Object> newData = new HashMap<>();
+            newData.put("QRCodes", qrCodes);
+            db.collection("Users").document(username)
+                    .update(newData);
+
+            //ALSO ADD TO QRCODES COLLECTION IF NOT THERE, IF THERE JUST ADD THE COMMENT
+
         }
+        else{
+            throw new RuntimeException("You have already added this QR code");
+
+
+
+
+        }
+        user.setScore(score);
+        //or could access the firestore directly in this method and change
+
     }
 
     public void deleteQRCode(QRCode qr){
@@ -84,11 +102,8 @@ public class Wallet {
         db.collection("Users").document(username)
                         .update(newData);
 
-
-
-
-
-
+        user.setScore(score);
+        //or could access the firestore directly in this method and change
 
 
     }
@@ -109,14 +124,14 @@ public class Wallet {
 
     }
 
-    public boolean checkExistingQrCode(QRCode qr){
+    public boolean haveQRCode(QRCode qr){
         for (int i =0; i < qrCodesCount; i++){
             if (((qrCodes.get(i)).getHash()) == qr.getHash()){
-                return false;
+                return true;
             }
 
         }
-        return true;
+        return false;
 
     }
 
