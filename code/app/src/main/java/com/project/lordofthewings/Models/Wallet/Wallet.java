@@ -13,6 +13,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firestore.v1.WriteResult;
 import com.project.lordofthewings.Controllers.FirebaseController;
 import com.project.lordofthewings.Models.Player.Player;
 import com.project.lordofthewings.Models.QRcode.QRCode;
@@ -43,8 +44,8 @@ public class Wallet {
                     if (document.exists()) {
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                         username = Objects.requireNonNull(document.get("username")).toString();
-                        score = Integer.parseInt(Objects.requireNonNull(document.get("Score")).toString());
-                        qrCodesCount = Integer.parseInt(Objects.requireNonNull(document.get("numberOfQRCodes")).toString());
+                        //score = Integer.parseInt(Objects.requireNonNull(document.get("Score")).toString());
+                        //qrCodesCount = Integer.parseInt(Objects.requireNonNull(document.get("numberOfQRCodes")).toString());
                         qrCodes = (ArrayList<QRCode>) document.get("QRCodes");
                     } else {
                         Log.d(TAG, "No such document");
@@ -55,11 +56,12 @@ public class Wallet {
             }
         });
 
-        qrCodesCount = getQRCodeCount();
+        qrCodesCount = getInitialQRCodeCount();
+        score = getInitialScore();
     }
 
 
-    public boolean addQRCode(String qr){
+    public boolean addQRCode(QRCode qr){
         if (checkExistingQrCode(qr)){
             return false;
         }
@@ -72,38 +74,38 @@ public class Wallet {
     }
 
     public void deleteQRCode(QRCode qr){
-        this.qrCodesCount -=1;
-        qrCodes.remove(qr);
-        Map<String, ArrayList<QRCode>> newData = new HashMap<>();
-        newData.put("userQRCodes", this.qrCodes);
+        Map<String, Object> newData = new HashMap<>();
+        newData.put("QRCodes", qrCodes);
 
+        this.qrCodesCount -=1;
+        this.score -= qr.getQRScore();
+        qrCodes.remove(qr);
 
         db.collection("Users").document(username)
-                .set(newData)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "DocumentSnapshot successfully written!");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error writing document", e);
-                    }
-                });
+                        .update(newData);
+
+
+
+
+
+
+
+
     }
 
-    public int getQRCodeCount(){
+
+
+    public int getInitialQRCodeCount(){
         return qrCodes.size();
-
-
     }
 
 
-    public void updateUserScore(String qr){
-
-
+    public int getInitialScore(){
+        int score = 0;
+        for (int i = 0; i < qrCodesCount; i++){
+            score += ((qrCodes.get(i)).getQRScore());
+            }
+        return score;
 
     }
 
@@ -115,8 +117,6 @@ public class Wallet {
 
         }
         return true;
-
-
 
     }
 
