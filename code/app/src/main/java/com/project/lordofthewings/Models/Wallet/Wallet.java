@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+
 public class Wallet {
 
     private String username;
@@ -32,6 +33,7 @@ public class Wallet {
 
     FirebaseController fbController = new FirebaseController();
     FirebaseFirestore db = fbController.getDb();
+
 
 
     public Wallet(Player user){
@@ -76,7 +78,7 @@ public class Wallet {
             db.collection("Users").document(username)
                     .update(newData);
 
-            //ALSO ADD TO QRCODES COLLECTION IF NOT THERE, IF THERE JUST ADD THE COMMENT
+            //ALSO ADD TO QRCodes COLLECTION IF NOT THERE, IF THERE JUST ADD THE NEW COMMENT
 
         }
         else{
@@ -86,8 +88,14 @@ public class Wallet {
 
 
         }
-        user.setScore(score);
+        //user.setScore(score);
         //or could access the firestore directly in this method and change
+//        Map<String, Object> newData = new HashMap<>();
+//        newData.put("Score", score);
+//        db.collection("Users").document(username)
+//                .update(newData);
+
+
 
     }
 
@@ -102,7 +110,7 @@ public class Wallet {
         db.collection("Users").document(username)
                         .update(newData);
 
-        user.setScore(score);
+        //user.setScore(score);
         //or could access the firestore directly in this method and change
 
 
@@ -124,12 +132,21 @@ public class Wallet {
 
     }
 
+    public int getScore(){
+        return this.score;
+
+    }
+
+    public int getQrCodesCount(){
+        return this.qrCodesCount;
+    }
+
+
     public boolean haveQRCode(QRCode qr){
         for (int i =0; i < qrCodesCount; i++){
             if (((qrCodes.get(i)).getHash()) == qr.getHash()){
                 return true;
             }
-
         }
         return false;
 
