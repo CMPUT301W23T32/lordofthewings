@@ -175,6 +175,16 @@ public class Wallet {
     }
 
     /**
+     * gets the QR codes the user has scanned so far
+     *
+     * @return : the ArrayList of the QR codes the user has scanned
+     */
+    public ArrayList<QRCode> getQrCodes(){
+        return this.qrCodes;
+
+    }
+
+    /**
      * Checks whether the user has already scanned the QR code
      * @param qr : the QR code we are checking for
      * @return : a boolean indicating whether the user already has scanned the QR
