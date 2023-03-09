@@ -3,6 +3,11 @@ package com.project.lordofthewings.Models.QRcode;
 
 import static java.lang.Math.pow;
 
+import android.location.Location;
+
+import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.firestore.GeoPoint;
+
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -22,9 +27,9 @@ public class QRCode {
     //placeholders to be changed based on their types and uses
     private String id;
 
-    private Collection<String> Comments;
+    private Collection<String> comments;
 
-    private String Location;
+    private LatLng location;
 
     /**
      * Constructor for the Object
@@ -37,6 +42,15 @@ public class QRCode {
         this.VisualRepr = this.getVisualRepresentation();
         this.QRName = this.createName();
         this.QRScore = this.calculateScore();
+    }
+
+    public QRCode(String hash, LatLng location){
+        this.QRContent = "";
+        this.QRHash = hash;
+        this.VisualRepr = this.getVisualRepresentation();
+        this.QRName = this.createName();
+        this.QRScore = this.calculateScore();
+        this.location = location;
     }
 
     /**
@@ -224,6 +238,8 @@ public class QRCode {
                 int sublen = curr - prev;
                 if (sublen > 1){
                     score += (int) pow(point.get(QRHash.charAt(prev)), sublen-1);
+                } else if ((sublen == 1) && (QRHash.charAt(prev) == '0')) {
+                    score += 1;
                 }
                 prev = i;
             }
@@ -233,5 +249,9 @@ public class QRCode {
 
     public Integer getQRScore(){
         return this.QRScore;
+    }
+
+    public LatLng getLocation() {
+        return location;
     }
 }
