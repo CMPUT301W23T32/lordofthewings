@@ -87,6 +87,9 @@ public class SignUpPage extends AppCompatActivity {
                 });
 
         }
+        else{
+            Toast.makeText(SignUpPage.this, "Please fill in all the fields!", Toast.LENGTH_SHORT).show();
+        }
     });
 }
 
