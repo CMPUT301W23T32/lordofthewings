@@ -1,17 +1,20 @@
 package com.project.lordofthewings.Models.Player;
 //import QRCode
 //import wallet
-import android.content.Context;
-import android.content.SharedPreferences;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.project.lordofthewings.Controllers.FirebaseController;
 
-import java.util.ArrayList;
 //friends is a list of players
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 public class Player {
     private String userName;
@@ -30,6 +33,24 @@ public class Player {
             }
         });
     }
+
+    //method to check if the user exists asynchronously
+    public CompletableFuture<Boolean> checkIfUserExists(String userName){
+        FirebaseFirestore db = this.fbcontroller.getDb();
+        CollectionReference playerRef = db.collection("Users");
+        Query query = playerRef.whereEqualTo("username",userName);
+
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
+        query.get().addOnSuccessListener(querySnapshot -> {
+            boolean exists =  querySnapshot.size() > 0;
+            future.complete(exists);
+        }).addOnFailureListener(error -> {
+            future.completeExceptionally(error);
+        });
+
+        return future;
+    }
+
 
     //private ArrayList<QRCode>  QRList;
     //private Wallet QRWallet;
