@@ -51,7 +51,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class QRCodeScan extends AppCompatActivity implements LocationListener {
+public class QRCodeScan extends AppCompatActivity {
     private String url = "https://api.dicebear.com/5.x/bottts-neutral/png?seed=";
     private static final int CAMERA_REQUEST = 1888;
     ImageView imageView;
@@ -177,40 +177,8 @@ public class QRCodeScan extends AppCompatActivity implements LocationListener {
         }
     }
 
-    ActivityResultLauncher<String[]> locationPermissionRequest =
-            registerForActivityResult(new ActivityResultContracts
-                            .RequestMultiplePermissions(), result -> {
-                        Boolean fineLocationGranted = result.getOrDefault(
-                                Manifest.permission.ACCESS_FINE_LOCATION, false);
-                        Boolean coarseLocationGranted = result.getOrDefault(
-                                Manifest.permission.ACCESS_COARSE_LOCATION, false);
-                        if (fineLocationGranted != null && fineLocationGranted) {
-                            // Precise location access granted.
-                        } else if (coarseLocationGranted != null && coarseLocationGranted) {
-                            // Only approximate location access granted.
-                        } else {
-                            // No location access granted.
-                        }
-                    }
-            );
 
-    public void onLocationChanged(Location location) {
-    }
 
-    @Override
-    public void onProviderDisabled(String provider) {
-        Log.d("Latitude", "disable");
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-        Log.d("Latitude", "enable");
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-        Log.d("Latitude", "status");
-    }
 
     private void requestPermissions() {
         ActivityCompat.requestPermissions(this, new String[]{

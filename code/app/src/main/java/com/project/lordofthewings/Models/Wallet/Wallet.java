@@ -196,10 +196,4 @@ public class Wallet {
         }
 
     }
-    private void setUsername(String username) {
-        this.username = username;
-    }
-    private void setQrCodes(ArrayList<QRCode> qrCodes) {
-        this.qrCodes = qrCodes;
-    }
 }
