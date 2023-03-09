@@ -89,8 +89,8 @@ public class Wallet {
                         data.put("Authors", authors);
                         data.put("Comments", comments);
                         if (lat != null && lon != null) {
-                            int latInt = (int) (Integer.parseInt(lat) * 1E6);
-                            int lonInt = (int) (Integer.parseInt(lon) * 1E6);
+                            float latInt = (float) (Float.parseFloat(lat));
+                            float lonInt = (float) (Float.parseFloat(lon));
                             GeoPoint geoPoint = new GeoPoint(latInt, lonInt);
                             data.put("Location", geoPoint);
                         } else{

@@ -41,6 +41,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.project.lordofthewings.Models.QRcode.QRCode;
 import com.project.lordofthewings.Models.Wallet.Wallet;
+import com.project.lordofthewings.Models.Wallet.walletCallback;
 import com.project.lordofthewings.R;
 import com.project.lordofthewings.Views.HomePage;
 import com.squareup.picasso.Picasso;
@@ -51,7 +52,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class QRCodeScan extends AppCompatActivity {
+public class QRCodeScan extends AppCompatActivity implements walletCallback {
     private String url = "https://api.dicebear.com/5.x/bottts-neutral/png?seed=";
     private static final int CAMERA_REQUEST = 1888;
     ImageView imageView;
@@ -147,7 +148,8 @@ public class QRCodeScan extends AppCompatActivity {
         });
         save_location = findViewById(R.id.add_location_button);
         save_location.setOnClickListener(c -> {
-            getLastLocation();
+            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+            getLastLocation(this);
 //            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 //            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 //                requestPermissions();
@@ -159,10 +161,7 @@ public class QRCodeScan extends AppCompatActivity {
 //            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 //            latitude = String.valueOf(location.getLatitude());
 //            longitude = String.valueOf(location.getLongitude());
-            location_text.setText("Location Added: " + latitude + ", " + longitude);
-            location_text.setVisibility(TextView.VISIBLE);
-            save_location.setVisibility(Button.GONE);
-            remove_location.setVisibility(Button.VISIBLE);
+
         });
     }
 
@@ -192,7 +191,7 @@ public class QRCodeScan extends AppCompatActivity {
 
 
     @SuppressLint("MissingPermission")
-    private void getLastLocation() {
+    private void getLastLocation(walletCallback callback) {
         // check if permissions are given
         if (checkPermissions()) {
 
@@ -214,6 +213,8 @@ public class QRCodeScan extends AppCompatActivity {
                             latitude = String.valueOf(location.getLatitude());
                             longitude = String.valueOf(location.getLongitude());
                         }
+
+                        callback.onCallback();
                     }
                 });
             } else {
@@ -270,8 +271,16 @@ public class QRCodeScan extends AppCompatActivity {
 
         if (requestCode == PERMISSION_ID) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                getLastLocation();
+                getLastLocation(this);
             }
         }
+    }
+
+    @Override
+    public void onCallback() {
+        location_text.setText("Location Added: " + latitude + ", " + longitude);
+        location_text.setVisibility(TextView.VISIBLE);
+        save_location.setVisibility(Button.GONE);
+        remove_location.setVisibility(Button.VISIBLE);
     }
 }
