@@ -15,6 +15,7 @@ import com.project.lordofthewings.Models.QRcode.QRCode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  *  A class which deals with all the QRCodes in existence
@@ -48,12 +49,14 @@ public class QRLocation {
 
     // fetches QR codes that are to be located on the map
     public ArrayList<QRCode> getLocatedQRArray(){
+
         ArrayList<QRCode> locatedQrs = new ArrayList<>();
         for (QRCode code: this.qrCodes) {
             if (code.getLocation() != null){
                 locatedQrs.add(code);
             }
         }
+
 
         this.db.terminate();
         return locatedQrs;
