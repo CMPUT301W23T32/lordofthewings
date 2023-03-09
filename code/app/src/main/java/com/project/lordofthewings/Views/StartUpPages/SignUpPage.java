@@ -52,11 +52,6 @@ public class SignUpPage extends AppCompatActivity {
             String lastNameRes = lastName.getText().toString();
 
 
-
-
-
-
-
             if (!usernameRes.equals("") && !firstNameRes.equals("") && !lastNameRes.equals("") && !emailRes.equals("")) {
                 FirebaseController fbcontroller = new FirebaseController();
 //                FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -133,7 +128,7 @@ public class SignUpPage extends AppCompatActivity {
 //        player.setEmail(email);
         //if you want to just put values to the db
         Map<String, Object> user = new HashMap<>();
-        ArrayList<QRCode> qrcodes = new ArrayList<>();
+        ArrayList<QRCode> qrcodes = new ArrayList<QRCode>();
         user.put("username", userName);
         user.put("email", email);
         user.put("firstName", firstName);

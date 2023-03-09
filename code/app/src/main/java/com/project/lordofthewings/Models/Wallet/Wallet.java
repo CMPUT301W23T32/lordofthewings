@@ -2,6 +2,7 @@ package com.project.lordofthewings.Models.Wallet;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.Intent;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -11,10 +12,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.auth.User;
 import com.project.lordofthewings.Controllers.FirebaseController;
 import com.project.lordofthewings.Models.Player.Player;
 import com.project.lordofthewings.Models.QRcode.QRCode;
+import com.project.lordofthewings.Views.CameraPages.QRCodeScan;
+import com.project.lordofthewings.Views.HomePage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,10 +32,11 @@ public class Wallet {
 
     private String username;
     private int score;
-    private ArrayList<QRCode> qrCodes;
+    private ArrayList<QRCode> qrCodes= new ArrayList<QRCode>();
     private int qrCodesCount;
 
     private Player user;
+
 
     FirebaseController fbController = new FirebaseController();
     FirebaseFirestore db = fbController.getDb();
@@ -40,71 +45,65 @@ public class Wallet {
     /**
      * initializes a wallet object that is associated with a specific user
      */
-    public Wallet(Player user){
-        this.user = user;
-        DocumentReference docRef = db.collection("Users").document(user.getUserName());
+    public Wallet(String user, ArrayList<QRCode> qrCodes, int score){
+        this.username = user;
+        Log.e("This is user", qrCodes.toString());
+        this.qrCodes = qrCodes;
+        this.score = score;
+        this.qrCodesCount = qrCodes.size();
+
+    }
+
+    /**
+     * Adds a QR code to the users Wallet, updates relevant info afterwards
+     * @param qr : the string of the qrCode that we wish to add
+     */
+    public void addQRCode(QRCode qr, String lat, String lon){
+        this.qrCodesCount +=1;
+        this.score += qr.getQRScore();
+        qrCodes.add(qr);
+        Map<String, Object> newData = new HashMap<>();
+        newData.put("QRCodes", qrCodes);
+        newData.put("Score", score);
+        Log.e("This is qrcodes", qrCodes.toString());
+        db.collection("Users").document(username)
+                .update(newData);
+
+        DocumentReference docRef = db.collection("QRCodes").document(qr.getHash());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                        username = Objects.requireNonNull(document.get("username")).toString();
-                        //score = Integer.parseInt(Objects.requireNonNull(document.get("Score")).toString());
-                        //qrCodesCount = Integer.parseInt(Objects.requireNonNull(document.get("numberOfQRCodes")).toString());
-                        qrCodes = (ArrayList<QRCode>) document.get("QRCodes");
+                        ArrayList<String> authors;
+                        authors = (ArrayList<String>) document.get("Authors");
+                        authors.add(username);
+                        task.getResult().getReference().update("Authors", authors);
                     } else {
                         Log.d(TAG, "No such document");
+                        ArrayList<String> authors = new ArrayList<>();
+                        ArrayList<Map<String, String>> comments = new ArrayList<>();
+                        Map<String, Object> data = new HashMap<>();
+                        data.put("QRCode", qr);
+                        data.put("Authors", authors);
+                        data.put("Comments", comments);
+                        if (lat != null && lon != null) {
+                            int latInt = (int) (Integer.parseInt(lat) * 1E6);
+                            int lonInt = (int) (Integer.parseInt(lon) * 1E6);
+                            GeoPoint geoPoint = new GeoPoint(latInt, lonInt);
+                            data.put("Location", geoPoint);
+                        } else{
+                            data.put("Location", null);
+                        }
+                        db.collection("QRCodes").document(qr.getHash())
+                                .set(data);
                     }
                 } else {
                     Log.d(TAG, "get failed with ", task.getException());
                 }
             }
         });
-
-        qrCodesCount = getInitialQRCodeCount();
-        score = getInitialScore();
-
-    }
-
-
-    /**
-     * Adds a QR code to the users Wallet, updates relevant info afterwards
-     * @param qr : the string of the qrCode that we wish to add
-     */
-    public void addQRCode(String qr){
-        //GET STRING NEEDED TO CREATE QR OBJECT
-        //INITIALIZE QR OBJECT, null will be the string we recieve from camera controller
-        QRCode whatWeInitialize = new QRCode(null);
-        if (haveQRCode(whatWeInitialize) == false){
-            this.qrCodesCount +=1;
-            this.score += whatWeInitialize.getQRScore();
-            qrCodes.add(whatWeInitialize);
-            Map<String, Object> newData = new HashMap<>();
-            newData.put("QRCodes", qrCodes);
-            db.collection("Users").document(username)
-                    .update(newData);
-
-            //ALSO ADD TO QRCodes COLLECTION IF NOT THERE, IF THERE JUST ADD THE NEW COMMENT
-
-        }
-        else{
-            throw new RuntimeException("You have already added this QR code");
-
-
-
-
-        }
-        //user.setScore(score);
-        //or could access the firestore directly in this method and change
-//        Map<String, Object> newData = new HashMap<>();
-//        newData.put("Score", score);
-//        db.collection("Users").document(username)
-//                .update(newData);
-
-
-
     }
 
     /**
@@ -190,13 +189,17 @@ public class Wallet {
      * @return : a boolean indicating whether the user already has scanned the QR
      */
     public boolean haveQRCode(QRCode qr){
-        for (int i =0; i < qrCodesCount; i++){
-            if (((qrCodes.get(i)).getHash()).equals(qr.getHash())){
-                return true;
-            }
+        if (qrCodes.contains(qr)){
+            return true;
+        }else {
+            return false;
         }
-        return false;
 
     }
-
+    private void setUsername(String username) {
+        this.username = username;
+    }
+    private void setQrCodes(ArrayList<QRCode> qrCodes) {
+        this.qrCodes = qrCodes;
+    }
 }
