@@ -1,10 +1,13 @@
 package com.project.lordofthewings.Views.CameraPages;
 
+import static android.content.ContentValues.TAG;
+
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -14,16 +17,30 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.project.lordofthewings.Models.QRcode.QRCode;
 import com.project.lordofthewings.R;
+import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class QRCodeScan extends AppCompatActivity implements LocationListener {
+    private String url = "https://api.dicebear.com/5.x/bottts-neutral/png?seed=";
     private static final int CAMERA_REQUEST = 1888;
     ImageView imageView;
     Button add_photo;
@@ -58,8 +75,9 @@ public class QRCodeScan extends AppCompatActivity implements LocationListener {
 
         // using the QRCode Class
         QRCode qr = new QRCode(qr_code);
-        TextView visual_rep = findViewById(R.id.qr_code_visual_representation);
-        visual_rep.setText(qr.getVisualRepresentation());
+        ImageView visual_rep = findViewById(R.id.qr_code_visual_representation);
+        Picasso.get().load(url+qr.getHash()).into(visual_rep);
+        //visual_rep.setText(qr.getVisualRepresentation());
         TextView points = findViewById(R.id.points);
         points.setText('+' + qr.getQRScore().toString() + " Points");
         TextView qr_code_name = findViewById(R.id.qr_code_name);
@@ -133,9 +151,7 @@ public class QRCodeScan extends AppCompatActivity implements LocationListener {
             );
 
     public void onLocationChanged(Location location) {
-
     }
-
     @Override
     public void onProviderDisabled(String provider) {
         Log.d("Latitude", "disable");
@@ -149,5 +165,23 @@ public class QRCodeScan extends AppCompatActivity implements LocationListener {
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
         Log.d("Latitude", "status");
+    }
+
+    public static Bitmap getBitmapFromURL(String src) {
+        try {
+            Log.e("src",src);
+            URL url = new URL(src);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            Log.e("Bitmap","returned");
+            return myBitmap;
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.e("Exception",e.getMessage());
+            return null;
+        }
     }
 }
