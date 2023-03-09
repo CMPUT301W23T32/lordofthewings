@@ -18,8 +18,12 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.project.lordofthewings.Controllers.FirebaseController;
 import com.project.lordofthewings.R;
 import com.project.lordofthewings.Views.CameraPages.QRCodeScan;
 import com.project.lordofthewings.Views.StartUpPages.SignUpPage;
@@ -43,8 +47,8 @@ public class HomePage extends AppCompatActivity {
             integrator.setPrompt("Scan a QR Code");
             integrator.setOrientationLocked(false);
             integrator.initiateScan();
-        });
 
+        });
 
         ImageButton settingsButton = findViewById(R.id.settingsButton);
         settingsButton.setOnClickListener(new View.OnClickListener() {
