@@ -20,28 +20,39 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
+import com.project.lordofthewings.Models.QRLocation.QRCodeCallback;
+import com.project.lordofthewings.Models.QRLocation.QRLocation;
+import com.project.lordofthewings.Models.QRcode.QRCode;
 import com.project.lordofthewings.R;
 import com.project.lordofthewings.databinding.ActivityMapsBinding;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+import java.util.ArrayList;
+
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, QRCodeCallback {
 
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
     FusedLocationProviderClient fusedLocationProviderClient;
 
+    private QRLocation qrLocation = new QRLocation(this);
+    private ArrayList<QRCode> locatedCodes;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         ImageButton back_button = findViewById(R.id.back_button_map);
         back_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,4 +139,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    @Override
+    public void onQrCodesRecieved() {
+        locatedCodes = qrLocation.getLocatedQRArray();
+        // nvm this is the issue
+        if (mMap != null && locatedCodes != null && !locatedCodes.isEmpty()) {
+            mMap.clear();
+            for (int i = 0; i < locatedCodes.size(); i++) {
+                mMap.addMarker(new MarkerOptions().position(locatedCodes.get(i).getLocation()).title(locatedCodes.get(i).getQRName()));
+            }
+        }
+    }
 }

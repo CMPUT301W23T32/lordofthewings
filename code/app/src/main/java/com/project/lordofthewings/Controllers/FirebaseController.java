@@ -22,6 +22,9 @@ public class FirebaseController {
         * @return db
      */
     public FirebaseFirestore getDb() {
-        return db;
+        if (db == null) {
+            this.db = FirebaseFirestore.getInstance();
+        }
+        return this.db;
     }
 }
