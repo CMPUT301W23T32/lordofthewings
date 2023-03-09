@@ -10,16 +10,23 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.core.FirestoreClient;
 import com.project.lordofthewings.Controllers.FirebaseController;
 
 //friends is a list of players
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public class Player {
     private String userName;
-    private String fullName;
+    private String firstName;
+    private String lastName;
     private String email;
+
+    //private ArrayList<QRCode>  QRList;
+    //private Wallet QRWallet;
+    //private Leaderboard leaderboard;
     FirebaseController fbcontroller = new FirebaseController();
     FirebaseFirestore db = fbcontroller.getDb();
 
@@ -34,39 +41,35 @@ public class Player {
         });
     }
 
-    //method to check if the user exists asynchronously
-    public CompletableFuture<Boolean> checkIfUserExists(String userName){
-        FirebaseFirestore db = this.fbcontroller.getDb();
-        CollectionReference playerRef = db.collection("Users");
-        Query query = playerRef.whereEqualTo("username",userName);
+//    public Player(String userName, String email, String firstName, String lastName){
+//        this.userName = userName;
+//        this.email = email;
+//        this.firstName = firstName;
+//        this.lastName = lastName;
+//    }
 
-        CompletableFuture<Boolean> future = new CompletableFuture<>();
-        query.get().addOnSuccessListener(querySnapshot -> {
-            boolean exists =  querySnapshot.size() > 0;
-            future.complete(exists);
-        }).addOnFailureListener(error -> {
-            future.completeExceptionally(error);
-        });
 
-        return future;
+
+
+
+    public void setEmail(String email){
+        this.email = email;
+    }
+
+    public String getEmail(){
+        return this.email;
     }
 
 
-    //private ArrayList<QRCode>  QRList;
-    //private Wallet QRWallet;
-    //private Leaderboard leaderboard;
-
-    /*
-    @return: return the full Name of the player
-     */
-    public  String getFullName(){
-        return this.fullName;
+    public void setLastName(String lastName){
+        this.lastName = lastName;
     }
+
     /*
     set the full Name of the player
     */
-    public void setFUllName(String newName){
-        this.fullName = newName;
+    public void setFirstName(String firstName){
+        this.firstName = firstName;
     }
 
     /*
