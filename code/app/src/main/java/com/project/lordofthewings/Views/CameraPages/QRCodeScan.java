@@ -70,7 +70,7 @@ public class QRCodeScan extends AppCompatActivity implements LocationListener {
         // using the QRCode Class
         QRCode qr = new QRCode(qr_code);
         ImageView visual_rep = findViewById(R.id.qr_code_visual_representation);
-        Picasso.get().load(url+qr.getHash()).into(visual_rep);
+        Picasso.get().load(url + qr.getHash()).into(visual_rep);
         //visual_rep.setText(qr.getVisualRepresentation());
         TextView points = findViewById(R.id.points);
         points.setText('+' + qr.getQRScore().toString() + " Points");
@@ -146,6 +146,7 @@ public class QRCodeScan extends AppCompatActivity implements LocationListener {
 
     public void onLocationChanged(Location location) {
     }
+
     @Override
     public void onProviderDisabled(String provider) {
         Log.d("Latitude", "disable");
