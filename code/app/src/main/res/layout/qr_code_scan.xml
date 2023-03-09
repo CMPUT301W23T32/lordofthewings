@@ -1,74 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+    android:orientation="vertical">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="14dp"
         android:text="Add New QRCode"
-        android:textSize="27dp"
-        android:textStyle="bold"
         android:textColor="@color/black"
-        android:padding="14dp"/>
+        android:textSize="27dp"
+        android:textStyle="bold" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="The Code you scanned is: "
             android:paddingLeft="10dp"
+            android:text="The Code you scanned is: "
             android:textSize="18dp"
-            android:visibility="gone"/>
+            android:visibility="gone" />
+
         <TextView
             android:id="@+id/qr_code_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="No Code Scanned"
             android:padding="10dp"
+            android:text="No Code Scanned"
             android:textSize="20dp"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <ImageView
+            android:id="@+id/qr_code_visual_representation"
             android:layout_width="200dp"
             android:layout_height="200dp"
-            android:id="@+id/qr_code_visual_representation"
-            android:gravity="center"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="3dp"
-
-            android:text="No Visual Representation Scanned"/>
+            android:gravity="center" />
+        <!--            android:text="No Visual Representation Scanned"/>-->
         <TextView
             android:id="@+id/qr_code_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="No Name Scanned"
-            android:paddingTop="0dp"
-            android:textSize="20dp"
             android:gravity="center"
-            android:textStyle="bold"/>
+            android:paddingTop="0dp"
+            android:text="No Name Scanned"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
         <TextView
+            android:id="@+id/points"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/points"
-            android:textSize="20dp"
+            android:gravity="center"
             android:padding="10dp"
             android:text="No Points Scanned"
-            android:textStyle="bold"
-            android:gravity="center"/>
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
         <Button
             android:id="@+id/add_image_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Add an image where you found this code"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
-            />
+            android:text="Add an image where you found this code" />
+
         <ImageView
             android:id="@+id/location_image"
             android:layout_width="100dp"
@@ -76,62 +79,67 @@
             android:layout_gravity="center"
             android:layout_margin="5dp"
             android:visibility="gone" />
+
         <Button
             android:id="@+id/remove_image_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Remove Image"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
-            android:visibility="gone"
-            />
+            android:text="Remove Image"
+            android:visibility="gone" />
+
         <Button
             android:id="@+id/add_location_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Add location of this QR code"
-            android:layout_marginTop="1dp"
             android:layout_marginLeft="15dp"
+            android:layout_marginTop="1dp"
             android:layout_marginRight="15dp"
-            />
+            android:text="Add location of this QR code" />
+
         <TextView
             android:id="@+id/location_added"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Location added!"
             android:layout_margin="10dp"
+            android:text="Location added!"
             android:textSize="20dp"
-            android:visibility="gone"/>
+            android:visibility="gone" />
+
         <Button
             android:id="@+id/remove_location_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Remove Location"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
+            android:text="Remove Location"
             android:visibility="gone"
 
             />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_gravity="center"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="horizontal">
+
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@android:string/cancel"
+                android:layout_margin="5dp"
                 android:backgroundTint="@color/orange_700"
-                android:layout_margin="5dp"/>
+                android:text="@android:string/cancel" />
+
             <Button
                 android:id="@+id/save_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Save"
-                android:textColor="@color/orange_500"
+                android:layout_margin="5dp"
                 android:backgroundTint="@color/white"
-                android:layout_margin="5dp"/>
+                android:text="Save"
+                android:textColor="@color/orange_500" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
