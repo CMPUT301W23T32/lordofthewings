@@ -90,15 +90,17 @@ public class StartUpActivityTests {
         solo.clickOnView(solo.getView(R.id.startup_signup_button));
         solo.waitForActivity("SignUpPage");
         solo.assertCurrentActivity("Wrong Activity", SignUpPage.class);
-        solo.enterText((EditText) solo.getView(R.id.username), "mktests");
-        solo.enterText((EditText) solo.getView(R.id.email), "mktests");
-        solo.enterText((EditText) solo.getView(R.id.firstName), "mktests");
-        solo.enterText((EditText) solo.getView(R.id.lastName), "mktests");
+        solo.enterText((EditText) solo.getView(R.id.username), "mktestss");
+        solo.enterText((EditText) solo.getView(R.id.email), "mktestss");
+        solo.enterText((EditText) solo.getView(R.id.firstName), "mktestss");
+        solo.enterText((EditText) solo.getView(R.id.lastName), "mktestss");
         solo.clickOnView(solo.getView(R.id.signUpButton));
         solo.waitForActivity("HomePage");
         solo.assertCurrentActivity("Wrong Activity", HomePage.class);
         solo.clickOnView(solo.getView(R.id.settingsButton));
         solo.clickOnMenuItem("Logout");
+        solo.waitForActivity("SignUpPage");
+        solo.assertCurrentActivity("Wrong Activity", SignUpPage.class);
 
 
 
