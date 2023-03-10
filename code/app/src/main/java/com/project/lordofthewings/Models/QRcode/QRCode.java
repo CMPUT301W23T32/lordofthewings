@@ -52,6 +52,12 @@ public class QRCode {
         this.QRScore = this.calculateScore();
         this.location = location;
     }
+    public QRCode(String hash, int a){
+        this.QRHash = hash;
+        this.QRContent = "";
+        this.QRName = this.createName();
+        this.QRScore = this.calculateScore();
+    }
 
     /**
      * Getter function for QRCode ID

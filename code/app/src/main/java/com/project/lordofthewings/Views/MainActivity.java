@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.project.lordofthewings.R;
+import com.project.lordofthewings.Views.StartUpPages.SignUpPage;
 import com.project.lordofthewings.Views.StartUpPages.StartUpPage;
 
 public class MainActivity extends AppCompatActivity {
@@ -19,11 +20,13 @@ public class MainActivity extends AppCompatActivity {
 //        FirebaseFirestore db = fbcontroller.getDb();
         SharedPreferences sh = getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE);
         if (sh.getString("username", "").equals("")) {
-            Intent intent = new Intent(MainActivity.this, StartUpPage.class);
+            Intent intent = new Intent(MainActivity.this, SignUpPage.class);
             startActivity(intent);
+            finish();
         } else {
             Intent intent = new Intent(MainActivity.this, HomePage.class);
             startActivity(intent);
+            finish();
         }
     }
 }

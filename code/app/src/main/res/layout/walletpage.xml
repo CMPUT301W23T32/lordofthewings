@@ -11,33 +11,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp">
-<!--        add a new user image here whenever we let them upload one-->
-        <ImageView
-            android:id="@+id/userIcon"
-            android:layout_width="wrap_content"
+        <!--        add a new user image here whenever we let them upload one-->
+        <ImageButton
+            android:id="@+id/backIcon"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
-            android:src="@drawable/user_icon"
+            android:src="@drawable/back_icon"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:layout_marginEnd="8dp" />
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/rounded_md"/>
 
         <TextView
             android:id="@+id/usernameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/userIcon"
+            android:layout_toEndOf="@id/backIcon"
             android:layout_centerVertical="true"
-            android:text="Username"
-            android:textSize="18sp" />
-
-        <ImageButton
-            android:id="@+id/settingsButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/settings_icon"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true" />
-
+            android:text="Wallet"
+            android:textSize="20sp" />
 
     </RelativeLayout>
 
@@ -53,8 +45,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center"
         android:layout_margin="10dp">
+        <TextView
+            android:id="@+id/pointsTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Score:"
+            android:textSize="27dp" />
+        <TextView
+            android:id="@+id/points"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:textSize="25dp"
+            android:text="0 points"/>
 
         <Button
             android:id="@+id/scanButton"
@@ -65,9 +72,15 @@
             android:text="Scan New QR code"
             android:textColor="@color/white"
             android:textSize="10sp"
-            android:gravity="center"/>
+            android:layout_marginLeft="20dp"/>
     </LinearLayout>
 
+    <ListView
+        android:id="@+id/qrCodeListView"
+        android:layout_width="match_parent"
+        android:layout_height="489dp"
+        android:layout_margin="8dp"
+        android:layout_weight="1" />
 
 
     <!-- QR code scanner button -->

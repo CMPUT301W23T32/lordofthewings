@@ -15,6 +15,7 @@ import com.project.lordofthewings.Models.QRcode.QRCode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  *  A class which deals with all the QRCodes in existence
@@ -34,8 +35,10 @@ public class QRLocation {
                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                     List<DocumentSnapshot> snapshotList = queryDocumentSnapshots.getDocuments();
                     for (DocumentSnapshot snapshot : snapshotList) {
-                        LatLng pos = new LatLng(snapshot.getGeoPoint("location").getLatitude(), snapshot.getGeoPoint("location").getLongitude());
-                        QRCode qrCode = new QRCode(snapshot.getString("hash"), pos);
+                        Log.d("loop", "onSuccess: " + snapshot.get("hash"));
+                        LatLng pos = new LatLng(snapshot.getGeoPoint("Location").getLatitude(), snapshot.getGeoPoint("Location").getLongitude());
+                        Map<String, Object> qrObject = (Map<String, Object>) snapshot.get("QRCode");
+                        QRCode qrCode = new QRCode(qrObject.get("hash").toString(), pos);
                         System.out.println("1st check: " + qrCodes);
                         qrCodes.add(qrCode);
                         System.out.println("2nd check: " + qrCodes);
@@ -48,12 +51,14 @@ public class QRLocation {
 
     // fetches QR codes that are to be located on the map
     public ArrayList<QRCode> getLocatedQRArray(){
+
         ArrayList<QRCode> locatedQrs = new ArrayList<>();
         for (QRCode code: this.qrCodes) {
             if (code.getLocation() != null){
                 locatedQrs.add(code);
             }
         }
+
 
         this.db.terminate();
         return locatedQrs;
