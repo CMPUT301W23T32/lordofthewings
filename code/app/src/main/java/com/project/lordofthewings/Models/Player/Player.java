@@ -54,16 +54,17 @@ public class Player {
             throw new Exception("Username already exists!");
         }
         this.score = 0;
-        this.QRList = new ArrayList<>();
+        this.QRList = new ArrayList<QRCode>();
         this.userName = userName;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
+        //db.collection("Users").document(userName).set(this);
     }
 
 
     //use this constructor to instantiate a player that already exists in the database
-    public Player(String userName, FirebaseFirestore db) throws Exception{
+    public Player(String userName) throws Exception{
         CompletableFuture<Boolean> future = checkIfUserExists(userName, db);
         Boolean exists = future.get();
 
@@ -79,10 +80,10 @@ public class Player {
                 this.firstName = (String) data.get("firstName");
                 this.lastName = (String) data.get("lastName");
                 this.score = (int) data.get("score");
+                this.QRList = (ArrayList<QRCode>) data.get("QRList");
             }
         });
     }
-
 
 
     public CompletableFuture<Boolean> checkIfUserExists(String userName, FirebaseFirestore db){
