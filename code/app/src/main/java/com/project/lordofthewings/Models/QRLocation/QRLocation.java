@@ -35,8 +35,10 @@ public class QRLocation {
                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                     List<DocumentSnapshot> snapshotList = queryDocumentSnapshots.getDocuments();
                     for (DocumentSnapshot snapshot : snapshotList) {
-                        LatLng pos = new LatLng(snapshot.getGeoPoint("location").getLatitude(), snapshot.getGeoPoint("location").getLongitude());
-                        QRCode qrCode = new QRCode(snapshot.getString("hash"), pos);
+                        Log.d("loop", "onSuccess: " + snapshot.get("hash"));
+                        LatLng pos = new LatLng(snapshot.getGeoPoint("Location").getLatitude(), snapshot.getGeoPoint("Location").getLongitude());
+                        Map<String, Object> qrObject = (Map<String, Object>) snapshot.get("QRCode");
+                        QRCode qrCode = new QRCode(qrObject.get("hash").toString(), pos);
                         System.out.println("1st check: " + qrCodes);
                         qrCodes.add(qrCode);
                         System.out.println("2nd check: " + qrCodes);
