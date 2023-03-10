@@ -40,7 +40,8 @@ public class WalletPage extends AppCompatActivity {
     private ListView qrCodeList;
     private ArrayAdapter<QRCode> qrCodeAdapter;
     TextView points;
-    TextView qrcodecount;
+
+    TextView qrCodeCount;
     TextView usernametext;
     String username;
     @SuppressLint("SetTextI18n")
@@ -56,7 +57,7 @@ public class WalletPage extends AppCompatActivity {
         qrCodeList.setAdapter(qrCodeAdapter);
         usernametext = findViewById(R.id.usernameTextView);
         points = findViewById(R.id.points);
-        qrcodecount = findViewById(R.id.qrcodeCount);
+        qrCodeCount = findViewById(R.id.qrcodeCount);
         this.username = username;
         ImageButton back = findViewById(R.id.backIcon);
         back.setOnClickListener(new View.OnClickListener() {
@@ -77,16 +78,15 @@ public class WalletPage extends AppCompatActivity {
                     if (document.exists()) {
                         Log.e("data", document.get("QRCodes").toString());
                         ArrayList<Map<String, Object>> qrCodes = (ArrayList<Map<String, Object>>) document.get("QRCodes");
-
                         if (qrCodes != null){
                             qrCodeAdapter.clear();
                             for (Map<String, Object> qrCode : qrCodes) {
+                                Integer count = qrCodes.size();
                                 String hash = qrCode.get("hash").toString();
                                 qrCodeAdapter.add(new QRCode(hash, 0));
                                 qrCodeAdapter.notifyDataSetChanged();
-                                int count = qrCodes.size();
                                 points.setText(document.get("Score").toString() + " Points");
-                                qrcodecount.setText(count);
+                                qrCodeCount.setText(count.toString());
                             }
                         }
                     } else {
@@ -97,7 +97,7 @@ public class WalletPage extends AppCompatActivity {
                 }
             }
         });
-        Button scan_qr_code = findViewById (R.id.scanButton);
+        Button scan_qr_code = findViewById(R.id.scanButton);
         scan_qr_code.setOnClickListener(c -> {
             IntentIntegrator integrator = new IntentIntegrator(this);
             integrator.setPrompt("Scan a QR Code");
@@ -123,12 +123,12 @@ public class WalletPage extends AppCompatActivity {
                         if (qrCodes != null){
                             qrCodeAdapter.clear();
                             for (Map<String, Object> qrCode : qrCodes) {
-                                int count = qrCodes.size();
+                                Integer count = qrCodes.size();
                                 String hash = qrCode.get("hash").toString();
                                 qrCodeAdapter.add(new QRCode(hash, 0));
                                 qrCodeAdapter.notifyDataSetChanged();
                                 points.setText(document.get("Score").toString() + " Points");
-                                qrcodecount.setText(count);
+                                qrCodeCount.setText(count.toString());
                             }
                         }
                     } else {
