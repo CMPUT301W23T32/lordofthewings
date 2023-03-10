@@ -1,3 +1,5 @@
+//noinspection GradleCompatible
+//noinspection GradleCompatible
 plugins {
     id 'com.android.application'
     id 'com.google.gms.google-services'
@@ -43,9 +45,9 @@ dependencies {
     // https://mvnrepository.com/artifact/commons-codec/commons-codec
     implementation 'commons-codec:commons-codec:1.15'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'com.google.firebase:firebase-crashlytics-buildtools:2.9.4'
     //implementation 'androidx.annotation:annotation-jvm:1.6.0'
     //testImplementation 'junit:junit:4.13.2'
     //unit testing libraries
@@ -71,6 +73,8 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
     implementation 'com.google.android.gms:play-services-location:21.0.1'
 
+    //other libraries
+    implementation 'com.squareup.picasso:picasso:2.8'
 }
 apply plugin: 'com.google.gms.google-services'
 

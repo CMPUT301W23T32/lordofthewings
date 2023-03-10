@@ -55,11 +55,15 @@
         <activity
             android:name=".Views.StartUpPages.StartUpPage"
             android:exported="true"
-            android:label="StartUpPage"></activity>
-        <activity
-            android:name=".Views.HomePage"
+            android:label="StartUpPage">
+        </activity>
+        <activity android:name=".Views.WalletPage"
+            android:label="WalletPage"
             android:exported="true"
-            android:label="HomePage" />
+            />
+        <activity android:name=".Views.HomePage"
+            android:label="HomePage"
+            android:exported="true"/>
         <activity
             android:name=".Views.StartUpPages.LogInPage"
             android:exported="true"
