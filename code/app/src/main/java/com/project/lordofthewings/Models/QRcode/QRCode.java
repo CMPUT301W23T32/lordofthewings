@@ -3,7 +3,8 @@ package com.project.lordofthewings.Models.QRcode;
 
 import static java.lang.Math.pow;
 
-import org.apache.commons.codec.digest.DigestUtils;
+
+import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.codec.digest.DigestUtils;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -34,6 +35,13 @@ public class QRCode {
         this.QRContent = QRContent;
         this.QRHash = this.calculateHash();
         this.VisualRepr = this.getVisualRepresentation();
+        this.QRName = this.createName();
+        this.QRScore = this.calculateScore();
+    }
+
+    public QRCode(String hash, int a){
+        this.QRHash = hash;
+        this.QRContent = "";
         this.QRName = this.createName();
         this.QRScore = this.calculateScore();
     }

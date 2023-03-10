@@ -26,8 +26,6 @@ import com.project.lordofthewings.Models.QRcode.QRCode;
 import com.project.lordofthewings.R;
 import com.project.lordofthewings.Views.HomePage;
 
-import org.apache.commons.codec.digest.DigestUtils;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;

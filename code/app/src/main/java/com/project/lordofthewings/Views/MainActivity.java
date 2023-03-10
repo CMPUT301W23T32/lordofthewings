@@ -22,9 +22,11 @@ public class MainActivity extends AppCompatActivity {
         if (sh.getString("username", "").equals("")) {
             Intent intent = new Intent(MainActivity.this, SignUpPage.class);
             startActivity(intent);
+            finish();
         } else {
             Intent intent = new Intent(MainActivity.this, HomePage.class);
             startActivity(intent);
+            finish();
         }
     }
 }
