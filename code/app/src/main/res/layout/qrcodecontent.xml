@@ -26,8 +26,8 @@
                 android:id="@+id/qrcode_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="QRCode name"
-                android:textSize="20dp"
+                android:text="QRCode Name"
+                android:textSize="18sp"
                 android:layout_gravity="start"/>
             <TextView
                 android:id="@+id/qrcode_points"
