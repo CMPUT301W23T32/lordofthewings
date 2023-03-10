@@ -8,7 +8,9 @@ import androidx.test.rule.ActivityTestRule;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.project.lordofthewings.Views.HomePage;
 import com.project.lordofthewings.Views.MainActivity;
+import com.project.lordofthewings.Views.StartUpPages.SignUpPage;
 import com.project.lordofthewings.Views.StartUpPages.StartUpPage;
 import com.robotium.solo.Solo;
 
@@ -50,6 +52,20 @@ public class StartUpActivityTests {
     public void start() throws Exception{
         Activity activity = rule.getActivity();
     }
+
+    @Test
+    public void checkIfPageSwitchesToSignUp(){
+
+        solo.assertCurrentActivity("Wrong Activity", StartUpPage.class);
+
+        solo.clickOnView(solo.getView(R.id.startup_signup_button));
+        solo.waitForActivity("SignUpPage");
+
+        solo.assertCurrentActivity("Wrong Activity", SignUpPage.class);
+
+    }
+
+
 
 
 
