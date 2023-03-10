@@ -25,7 +25,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 /**
- * Test class for MainActivity. All the UI tests are written here. Robotium test framework is used
+ * Test class for activity flow. All the UI tests are written here. Robotium test framework is used
  */
 @RunWith(AndroidJUnit4.class)
 public class StartUpActivityTests {
@@ -69,10 +69,8 @@ public class StartUpActivityTests {
     @Test
     public void checkIfSignUpWorks() {
         solo.assertCurrentActivity("Wrong Activity", StartUpPage.class);
-
         solo.clickOnView(solo.getView(R.id.startup_signup_button));
         solo.waitForActivity("SignUpPage");
-
         solo.assertCurrentActivity("Wrong Activity", SignUpPage.class);
         solo.enterText((EditText) solo.getView(R.id.username), "mktest");
         solo.enterText((EditText) solo.getView(R.id.email), "mktest");
@@ -81,8 +79,6 @@ public class StartUpActivityTests {
         solo.clickOnView(solo.getView(R.id.signUpButton));
         solo.waitForActivity("HomePage");
         solo.assertCurrentActivity("Wrong Activity", HomePage.class);
-        
-
 
     }
 
