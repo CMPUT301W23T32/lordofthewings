@@ -14,6 +14,7 @@ import com.project.lordofthewings.Views.StartUpPages.SignUpPage;
 import com.project.lordofthewings.Views.StartUpPages.StartUpPage;
 import com.robotium.solo.Solo;
 
+import org.jetbrains.annotations.TestOnly;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -66,19 +67,40 @@ public class StartUpActivityTests {
     }
 
 
+//    @Test
+//    public void checkIfSignUpWorks() {
+//        solo.assertCurrentActivity("Wrong Activity", StartUpPage.class);
+//        solo.clickOnView(solo.getView(R.id.startup_signup_button));
+//        solo.waitForActivity("SignUpPage");
+//        solo.assertCurrentActivity("Wrong Activity", SignUpPage.class);
+//        solo.enterText((EditText) solo.getView(R.id.username), "mktest");
+//        solo.enterText((EditText) solo.getView(R.id.email), "mktest");
+//        solo.enterText((EditText) solo.getView(R.id.firstName), "mktest");
+//        solo.enterText((EditText) solo.getView(R.id.lastName), "mktest");
+//        solo.clickOnView(solo.getView(R.id.signUpButton));
+//        solo.waitForActivity("HomePage");
+//        solo.assertCurrentActivity("Wrong Activity", HomePage.class);
+//
+//    }
+
+   
     @Test
-    public void checkIfSignUpWorks() {
+    public void checkIfLogOutWorks() {
         solo.assertCurrentActivity("Wrong Activity", StartUpPage.class);
         solo.clickOnView(solo.getView(R.id.startup_signup_button));
         solo.waitForActivity("SignUpPage");
         solo.assertCurrentActivity("Wrong Activity", SignUpPage.class);
-        solo.enterText((EditText) solo.getView(R.id.username), "mktest");
-        solo.enterText((EditText) solo.getView(R.id.email), "mktest");
-        solo.enterText((EditText) solo.getView(R.id.firstName), "mktest");
-        solo.enterText((EditText) solo.getView(R.id.lastName), "mktest");
+        solo.enterText((EditText) solo.getView(R.id.username), "mktests");
+        solo.enterText((EditText) solo.getView(R.id.email), "mktests");
+        solo.enterText((EditText) solo.getView(R.id.firstName), "mktests");
+        solo.enterText((EditText) solo.getView(R.id.lastName), "mktests");
         solo.clickOnView(solo.getView(R.id.signUpButton));
         solo.waitForActivity("HomePage");
         solo.assertCurrentActivity("Wrong Activity", HomePage.class);
+        solo.clickOnView(solo.getView(R.id.settingsButton));
+        solo.clickOnMenuItem("Logout");
+
+
 
     }
 
