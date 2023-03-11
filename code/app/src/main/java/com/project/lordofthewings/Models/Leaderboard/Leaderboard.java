@@ -23,7 +23,6 @@ public class Leaderboard {
     FirebaseController fbController = new FirebaseController();
     FirebaseFirestore db = fbController.getDb();
     private ArrayList<Player> leaderboard = new ArrayList<Player>();
-    private int totalPlayers = 0;
 
     public Leaderboard(){
         createLeaderboard();
@@ -45,7 +44,6 @@ public class Leaderboard {
                             try {
                                 Player player = new Player(playerToBeInitialized);
                                 leaderboard.add(player);
-                                totalPlayers += 1;
                             } catch (Exception e) {
                                 throw new RuntimeException(e);
                             }
@@ -63,6 +61,21 @@ public class Leaderboard {
                 });
 
     }
+
+    public int getGlobalRankingOfPlayer(Player p){
+        int i;
+        for (i = 0; i < leaderboard.size(); i++){
+            String playerUsername = (leaderboard.get(i).getUserName());
+            if (p.getUserName().equals(playerUsername)){
+                break;
+            }
+
+        }
+        return (i + 1);
+
+    }
+
+    
 
 
 
