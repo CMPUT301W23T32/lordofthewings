@@ -125,7 +125,7 @@ public class StartUpActivityTests {
 
     }
     @Test
-    public void checkIfSwitchesToWalletWithProperUser() {
+    public void checkWalletBackButton() {
         solo.assertCurrentActivity("Wrong Activity", SignUpPage.class);
         solo.enterText((EditText) solo.getView(R.id.username), "mktest");
         solo.enterText((EditText) solo.getView(R.id.email), "mktest");
@@ -137,7 +137,13 @@ public class StartUpActivityTests {
         solo.clickOnView(solo.getView(R.id.walletButton));
         solo.waitForActivity("WalletPage");
         solo.assertCurrentActivity("Wrong Activity", WalletPage.class);
-        assertTrue(solo.waitForText("mktest", 1, 2000));
+        solo.clickOnView(solo.getView(R.id.backIcon));
+        solo.waitForActivity("HomePage");
+        solo.assertCurrentActivity("Wrong Activity", HomePage.class);
+
+
+
+
 
     }
 
