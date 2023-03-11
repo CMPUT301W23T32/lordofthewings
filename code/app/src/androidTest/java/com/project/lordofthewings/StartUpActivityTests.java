@@ -1,13 +1,22 @@
 package com.project.lordofthewings;
 
+import static android.content.ContentValues.TAG;
+
 import android.app.Activity;
 
+import androidx.annotation.NonNull;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
+
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.project.lordofthewings.Controllers.FirebaseController;
 import com.project.lordofthewings.Views.HomePage;
 import com.project.lordofthewings.Views.MainActivity;
 import com.project.lordofthewings.Views.StartUpPages.SignUpPage;
@@ -32,6 +41,8 @@ import static org.junit.Assert.assertFalse;
 @RunWith(AndroidJUnit4.class)
 public class StartUpActivityTests {
     private Solo solo;
+    FirebaseController fbController = new FirebaseController();
+    FirebaseFirestore db = fbController.getDb();
 
     @Rule
     public ActivityTestRule<SignUpPage> rule =
@@ -74,10 +85,10 @@ public class StartUpActivityTests {
     @Test
     public void checkIfLogOutWorks() {
         solo.assertCurrentActivity("Wrong Activity", SignUpPage.class);
-        solo.enterText((EditText) solo.getView(R.id.username), "mktests");
-        solo.enterText((EditText) solo.getView(R.id.email), "mktests");
-        solo.enterText((EditText) solo.getView(R.id.firstName), "mktests");
-        solo.enterText((EditText) solo.getView(R.id.lastName), "mktests");
+        solo.enterText((EditText) solo.getView(R.id.username), "mktest");
+        solo.enterText((EditText) solo.getView(R.id.email), "mktest");
+        solo.enterText((EditText) solo.getView(R.id.firstName), "mktest");
+        solo.enterText((EditText) solo.getView(R.id.lastName), "mktest");
         solo.clickOnView(solo.getView(R.id.signUpButton));
         solo.waitForActivity("HomePage");
         solo.assertCurrentActivity("Wrong Activity", HomePage.class);
@@ -91,17 +102,38 @@ public class StartUpActivityTests {
     @Test
     public void checkIfSwitchesToWallet() {
         solo.assertCurrentActivity("Wrong Activity", SignUpPage.class);
-        solo.enterText((EditText) solo.getView(R.id.username), "mktests");
-        solo.enterText((EditText) solo.getView(R.id.email), "mktests");
-        solo.enterText((EditText) solo.getView(R.id.firstName), "mktests");
-        solo.enterText((EditText) solo.getView(R.id.lastName), "mktests");
+        solo.enterText((EditText) solo.getView(R.id.username), "mktest");
+        solo.enterText((EditText) solo.getView(R.id.email), "mktest");
+        solo.enterText((EditText) solo.getView(R.id.firstName), "mktest");
+        solo.enterText((EditText) solo.getView(R.id.lastName), "mktest");
         solo.clickOnView(solo.getView(R.id.signUpButton));
         solo.waitForActivity("HomePage");
         solo.assertCurrentActivity("Wrong Activity", HomePage.class);
         solo.clickOnView(solo.getView(R.id.walletButton));
         solo.waitForActivity("WalletPage");
         solo.assertCurrentActivity("Wrong Activity", WalletPage.class);
-        
+
+    }
+
+    public void deleteTestUser(){
+        db.collection("Users").document("mktest")
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error deleting document", e);
+                    }
+                });
+
+
+
+
     }
 
 
@@ -127,6 +159,8 @@ public class StartUpActivityTests {
     @After
     public void tearDown() throws Exception{
         solo.finishOpenedActivities();
+        deleteTestUser();
+
     }
 
 }
