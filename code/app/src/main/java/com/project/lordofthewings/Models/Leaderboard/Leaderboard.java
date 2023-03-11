@@ -26,10 +26,7 @@ public class Leaderboard {
 
     public Leaderboard(){
         createLeaderboard();
-
-
     }
-
     public void createLeaderboard() {
         db
                 .collection("Users")
@@ -75,7 +72,11 @@ public class Leaderboard {
 
     }
 
-    
+    public ArrayList<Player> getLeaderboard(){
+        return leaderboard;
+    }
+
+
 
 
 
