@@ -79,6 +79,21 @@ public class StartUpActivityTests {
 
     }
 
+
+    @Test
+    public void checkIfHomePageDisplaysCorrectUser() {
+        solo.assertCurrentActivity("Wrong Activity", SignUpPage.class);
+        solo.enterText((EditText) solo.getView(R.id.username), "mktest");
+        solo.enterText((EditText) solo.getView(R.id.email), "mktest");
+        solo.enterText((EditText) solo.getView(R.id.firstName), "mktest");
+        solo.enterText((EditText) solo.getView(R.id.lastName), "mktest");
+        solo.clickOnView(solo.getView(R.id.signUpButton));
+        solo.waitForActivity("HomePage");
+        solo.assertCurrentActivity("Wrong Activity", HomePage.class);
+        assertTrue(solo.waitForText("mktest", 1, 2000));
+
+    }
+
     @Test
     public void checkIfLogOutWorks() {
         solo.assertCurrentActivity("Wrong Activity", SignUpPage.class);
@@ -109,7 +124,6 @@ public class StartUpActivityTests {
         solo.assertCurrentActivity("Wrong Activity", WalletPage.class);
 
     }
-
     @Test
     public void checkIfSwitchesToWalletWithProperUser() {
         solo.assertCurrentActivity("Wrong Activity", SignUpPage.class);
@@ -123,21 +137,9 @@ public class StartUpActivityTests {
         solo.clickOnView(solo.getView(R.id.walletButton));
         solo.waitForActivity("WalletPage");
         solo.assertCurrentActivity("Wrong Activity", WalletPage.class);
-        assertTrue(solo.waitForText("Edmonton", 1, 2000));
+        assertTrue(solo.waitForText("mktest", 1, 2000));
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
     public void deleteTestUser(){
         db.collection("Users").document("mktest")
@@ -159,7 +161,6 @@ public class StartUpActivityTests {
 
 
     }
-
 
     /**
      * Close activity after each test
