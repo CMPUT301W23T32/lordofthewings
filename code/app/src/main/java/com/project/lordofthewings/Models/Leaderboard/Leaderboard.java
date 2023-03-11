@@ -34,7 +34,7 @@ public class Leaderboard {
     public void createLeaderboard() {
         db
                 .collection("Users")
-                .orderBy("Score")
+                .orderBy("Score", Query.Direction.DESCENDING)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
@@ -63,6 +63,7 @@ public class Leaderboard {
                 });
 
     }
+
 
 
 
