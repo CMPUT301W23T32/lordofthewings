@@ -89,7 +89,7 @@ public class Leaderboard {
     }
 
     /**
-     * returns ArrayList representing the ranking of the players, lower the index, higher the
+     * returns ArrayList representing the ranking of the players, lower the index = higher the
      * rating
      * @return : The ArrayList representing the ranking of the players
      */
