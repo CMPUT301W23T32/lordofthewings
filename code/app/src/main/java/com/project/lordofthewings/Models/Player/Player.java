@@ -12,6 +12,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.core.FirestoreClient;
 import com.project.lordofthewings.Controllers.FirebaseController;
+import com.project.lordofthewings.Models.Leaderboard.Leaderboard;
 import com.project.lordofthewings.Models.QRcode.QRCode;
 import com.project.lordofthewings.Models.Wallet.Wallet;
 
@@ -26,6 +27,8 @@ public class Player {
     private String firstName;
     private String lastName;
     private String email;
+
+    private int globalRank;
 
 
     private int score;
@@ -157,6 +160,17 @@ public class Player {
     }
     public void setUserName (String newUserName){
         this.userName = newUserName;
+    }
+
+    public void setGlobalRank(){
+        Leaderboard leaderboard = new Leaderboard();
+        this.globalRank = leaderboard.getGlobalRankingOfPlayer(this);
+
+
+
+
+
+
     }
 
 }
