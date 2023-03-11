@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.project.lordofthewings.Controllers.FirebaseController;
+import com.project.lordofthewings.Views.CameraPages.QRCodeScan;
 import com.project.lordofthewings.Views.HomePage;
 import com.project.lordofthewings.Views.MainActivity;
 import com.project.lordofthewings.Views.StartUpPages.SignUpPage;
@@ -67,7 +68,7 @@ public class StartUpActivityTests {
     }
 
     @Test
-    public void checkIfSignUpWorks() {
+    public void checkIfSignUpSwitchesToHomepage() {
         solo.assertCurrentActivity("Wrong Activity", SignUpPage.class);
         solo.enterText((EditText) solo.getView(R.id.username), "mktest");
         solo.enterText((EditText) solo.getView(R.id.email), "mktest");
@@ -78,6 +79,23 @@ public class StartUpActivityTests {
         solo.assertCurrentActivity("Wrong Activity", HomePage.class);
 
     }
+
+    @Test
+    public void checkIfSwitchesToQRCodeScan() {
+        solo.assertCurrentActivity("Wrong Activity", SignUpPage.class);
+        solo.enterText((EditText) solo.getView(R.id.username), "mktest");
+        solo.enterText((EditText) solo.getView(R.id.email), "mktest");
+        solo.enterText((EditText) solo.getView(R.id.firstName), "mktest");
+        solo.enterText((EditText) solo.getView(R.id.lastName), "mktest");
+        solo.clickOnView(solo.getView(R.id.signUpButton));
+        solo.waitForActivity("HomePage");
+        solo.assertCurrentActivity("Wrong Activity", HomePage.class);
+        solo.clickOnView(solo.getView(R.id.scanButton));
+        solo.waitForActivity("QRCodeScan");
+        solo.assertCurrentActivity("Wrong Activity", QRCodeScan.class);
+        
+    }
+
 
 
     @Test
@@ -141,11 +159,8 @@ public class StartUpActivityTests {
         solo.waitForActivity("HomePage");
         solo.assertCurrentActivity("Wrong Activity", HomePage.class);
 
-
-
-
-
     }
+
 
     public void deleteTestUser(){
         db.collection("Users").document("mktest")
