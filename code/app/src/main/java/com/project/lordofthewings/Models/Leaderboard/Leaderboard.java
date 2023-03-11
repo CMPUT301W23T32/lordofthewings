@@ -19,14 +19,25 @@ import com.project.lordofthewings.Models.Player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+
+/**
+ * represents the leaderboard for the QR game
+ */
 public class Leaderboard {
     FirebaseController fbController = new FirebaseController();
     FirebaseFirestore db = fbController.getDb();
     private ArrayList<Player> leaderboard = new ArrayList<Player>();
 
+    /**
+     * initializes an object representing the leaderboard
+     */
     public Leaderboard(){
         createLeaderboard();
     }
+
+    /**
+     * creates the leaderboard based on the score of the players
+     */
     public void createLeaderboard() {
         db
                 .collection("Users")
@@ -59,6 +70,11 @@ public class Leaderboard {
 
     }
 
+    /**
+     * Returns the ranking of a specific player
+     * @param p : the player we want the global ranking of
+     * @return : the ranking of the player
+     */
     public int getGlobalRankingOfPlayer(Player p){
         int i;
         for (i = 0; i < leaderboard.size(); i++){
@@ -72,8 +88,13 @@ public class Leaderboard {
 
     }
 
+    /**
+     * returns ArrayList representing the ranking of the players, lower the index, higher the
+     * rating
+     * @return : The ArrayList representing the ranking of the players
+     */
     public ArrayList<Player> getLeaderboard(){
-        return leaderboard;
+        return this.leaderboard;
     }
 
 

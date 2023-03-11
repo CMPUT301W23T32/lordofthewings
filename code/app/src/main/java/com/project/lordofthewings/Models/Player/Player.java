@@ -62,7 +62,7 @@ public class Player {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.globalRank = initializeGlobalRank();
+        this.globalRank = getGlobalRank();
 
         //db.collection("Users").document(userName).set(this);
     }
@@ -77,7 +77,7 @@ public class Player {
             throw new Exception("Username does not exist!");
         }
         this.userName = userName;
-        this.globalRank = initializeGlobalRank();
+        this.globalRank = getGlobalRank();
         db.collection("Users").document(userName).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Map<String, Object> data = task.getResult().getData();
@@ -165,16 +165,17 @@ public class Player {
         this.userName = newUserName;
     }
 
-    public int initializeGlobalRank(){
-        Leaderboard leaderboard = new Leaderboard();
-        int playerRank = leaderboard.getGlobalRankingOfPlayer(this);
-        return playerRank;
-    }
-
-
+    /**
+     * return the global rank of the Player
+     * @return : an integer representing the global rank of the player
+     */
     public int getGlobalRank(){
+        Leaderboard leaderboard = new Leaderboard();
+        this.globalRank = leaderboard.getGlobalRankingOfPlayer(this);
+
         return this.globalRank;
     }
+
 
 
 }
