@@ -66,8 +66,6 @@ public class StartUpActivityTests {
         Activity activity = rule.getActivity();
     }
 
-
-
     @Test
     public void checkIfSignUpWorks() {
         solo.assertCurrentActivity("Wrong Activity", SignUpPage.class);
@@ -81,7 +79,6 @@ public class StartUpActivityTests {
 
     }
 
-   
     @Test
     public void checkIfLogOutWorks() {
         solo.assertCurrentActivity("Wrong Activity", SignUpPage.class);
@@ -96,9 +93,7 @@ public class StartUpActivityTests {
         solo.clickOnMenuItem("Logout");
         solo.waitForActivity("SignUpPage");
         solo.assertCurrentActivity("Wrong Activity", SignUpPage.class);
-
     }
-
     @Test
     public void checkIfSwitchesToWallet() {
         solo.assertCurrentActivity("Wrong Activity", SignUpPage.class);
@@ -114,6 +109,35 @@ public class StartUpActivityTests {
         solo.assertCurrentActivity("Wrong Activity", WalletPage.class);
 
     }
+
+    @Test
+    public void checkIfSwitchesToWalletWithProperUser() {
+        solo.assertCurrentActivity("Wrong Activity", SignUpPage.class);
+        solo.enterText((EditText) solo.getView(R.id.username), "mktest");
+        solo.enterText((EditText) solo.getView(R.id.email), "mktest");
+        solo.enterText((EditText) solo.getView(R.id.firstName), "mktest");
+        solo.enterText((EditText) solo.getView(R.id.lastName), "mktest");
+        solo.clickOnView(solo.getView(R.id.signUpButton));
+        solo.waitForActivity("HomePage");
+        solo.assertCurrentActivity("Wrong Activity", HomePage.class);
+        solo.clickOnView(solo.getView(R.id.walletButton));
+        solo.waitForActivity("WalletPage");
+        solo.assertCurrentActivity("Wrong Activity", WalletPage.class);
+        assertTrue(solo.waitForText("Edmonton", 1, 2000));
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
     public void deleteTestUser(){
         db.collection("Users").document("mktest")
@@ -135,21 +159,6 @@ public class StartUpActivityTests {
 
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     /**
