@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -151,9 +152,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            Address address = addressList.get(0);
-            LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f));
+            if (addressList.size() == 0) {
+                Toast.makeText(this, "No location found", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                Address address = addressList.get(0);
+                LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f));
+            }
         }
 
     }
