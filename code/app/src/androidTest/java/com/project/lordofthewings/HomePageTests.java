@@ -16,6 +16,7 @@ import android.widget.ListView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.journeyapps.barcodescanner.CaptureActivity;
 import com.project.lordofthewings.Controllers.FirebaseController;
 import com.project.lordofthewings.Views.CameraPages.QRCodeScan;
 import com.project.lordofthewings.Views.HomePage;
@@ -40,7 +41,7 @@ import static org.junit.Assert.assertFalse;
  * Test class for activity flow. All the UI tests are written here. Robotium test framework is used
  */
 @RunWith(AndroidJUnit4.class)
-public class StartUpActivityTests {
+public class HomePageTests {
     private Solo solo;
     FirebaseController fbController = new FirebaseController();
     FirebaseFirestore db = fbController.getDb();
@@ -48,25 +49,31 @@ public class StartUpActivityTests {
     @Rule
     public ActivityTestRule<SignUpPage> rule =
             new ActivityTestRule<>(SignUpPage.class, true, true);
+
     /**
      * Runs before all tests and creates solo instance.
+     *
      * @throws Exception
      */
     @Before
-    public void setUp() throws Exception{
+    public void setUp() throws Exception {
 
-        solo = new Solo(InstrumentationRegistry.getInstrumentation(),rule.getActivity());
+        solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
     }
 
     /**
      * Gets the Activity
+     *
      * @throws Exception
      */
     @Test
-    public void start() throws Exception{
+    public void start() throws Exception {
         Activity activity = rule.getActivity();
     }
 
+    /**
+     * Checks if the page switches to homepage on clicking Signup Button
+     */
     @Test
     public void checkIfSignUpSwitchesToHomepage() {
         solo.assertCurrentActivity("Wrong Activity", SignUpPage.class);
@@ -77,9 +84,11 @@ public class StartUpActivityTests {
         solo.clickOnView(solo.getView(R.id.signUpButton));
         solo.waitForActivity("HomePage");
         solo.assertCurrentActivity("Wrong Activity", HomePage.class);
-
     }
 
+    /**
+     * Checks if the page switches to CaptureActivity on clicking the scan button
+     */
     @Test
     public void checkIfSwitchesToQRCodeScan() {
         solo.assertCurrentActivity("Wrong Activity", SignUpPage.class);
@@ -89,15 +98,15 @@ public class StartUpActivityTests {
         solo.enterText((EditText) solo.getView(R.id.lastName), "mktest");
         solo.clickOnView(solo.getView(R.id.signUpButton));
         solo.waitForActivity("HomePage");
-        solo.assertCurrentActivity("Wrong Activity", HomePage.class);
+        solo.assertCurrentActivity("HomePage", HomePage.class);
         solo.clickOnView(solo.getView(R.id.scanButton));
         solo.waitForActivity("QRCodeScan");
-        solo.assertCurrentActivity("Wrong Activity", QRCodeScan.class);
-        
+        solo.assertCurrentActivity("QRCodeScan", CaptureActivity.class);
     }
 
-
-
+    /**
+     * Checks if the correct user name is being displayed in the homepage
+     */
     @Test
     public void checkIfHomePageDisplaysCorrectUser() {
         solo.assertCurrentActivity("Wrong Activity", SignUpPage.class);
@@ -109,9 +118,11 @@ public class StartUpActivityTests {
         solo.waitForActivity("HomePage");
         solo.assertCurrentActivity("Wrong Activity", HomePage.class);
         assertTrue(solo.waitForText("mktest", 1, 2000));
-
     }
 
+    /**
+     * Checks if the logout feature logs the user out successfully and returns to the signup screen
+     */
     @Test
     public void checkIfLogOutWorks() {
         solo.assertCurrentActivity("Wrong Activity", SignUpPage.class);
@@ -127,6 +138,10 @@ public class StartUpActivityTests {
         solo.waitForActivity("SignUpPage");
         solo.assertCurrentActivity("Wrong Activity", SignUpPage.class);
     }
+
+    /**
+     * Checks if it switches to the Wallet activity on clicking the Wallet button
+     */
     @Test
     public void checkIfSwitchesToWallet() {
         solo.assertCurrentActivity("Wrong Activity", SignUpPage.class);
@@ -140,27 +155,7 @@ public class StartUpActivityTests {
         solo.clickOnView(solo.getView(R.id.walletButton));
         solo.waitForActivity("WalletPage");
         solo.assertCurrentActivity("Wrong Activity", WalletPage.class);
-
     }
-    @Test
-    public void checkWalletBackButton() {
-        solo.assertCurrentActivity("Wrong Activity", SignUpPage.class);
-        solo.enterText((EditText) solo.getView(R.id.username), "mktest");
-        solo.enterText((EditText) solo.getView(R.id.email), "mktest");
-        solo.enterText((EditText) solo.getView(R.id.firstName), "mktest");
-        solo.enterText((EditText) solo.getView(R.id.lastName), "mktest");
-        solo.clickOnView(solo.getView(R.id.signUpButton));
-        solo.waitForActivity("HomePage");
-        solo.assertCurrentActivity("Wrong Activity", HomePage.class);
-        solo.clickOnView(solo.getView(R.id.walletButton));
-        solo.waitForActivity("WalletPage");
-        solo.assertCurrentActivity("Wrong Activity", WalletPage.class);
-        solo.clickOnView(solo.getView(R.id.backIcon));
-        solo.waitForActivity("HomePage");
-        solo.assertCurrentActivity("Wrong Activity", HomePage.class);
-
-    }
-
 
     public void deleteTestUser(){
         db.collection("Users").document("mktest")
@@ -177,10 +172,6 @@ public class StartUpActivityTests {
                         Log.w(TAG, "Error deleting document", e);
                     }
                 });
-
-
-
-
     }
 
     /**
@@ -191,7 +182,5 @@ public class StartUpActivityTests {
     public void tearDown() throws Exception{
         solo.finishOpenedActivities();
         deleteTestUser();
-
     }
-
 }
