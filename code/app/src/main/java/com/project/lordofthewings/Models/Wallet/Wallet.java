@@ -79,10 +79,12 @@ public class Wallet {
                         ArrayList<String> authors;
                         authors = (ArrayList<String>) document.get("Authors");
                         authors.add(username);
-                        float latInt = (float) (Float.parseFloat(lat));
-                        float lonInt = (float) (Float.parseFloat(lon));
-                        GeoPoint geoPoint = new GeoPoint(latInt, lonInt);
-                        task.getResult().getReference().update("Location", geoPoint);
+                        if (lat != null && lon != null) {
+                            float latInt = (float) (Float.parseFloat(lat));
+                            float lonInt = (float) (Float.parseFloat(lon));
+                            GeoPoint geoPoint = new GeoPoint(latInt, lonInt);
+                            task.getResult().getReference().update("Location", geoPoint);
+                        }
                         task.getResult().getReference().update("Authors", authors);
                     } else {
                         Log.d(TAG, "No such document");
