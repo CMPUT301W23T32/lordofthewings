@@ -10,4 +10,5 @@
 
     <color name="orange_500">#EE8D71</color>
     <color name="orange_700">#993C39</color>
+    <color name="colorPrimary" />
 </resources>

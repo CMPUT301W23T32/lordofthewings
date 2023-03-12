@@ -1,16 +1,24 @@
 package com.project.lordofthewings.Views;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
+import android.widget.ImageView;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -22,6 +30,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
@@ -30,8 +40,12 @@ import com.project.lordofthewings.Models.QRLocation.QRLocation;
 import com.project.lordofthewings.Models.QRcode.QRCode;
 import com.project.lordofthewings.R;
 import com.project.lordofthewings.databinding.ActivityMapsBinding;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -108,6 +122,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     }
+
+
 
     private void enableUserLocation() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -188,15 +204,52 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         }
     }
+//
+//    public Bitmap bitmap_returner(String _get_hash) {
+//        ImageView imageView = findViewById(R.id.vis_rep_temp);
+//
+//        String url = "https://api.dicebear.com/5.x/bottts-neutral/png?seed=";
+//        Picasso.get().load(url + _get_hash).into(imageView);
+//
+//        BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
+//        Bitmap bitmap = drawable.getBitmap();
+//
+//        return bitmap;
+//    }
+
+    public static Bitmap getBitmapFromURL(String src) {
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy gfgPolicy =
+                    new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(gfgPolicy);
+        }
+        try {
+            URL url = new URL(src);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            return myBitmap;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     @Override
     public void onQrCodesRecieved() {
+        String url = "https://api.dicebear.com/5.x/bottts-neutral/png?seed=";
         locatedCodes = qrLocation.getLocatedQRArray();
         // nvm this is the issue
         if (mMap != null && locatedCodes != null && !locatedCodes.isEmpty()) {
             mMap.clear();
             for (int i = 0; i < locatedCodes.size(); i++) {
-                mMap.addMarker(new MarkerOptions().position(locatedCodes.get(i).getLocation()).title(locatedCodes.get(i).getQRName()));
+                mMap.addMarker(new MarkerOptions()
+                        .position(locatedCodes.get(i).getLocation())
+                        .title(locatedCodes.get(i).getQRName())
+                        .snippet(String.valueOf(locatedCodes.get(i).getQRScore()))
+                        .icon(BitmapDescriptorFactory.fromBitmap(getBitmapFromURL(url + locatedCodes.get(i).getHash()))));
             }
         }
     }
