@@ -22,10 +22,14 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.project.lordofthewings.Controllers.QRCodeArrayAdapter;
@@ -34,9 +38,10 @@ import com.project.lordofthewings.R;
 import com.project.lordofthewings.Views.CameraPages.QRCodeScan;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
-public class WalletPage extends AppCompatActivity {
+public class WalletPage extends AppCompatActivity{
     private ListView qrCodeList;
     private ArrayAdapter<QRCode> qrCodeAdapter;
     TextView points;
@@ -44,6 +49,7 @@ public class WalletPage extends AppCompatActivity {
     TextView qrCodeCount;
     TextView usernametext;
     String username;
+
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstance){
@@ -54,6 +60,7 @@ public class WalletPage extends AppCompatActivity {
         String username = sh.getString("username", "");
         qrCodeList = findViewById(R.id.qrCodeListView);
         qrCodeAdapter = new QRCodeArrayAdapter(this);
+
         qrCodeList.setAdapter(qrCodeAdapter);
         usernametext = findViewById(R.id.usernameTextView);
         points = findViewById(R.id.points);
@@ -105,6 +112,10 @@ public class WalletPage extends AppCompatActivity {
             integrator.initiateScan();
 
         });
+
+
+
+
 
     }
     @Override
@@ -161,4 +172,48 @@ public class WalletPage extends AppCompatActivity {
         }
     }
 
+    public void fetchDataAndRefreshUI() {
+        SharedPreferences sh = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
+        String username = sh.getString("username", "");
+        qrCodeList = findViewById(R.id.qrCodeListView);
+        qrCodeAdapter = new QRCodeArrayAdapter(this);
+        qrCodeList.setAdapter(qrCodeAdapter);
+        usernametext = findViewById(R.id.usernameTextView);
+        points = findViewById(R.id.points);
+        qrCodeCount = findViewById(R.id.qrcodeCount);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference docRef = db.collection("Users").document(username);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.e("data", document.get("QRCodes").toString());
+                        ArrayList<Map<String, Object>> qrCodes = (ArrayList<Map<String, Object>>) document.get("QRCodes");
+                        if (qrCodes != null) {
+                            Log.d("Breakpoint3", "Breakpoint3");
+                            qrCodeAdapter.clear();
+                            for (Map<String, Object> qrCode : qrCodes) {
+                                Integer count = qrCodes.size();
+                                String hash = qrCode.get("hash").toString();
+                                qrCodeAdapter.add(new QRCode(hash, 0));
+                                qrCodeAdapter.notifyDataSetChanged();
+                                points.setText(document.get("Score").toString() + " Points");
+                                qrCodeCount.setText(count.toString());
+                            }
+                        } if (qrCodes.size() == 0 && qrCodes != null) {
+                            Integer count = qrCodes.size();
+                            points.setText(document.get("Score").toString() + " Points");
+                            qrCodeCount.setText(count.toString());
+                        }
+                    } else {
+                        Log.d("No Doc", "No such document");
+                    }
+                } else {
+                    Log.d("Err", "get failed with ", task.getException());
+                }
+            }
+        });
+    }
 }

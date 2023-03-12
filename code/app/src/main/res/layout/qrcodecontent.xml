@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:background="@drawable/rounded_qr">
 
     <LinearLayout
@@ -17,6 +17,7 @@
             android:layout_height="120dp"
             android:layout_margin="10dp"
             android:layout_gravity="center"/>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -38,5 +39,19 @@
                 android:layout_marginTop="4dp"
                 />
         </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <ImageButton
+            android:id="@+id/qrDeleteButton"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/delete_icon"
+            android:contentDescription="Deletes QRCode" />
     </LinearLayout>
+
 </LinearLayout>
