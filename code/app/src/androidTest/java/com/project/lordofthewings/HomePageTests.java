@@ -158,6 +158,9 @@ public class HomePageTests {
         solo.assertCurrentActivity("Wrong Activity", WalletPage.class);
     }
 
+    /**
+     * Checks if it switches to the Map activity on clicking the Wallet button
+     */
     @Test
     public void checkIfSwitchesToMap() {
         solo.assertCurrentActivity("Wrong Activity", SignUpPage.class);
@@ -174,7 +177,9 @@ public class HomePageTests {
 
     }
 
-
+    /**
+     * deletes the test user from the firestore database
+     */
     public void deleteTestUser(){
         db.collection("Users").document("mktest")
                 .delete()
@@ -193,7 +198,7 @@ public class HomePageTests {
     }
 
     /**
-     * Close activity after each test
+     * Close activity after each test, deletes the test user from firestore after each test
      * @throws Exception
      */
     @After
