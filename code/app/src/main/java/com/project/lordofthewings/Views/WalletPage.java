@@ -56,16 +56,16 @@ public class WalletPage extends AppCompatActivity{
         super.onCreate(savedInstance);
         setContentView(R.layout.walletpage);
         //TextView hometext = findViewById(R.id.TextView01);
-        SharedPreferences sh = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
-        String username = sh.getString("username", "");
-        qrCodeList = findViewById(R.id.qrCodeListView);
-        qrCodeAdapter = new QRCodeArrayAdapter(this);
-
-        qrCodeList.setAdapter(qrCodeAdapter);
-        usernametext = findViewById(R.id.usernameTextView);
-        points = findViewById(R.id.points);
-        qrCodeCount = findViewById(R.id.qrcodeCount);
-        this.username = username;
+//        SharedPreferences sh = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
+//        String username = sh.getString("username", "");
+//        qrCodeList = findViewById(R.id.qrCodeListView);
+//        qrCodeAdapter = new QRCodeArrayAdapter(this);
+//
+//        qrCodeList.setAdapter(qrCodeAdapter);
+//        usernametext = findViewById(R.id.usernameTextView);
+//        points = findViewById(R.id.points);
+//        qrCodeCount = findViewById(R.id.qrcodeCount);
+//        this.username = username;
         ImageButton back = findViewById(R.id.backIcon);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,35 +75,7 @@ public class WalletPage extends AppCompatActivity{
                 finish();
             }
         });
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference docRef = db.collection("Users").document(username);
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.e("data", document.get("QRCodes").toString());
-                        ArrayList<Map<String, Object>> qrCodes = (ArrayList<Map<String, Object>>) document.get("QRCodes");
-                        if (qrCodes != null){
-                            qrCodeAdapter.clear();
-                            for (Map<String, Object> qrCode : qrCodes) {
-                                Integer count = qrCodes.size();
-                                String hash = qrCode.get("hash").toString();
-                                qrCodeAdapter.add(new QRCode(hash, 0));
-                                qrCodeAdapter.notifyDataSetChanged();
-                                points.setText(document.get("Score").toString() + " Points");
-                                qrCodeCount.setText(count.toString());
-                            }
-                        }
-                    } else {
-                        Log.d(TAG, "No such document");
-                    }
-                } else {
-                    Log.d(TAG, "get failed with ", task.getException());
-                }
-            }
-        });
+        fetchDataAndRefreshUI();
         Button scan_qr_code = findViewById(R.id.scanButton);
         scan_qr_code.setOnClickListener(c -> {
             IntentIntegrator integrator = new IntentIntegrator(this);
@@ -112,45 +84,11 @@ public class WalletPage extends AppCompatActivity{
             integrator.initiateScan();
 
         });
-
-
-
-
-
     }
     @Override
     protected void onResume() {
         super.onResume();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference docRef = db.collection("Users").document(username);
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.e("data", document.get("QRCodes").toString());
-                        ArrayList<Map<String, Object>> qrCodes = (ArrayList<Map<String, Object>>) document.get("QRCodes");
-                        if (qrCodes != null){
-                            qrCodeAdapter.clear();
-                            for (Map<String, Object> qrCode : qrCodes) {
-                                Integer count = qrCodes.size();
-                                String hash = qrCode.get("hash").toString();
-                                qrCodeAdapter.add(new QRCode(hash, 0));
-                                qrCodeAdapter.notifyDataSetChanged();
-                                points.setText(document.get("Score").toString() + " Points");
-                                qrCodeCount.setText(count.toString());
-                            }
-                        }
-                    } else {
-                        Log.d(TAG, "No such document");
-                    }
-                } else {
-                    Log.d(TAG, "get failed with ", task.getException());
-                }
-            }
-        });
-
+        fetchDataAndRefreshUI();
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
