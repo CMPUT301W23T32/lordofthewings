@@ -3,8 +3,13 @@ package com.project.lordofthewings.Models.QRcode;
 
 import static java.lang.Math.pow;
 
+import android.location.Location;
 
-import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.codec.digest.DigestUtils;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.firestore.GeoPoint;
+
+import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -22,9 +27,9 @@ public class QRCode {
     //placeholders to be changed based on their types and uses
     private String id;
 
-    private Collection<String> Comments;
+    private Collection<String> comments;
 
-    private String Location;
+    private LatLng location;
 
     /**
      * Constructor for the Object
@@ -39,6 +44,14 @@ public class QRCode {
         this.QRScore = this.calculateScore();
     }
 
+    public QRCode(String hash, LatLng location){
+        this.QRContent = "";
+        this.QRHash = hash;
+        this.VisualRepr = this.getVisualRepresentation();
+        this.QRName = this.createName();
+        this.QRScore = this.calculateScore();
+        this.location = location;
+    }
     public QRCode(String hash, int a){
         this.QRHash = hash;
         this.QRContent = "";
@@ -64,7 +77,8 @@ public class QRCode {
      *  SHA256-Hash Value of that QRCode
      */
     public String calculateHash(){
-        return DigestUtils.sha256Hex(this.QRContent);
+        String pass = new String(Hex.encodeHex(DigestUtils.sha256(this.QRContent)));
+        return pass;
     }
 
     public String getHash(){
@@ -230,6 +244,8 @@ public class QRCode {
                 int sublen = curr - prev;
                 if (sublen > 1){
                     score += (int) pow(point.get(QRHash.charAt(prev)), sublen-1);
+                } else if ((sublen == 1) && (QRHash.charAt(prev) == '0')) {
+                    score += 1;
                 }
                 prev = i;
             }
@@ -239,5 +255,9 @@ public class QRCode {
 
     public Integer getQRScore(){
         return this.QRScore;
+    }
+
+    public LatLng getLocation() {
+        return location;
     }
 }

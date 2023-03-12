@@ -26,6 +26,7 @@ import com.project.lordofthewings.Models.QRcode.QRCode;
 import com.project.lordofthewings.R;
 import com.project.lordofthewings.Views.HomePage;
 
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,6 +49,7 @@ public class SignUpPage extends AppCompatActivity {
             String emailRes = email.getText().toString();
             String firstNameRes = firstName.getText().toString();
             String lastNameRes = lastName.getText().toString();
+
 
 
             if (!usernameRes.equals("") && !firstNameRes.equals("") && !lastNameRes.equals("") && !emailRes.equals("")) {
