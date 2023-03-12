@@ -2,9 +2,13 @@ package com.project.lordofthewings.Views;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.ImageButton;
 
 import androidx.core.app.ActivityCompat;
@@ -26,16 +30,19 @@ import com.project.lordofthewings.Models.QRcode.QRCode;
 import com.project.lordofthewings.R;
 import com.project.lordofthewings.databinding.ActivityMapsBinding;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, QRCodeCallback {
 
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
     FusedLocationProviderClient fusedLocationProviderClient;
-
     private QRLocation qrLocation = new QRLocation(this);
     private ArrayList<QRCode> locatedCodes;
+    private EditText search_bar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +53,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(binding.getRoot());
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-
+        search_bar = findViewById(R.id.search_text);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -79,6 +86,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             enableUserLocation();
             snapToUserLocation();
+            search_bar.setOnEditorActionListener((v, actionId, event) -> {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    search();
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            });
+
         } else {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
                 // Show an explanation to the user *asynchronously* -- don't block
@@ -123,6 +140,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
+    private void search() {
+        String location_text = search_bar.getText().toString();
+        List<Address> addressList = null;
+
+        if (location_text != null || !location_text.equals("")) {
+            Geocoder geocoder = new Geocoder(this);
+            try {
+                addressList = geocoder.getFromLocationName(location_text, 1);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Address address = addressList.get(0);
+            LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f));
+        }
+
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         // requests permission
@@ -132,6 +167,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // permission was granted snap to user location
                 enableUserLocation();
                 snapToUserLocation();
+                search_bar.setOnEditorActionListener((v, actionId, event) -> {
+                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                        search();
+                        return true;
+                    }
+                    else{
+                        return false;
+                    }
+                });
             } else {
                 // permission denied, boo! Disable the
                 // functionality that depends on this permission.

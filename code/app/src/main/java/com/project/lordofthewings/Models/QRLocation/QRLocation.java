@@ -36,7 +36,7 @@ public class QRLocation {
                     List<DocumentSnapshot> snapshotList = queryDocumentSnapshots.getDocuments();
                     for (DocumentSnapshot snapshot : snapshotList) {
                         Log.d("loop", "onSuccess: " + snapshot.get("hash"));
-                        LatLng pos = new LatLng(snapshot.getGeoPoint("Location").getLatitude(), snapshot.getGeoPoint("Location").getLongitude());
+                        LatLng pos = snapshot.get("Location") == null ? null : new LatLng(snapshot.getGeoPoint("Location").getLatitude(), snapshot.getGeoPoint("Location").getLongitude());
                         Map<String, Object> qrObject = (Map<String, Object>) snapshot.get("QRCode");
                         QRCode qrCode = new QRCode(qrObject.get("hash").toString(), pos);
                         System.out.println("1st check: " + qrCodes);
@@ -51,14 +51,12 @@ public class QRLocation {
 
     // fetches QR codes that are to be located on the map
     public ArrayList<QRCode> getLocatedQRArray(){
-
         ArrayList<QRCode> locatedQrs = new ArrayList<>();
         for (QRCode code: this.qrCodes) {
             if (code.getLocation() != null){
                 locatedQrs.add(code);
             }
         }
-
 
         this.db.terminate();
         return locatedQrs;
