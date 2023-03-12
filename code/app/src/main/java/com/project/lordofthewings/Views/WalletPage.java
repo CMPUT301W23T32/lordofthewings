@@ -172,6 +172,12 @@ public class WalletPage extends AppCompatActivity{
         }
     }
 
+
+    /**
+     * Function to fetch data from Firestore and refresh the UI
+     *
+     * Essentially just the implementation of code up there, should help with refactoring later
+     */
     public void fetchDataAndRefreshUI() {
         SharedPreferences sh = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
         String username = sh.getString("username", "");
@@ -192,7 +198,6 @@ public class WalletPage extends AppCompatActivity{
                         Log.e("data", document.get("QRCodes").toString());
                         ArrayList<Map<String, Object>> qrCodes = (ArrayList<Map<String, Object>>) document.get("QRCodes");
                         if (qrCodes != null) {
-                            Log.d("Breakpoint3", "Breakpoint3");
                             qrCodeAdapter.clear();
                             for (Map<String, Object> qrCode : qrCodes) {
                                 Integer count = qrCodes.size();
