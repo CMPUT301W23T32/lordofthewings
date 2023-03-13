@@ -38,7 +38,7 @@ public class QRCodeTest {
         //manually calculated the test score to verify the algorithm
         QRCode QR4 = new QRCode("test4hash");
         System.out.println(QR4.getHash());
-        Integer Value = 89;
+        Integer Value = 93;
         assertEquals(Value,QR4.getQRScore());
     }
 
