@@ -1,0 +1,9 @@
+com.project.lordofthewings
+com.project.lordofthewings.Controllers
+com.project.lordofthewings.Models.Player
+com.project.lordofthewings.Models.QRcode
+com.project.lordofthewings.Models.QRLocation
+com.project.lordofthewings.Models.Wallet
+com.project.lordofthewings.Views
+com.project.lordofthewings.Views.CameraPages
+com.project.lordofthewings.Views.StartUpPages
