@@ -1,6 +1,5 @@
 package com.project.lordofthewings;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
@@ -9,6 +8,10 @@ import com.google.firebase.firestore.GeoPoint;
 import com.project.lordofthewings.Models.QRcode.QRCode;
 
 import org.junit.jupiter.api.Test;
+
+/**
+ * Test Suite to do Unit Testing on the QRCode Class
+ */
 
 public class QRCodeTest {
 

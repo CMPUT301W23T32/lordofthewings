@@ -8,6 +8,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.project.lordofthewings.R;
 
+
+/**
+ * Class to handle the startups page which lets users sign in or sign up
+ * Note - This class is not used since login was deprecated.
+ *
+ */
 public class StartUpPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstance){

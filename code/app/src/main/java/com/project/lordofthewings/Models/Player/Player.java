@@ -21,6 +21,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * Class to model the users playing the game.
+ *  Known Issues: N/A
+ */
+
 public class Player {
     private String userName;
     private String firstName;
@@ -48,7 +53,15 @@ public class Player {
 //    }
 
 
-    //use this constructor to instantiate a new player during signup
+    /**
+     * Primary constructor to instantiate a new player during sign up
+     * @param userName username of the player
+     * @param email email of the player
+     * @param firstName first name of the player
+     * @param lastName last name of the player
+     * @param db database reference
+     * @throws Exception if the username already exists
+     */
     public Player(String userName, String email, String firstName, String lastName, FirebaseFirestore db) throws Exception{
         if(checkIfUserExists(userName,db).get()){
             throw new Exception("Username already exists!");
@@ -63,7 +76,11 @@ public class Player {
     }
 
 
-    //use this constructor to instantiate a player that already exists in the database
+    /**
+     * Secondary constructor to instantiate a known player object from the database
+     * @param userName username of the player (already exists)
+     * @throws Exception if the username does not exist
+     */
     public Player(String userName) throws Exception{
         CompletableFuture<Boolean> future = checkIfUserExists(userName, db);
         Boolean exists = future.get();
@@ -86,6 +103,13 @@ public class Player {
     }
 
 
+    /**
+     * Checks if a user exists in the database asynchronously
+     *
+     * @param userName username of the player
+     * @param db database reference
+     * @return a future boolean value based on the query
+     */
     public CompletableFuture<Boolean> checkIfUserExists(String userName, FirebaseFirestore db){
         CollectionReference playerRef = db.collection("Users");
         Query query = playerRef.whereEqualTo("username",userName);
@@ -98,27 +122,6 @@ public class Player {
         });
         return future;
     }
-
-
-
-    /*
-    2 constructors,
-
-    function: create a new user
-
-    mainly for signup
-
-    1st constructor only takes a username, checks if it exists
-    if it exists then it tells the user that username is reserved
-    and you gotta choose another username otherwise if it doesn't exist, add the player
-
-    to just retrieve the values
-
-     2nd constructor-:
-     now the username should exist, no matter what and then retrieve the values
-
-     if we want a username
-     */
 
 
     public int getScore(){
@@ -137,24 +140,18 @@ public class Player {
         return this.email;
     }
 
-
     public void setLastName(String lastName){
         this.lastName = lastName;
     }
 
-    /*
-    set the full Name of the player
-    */
     public void setFirstName(String firstName){
         this.firstName = firstName;
     }
 
-    /*
-    @return: return the useName of the player
-     */
     public String getUserName(){
         return this.userName;
     }
+
     public void setUserName (String newUserName){
         this.userName = newUserName;
     }

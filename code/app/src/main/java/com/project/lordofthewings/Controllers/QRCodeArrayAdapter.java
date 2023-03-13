@@ -34,6 +34,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Custom Array Adapter for a list of QRCode objects to be displayed in a ListView
+ * throughout the app.
+ */
 public class QRCodeArrayAdapter extends ArrayAdapter<QRCode> {
 
     public QRCodeArrayAdapter(@NonNull Context context) {

@@ -26,7 +26,10 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * represents a players wallet
+ * Class to model a Player's Wallet in the game.
+ * Purpose of the Wallet is to hold the QRCodes that the player has collected throughout.
+ * Issues: Pending integration for some of the methods
+ *
  */
 public class Wallet {
 
@@ -43,7 +46,10 @@ public class Wallet {
 
 
     /**
-     * initializes a wallet object that is associated with a specific user
+     * Constructor for the Wallet class
+     * @param user the username of the user
+     * @param qrCodes the list of QR codes that the user has collected
+     * @param score the score of the user
      */
     public Wallet(String user, ArrayList<QRCode> qrCodes, int score){
         this.username = user;
@@ -55,8 +61,10 @@ public class Wallet {
     }
 
     /**
-     * Adds a QR code to the users Wallet, updates relevant info afterwards
-     * @param qr : the string of the qrCode that we wish to add
+     * Adds a QR code to the wallet
+     * @param qr the QRCode Object to be added
+     * @param lat the latitude of the location where the QR code was scanned
+     * @param lon the longitude of the location where the QR code was scanned
      */
     public void addQRCode(QRCode qr, String lat, String lon){
         this.qrCodesCount +=1;
@@ -113,8 +121,8 @@ public class Wallet {
     }
 
     /**
-     * deletes a QR code from the users wallet, updates relevant info afterwards
-     * @param qr: the QR code we want to delete from our wallet
+     * Deletes a QR code from the users wallet, updates relevant info afterwards
+     * @param qr the QR code object that is to be deleted
      */
     public void deleteQRCode(QRCode qr){
         Map<String, Object> newData = new HashMap<>();
@@ -141,8 +149,7 @@ public class Wallet {
     /**
      *
      * Allows us to get the users total QR codes scanned from previous runs of the app
-     * @return : the total number of QR codes the player has scanned
-     * in previous runs of the app
+     * @return the total number of QR codes the player has scanned
      */
     public int getInitialQRCodeCount(){
         return qrCodes.size();
@@ -151,8 +158,8 @@ public class Wallet {
     /**
      * Allows us to get the total score of the QR codes scanned from previous runs of the app
      * by the player
-     * @return : the total score of the QR codes the player has scanned
-     *           in previous runs of the app
+     * @return the total score of the QR codes the player has scanned
+     *
      */
     public int getInitialScore(){
         int score = 0;
@@ -164,25 +171,25 @@ public class Wallet {
     }
 
     /**
-     * gets the players score
-     * @return : the players score
+     * getter for the player score
+     * @return the players score
      */
     public int getScore(){
         return this.score;
 
     }
     /**
-     * gets the total number of QRCodes the player has scanned
-     * @return : the number of QRCodes the player has scanned
+     * getter for the player's scanned QR codes count
+     * @return  the number of scanned QRCodes
      */
     public int getQrCodesCount(){
         return this.qrCodesCount;
     }
 
     /**
-     * gets the QR codes the user has scanned so far
+     * getter for the player's scanned QR codes
      *
-     * @return : the ArrayList of the QR codes the user has scanned
+     * @return list of scanned QRCode objects
      */
     public ArrayList<QRCode> getQrCodes(){
         return this.qrCodes;
@@ -191,8 +198,8 @@ public class Wallet {
 
     /**
      * Checks whether the user has already scanned the QR code
-     * @param qr : the QR code we are checking for
-     * @return : a boolean indicating whether the user already has scanned the QR
+     * @param qr the QR object to verify
+     * @return boolean based on result
      */
     public boolean haveQRCode(QRCode qr){
         if (qrCodes.contains(qr)){

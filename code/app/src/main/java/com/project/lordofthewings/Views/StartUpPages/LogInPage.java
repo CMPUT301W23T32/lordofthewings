@@ -22,6 +22,13 @@ import com.project.lordofthewings.R;
 import com.project.lordofthewings.Views.HomePage;
 
 import org.apache.commons.codec.binary.Hex;
+
+/**
+ * Class to handle login page functionalities.
+ * Note: Not in use anymore since login is deprecated.
+ */
+
+
 public class LogInPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstance){

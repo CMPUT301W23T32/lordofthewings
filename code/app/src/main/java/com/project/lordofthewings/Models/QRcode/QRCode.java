@@ -1,6 +1,11 @@
 package com.project.lordofthewings.Models.QRcode;
 
 
+/**
+ * Class to model a QRCode object in the game.
+ * Known Issues: Cleaning up some of the constructors and redundant methods
+ */
+
 import static java.lang.Math.pow;
 
 import android.location.Location;
@@ -19,22 +24,19 @@ public class QRCode {
     private String VisualRepr;
     private String QRName;
 
-    //will create an image attribute later with the proper type
     private Integer QRScore;
     private final String QRHash;
-
-
-    //placeholders to be changed based on their types and uses
-    private String id;
 
     private Collection<String> comments;
 
     private LatLng location;
 
     /**
-     * Constructor for the Object
-     * @param QRContent
-     *  QRContent placeholder for now since we will retrieve that when we scan the obj
+     * Primary Constructor for the QRCode Class to create the object when first scanned
+     * using a camera.
+     *
+     * @param QRContent Contents of the QRCode scanned
+     *
      */
     public QRCode(String QRContent){
         this.QRContent = QRContent;
@@ -44,6 +46,14 @@ public class QRCode {
         this.QRScore = this.calculateScore();
     }
 
+    /**
+     * Secondary Constructor for the QRCode Class to recreate an already scanned QRCode using a
+     * known hash value.
+     * @param hash Hash value of the QRCode
+     *
+     * @param location Location of the QRCode (if provided)
+     */
+
     public QRCode(String hash, LatLng location){
         this.QRContent = "";
         this.QRHash = hash;
@@ -52,6 +62,12 @@ public class QRCode {
         this.QRScore = this.calculateScore();
         this.location = location;
     }
+
+    /**
+     * Constructor to recreate a QRCode object from the database
+     * @param hash Hash value of the QRCode
+     * @param a Dummy parameter to differentiate from the other constructor
+     */
     public QRCode(String hash, int a){
         this.QRHash = hash;
         this.QRContent = "";
@@ -59,19 +75,9 @@ public class QRCode {
         this.QRScore = this.calculateScore();
     }
 
-    /**
-     * Getter function for QRCode ID
-     * @return
-     * Returns the String of the ID
-     *
-     */
-    public String getId(){
-        return this.id;
-    }
-
 
     /**
-     *  Function that takes in the QRCode Content and Calculates a SHA256 Hash
+     *  Method that takes in the QRCode Content and Calculates a SHA256 Hash
      *
      * @return
      *  SHA256-Hash Value of that QRCode
@@ -81,18 +87,26 @@ public class QRCode {
         return pass;
     }
 
+    /**
+     * Getter for the hash value of the QRCode
+     * @return Hash value of the QRCode
+     */
     public String getHash(){
         return QRHash;
     }
 
 
+    /**
+     * Extracts the first 6 characters of the Hash value
+     * @return First 6 characters of the Hash value
+     */
 
     public String getHashBits(){
         return getHash().substring(0,6);
     }
 
     /**
-     * Function that takes in the Hash value and gives out a visual representation for the QR code
+     * Method that takes in the Hash value and gives out a visual representation for the QR code
      * Uses the first 6 values of the Hash value and makes a visual representation based on that
      * @return
      * Visual Representation for the QR code in a String
@@ -181,7 +195,7 @@ public class QRCode {
     }
 
     /**
-     *  Function to provide every QRCode to have a Human Readable Identifier.
+     *  Method to provide every QRCode to have a Human Readable Identifier.
      *  Takes the first 6 bits of the Hash Value and assigns every QR a name based on the
      *  hash value of those bits.
      * @return

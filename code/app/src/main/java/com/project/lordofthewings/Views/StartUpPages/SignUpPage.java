@@ -32,6 +32,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
+
+/**
+ * Class to handle to sign up for new users
+ */
 public class SignUpPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstance){
@@ -96,27 +100,19 @@ public class SignUpPage extends AppCompatActivity {
     }
 
 
-
-
-    //method to check if the user exists asynchronously
-
-
-
-    public CompletableFuture<Boolean> checkIfUserExists(String userName, FirebaseFirestore db){
-        CollectionReference playerRef = db.collection("Users");
-        Query query = playerRef.whereEqualTo("username",userName);
-        CompletableFuture<Boolean> future = new CompletableFuture<>();
-        query.get().addOnSuccessListener(querySnapshot -> {
-            boolean exists =  querySnapshot.size() > 0;
-            future.complete(exists);
-        }).addOnFailureListener(error -> {
-            future.completeExceptionally(error);
-        });
-
-        return future;
-    }
-
-
+    /**
+     * Method to add a player to the database during sign up
+     * @param userName
+     *  username of the player
+     * @param email
+     *  email of the player
+     * @param firstName
+     *  first name of the player
+     * @param lastName
+     *  last name of the player
+     * @return
+     *  a map instance of the player object
+     */
     public Map<String, Object> addPlayertoDB(String userName, String email,String firstName, String lastName){
         //if you want to use the player object
         //can add a new constructor to the player class that takes in all the parameters
