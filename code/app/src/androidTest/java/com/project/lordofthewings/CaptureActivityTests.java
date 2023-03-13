@@ -92,6 +92,10 @@ public class CaptureActivityTests {
     }
 
 
+
+    /**
+     * deletes the test user from the firestore database
+     */
     public void deleteTestUser(){
         db.collection("Users").document("mktest")
                 .delete()
@@ -110,7 +114,7 @@ public class CaptureActivityTests {
     }
 
     /**
-     * Close activity after each test
+     * Close activity after each test, deletes the test user from firestore after each test
      * @throws Exception
      */
     @After

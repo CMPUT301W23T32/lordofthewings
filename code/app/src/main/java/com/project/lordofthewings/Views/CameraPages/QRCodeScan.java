@@ -18,6 +18,7 @@ import android.os.Looper;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -39,6 +40,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.project.lordofthewings.Models.QRLocation.QRLocation;
 import com.project.lordofthewings.Models.QRcode.QRCode;
 import com.project.lordofthewings.Models.Wallet.Wallet;
 import com.project.lordofthewings.Models.Wallet.walletCallback;
@@ -55,6 +57,7 @@ import java.util.ArrayList;
 public class QRCodeScan extends AppCompatActivity implements walletCallback {
     private String url = "https://api.dicebear.com/5.x/bottts-neutral/png?seed=";
     private static final int CAMERA_REQUEST = 1888;
+
     ImageView imageView;
     Button add_photo;
     Button remove_photo;
@@ -91,6 +94,7 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
         location_text.setText("Location Not Added");
         location_text.setVisibility(TextView.VISIBLE);
         save_button = findViewById(R.id.save_button);
+        Button cancel_button = findViewById(R.id.cancel_button);
 
         // using the QRCode Class
         this.qr = new QRCode(qr_code);
@@ -102,12 +106,19 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
         TextView qr_code_name = findViewById(R.id.qr_code_name);
         qr_code_name.setText(qr.getQRName());
 
+        cancel_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         save_button.setOnClickListener(c -> {
             SharedPreferences sh = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
             String username = sh.getString("username", "");
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             DocumentReference docRef = db.collection("Users").document(username);
+
             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {

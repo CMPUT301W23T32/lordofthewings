@@ -21,6 +21,7 @@ import com.project.lordofthewings.Controllers.FirebaseController;
 import com.project.lordofthewings.Views.CameraPages.QRCodeScan;
 import com.project.lordofthewings.Views.HomePage;
 import com.project.lordofthewings.Views.MainActivity;
+import com.project.lordofthewings.Views.MapsActivity;
 import com.project.lordofthewings.Views.StartUpPages.SignUpPage;
 import com.project.lordofthewings.Views.StartUpPages.StartUpPage;
 import com.project.lordofthewings.Views.WalletPage;
@@ -157,6 +158,29 @@ public class HomePageTests {
         solo.assertCurrentActivity("Wrong Activity", WalletPage.class);
     }
 
+//    /**
+//     * Checks if it switches to the Map activity on clicking the Wallet button
+//     */
+//    @Test
+//    public void checkifswitchmaps() {
+//        solo.assertCurrentActivity("Wrong Activity", SignUpPage.class);
+//        solo.enterText((EditText) solo.getView(R.id.username), "mktest");
+//        solo.enterText((EditText) solo.getView(R.id.email), "mktest");
+//        solo.enterText((EditText) solo.getView(R.id.firstName), "mktest");
+//        solo.enterText((EditText) solo.getView(R.id.lastName), "mktest");
+//        solo.clickOnView(solo.getView(R.id.signUpButton));
+//        solo.waitForActivity("HomePage");
+//        solo.assertCurrentActivity("Wrong Activity", HomePage.class);
+//        solo.clickOnView(solo.getView(R.id.mapButton));
+//        solo.waitForActivity("MapsActivity");
+//        solo.sleep(5000);
+//        solo.goBack();
+//        solo.assertCurrentActivity("Wrong Activity", HomePage.class);
+//    }
+
+    /**
+     * deletes the test user from the firestore database
+     */
     public void deleteTestUser(){
         db.collection("Users").document("mktest")
                 .delete()
@@ -175,7 +199,7 @@ public class HomePageTests {
     }
 
     /**
-     * Close activity after each test
+     * Close activity after each test, deletes the test user from firestore after each test
      * @throws Exception
      */
     @After
