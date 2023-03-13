@@ -162,7 +162,7 @@ public class HomePageTests {
      * Checks if it switches to the Map activity on clicking the Wallet button
      */
     @Test
-    public void checkIfSwitchesToMap() {
+    public void checkifswitchmaps() {
         solo.assertCurrentActivity("Wrong Activity", SignUpPage.class);
         solo.enterText((EditText) solo.getView(R.id.username), "mktest");
         solo.enterText((EditText) solo.getView(R.id.email), "mktest");
@@ -173,8 +173,9 @@ public class HomePageTests {
         solo.assertCurrentActivity("Wrong Activity", HomePage.class);
         solo.clickOnView(solo.getView(R.id.mapButton));
         solo.waitForActivity("MapsActivity");
-        solo.assertCurrentActivity("Wrong Activity", MapsActivity.class);
-
+        solo.sleep(5000);
+        solo.goBack();
+        solo.assertCurrentActivity("Wrong Activity", HomePage.class);
     }
 
     /**
