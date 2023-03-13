@@ -24,52 +24,58 @@ import java.util.List;
  * represents the leaderboard for the QR game
  */
 public class Leaderboard {
-    FirebaseController fbController = new FirebaseController();
-    FirebaseFirestore db = fbController.getDb();
-    public ArrayList<String> leaderboard = new ArrayList<String>();
+
+    public ArrayList<Player> leaderboard = new ArrayList<Player>();
 
     /**
      * initializes an object representing the leaderboard
      */
-    public Leaderboard(){
-        createLeaderboard();
+    public Leaderboard(ArrayList<String> users){
+        for (int i = 0; i < leaderboard.size(); i++) {
+            try {
+                Player temp = new Player(users.get(i));
+                this.leaderboard.add(temp);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
-    /**
-     * creates the leaderboard based on the score of the players
-     */
-    public void createLeaderboard() {
-        db
-                .collection("Users")
-                .orderBy("Score", Query.Direction.DESCENDING)
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        Log.d(TAG, "on success: we getting data");
-                        List<DocumentSnapshot> users = queryDocumentSnapshots.getDocuments();
-                        for (DocumentSnapshot snapshot : users) {
-                            String playerToBeInitialized = snapshot.getString("username");
-                            try {
-                                Player player = new Player(playerToBeInitialized);
-                                leaderboard.add(player);
-                            } catch (Exception e) {
-                                throw new RuntimeException(e);
-                            }
-
-                        }
-
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e(TAG, "onFailure: ", e);
-
-                    }
-                });
-
-    }
+//    /**
+//     * creates the leaderboard based on the score of the players
+//     */
+//    public void createLeaderboard() {
+//        db
+//                .collection("Users")
+//                .orderBy("Score", Query.Direction.DESCENDING)
+//                .get()
+//                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+//                        Log.d(TAG, "on success: we getting data");
+//                        List<DocumentSnapshot> users = queryDocumentSnapshots.getDocuments();
+//                        for (DocumentSnapshot snapshot : users) {
+//                            String playerToBeInitialized = snapshot.getString("username");
+//                            try {
+//                                Player player = new Player(playerToBeInitialized);
+//                                leaderboard.add(player);
+//                            } catch (Exception e) {
+//                                throw new RuntimeException(e);
+//                            }
+//
+//                        }
+//
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Log.e(TAG, "onFailure: ", e);
+//
+//                    }
+//                });
+//
+//    }
 
     /**
      * Returns the ranking of a specific player
@@ -83,10 +89,8 @@ public class Leaderboard {
             if (p.getUserName().equals(playerUsername)){
                 break;
             }
-
         }
         return (i + 1);
-
     }
 
     /**

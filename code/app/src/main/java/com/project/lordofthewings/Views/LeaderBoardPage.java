@@ -32,15 +32,13 @@ public class LeaderBoardPage extends AppCompatActivity {
     ArrayList<String> dataList;
 
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leader_board_page);
         cityList = findViewById(R.id.list);
         dataList = new ArrayList<>();
+
         cityAdapter = new ArrayAdapter<>(this, R.layout.content, dataList);
         cityList.setAdapter(cityAdapter);
         FirebaseController fbController = new FirebaseController();
@@ -59,9 +57,12 @@ public class LeaderBoardPage extends AppCompatActivity {
                             String playerToBeInitialized = snapshot.getString("username");
 
                             dataList.add(playerToBeInitialized);
+
+
                             cityAdapter.notifyDataSetChanged();
 
                         }
+
 
                     }
                 })
