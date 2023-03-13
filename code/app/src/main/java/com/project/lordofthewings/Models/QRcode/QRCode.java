@@ -260,4 +260,5 @@ public class QRCode {
     public LatLng getLocation() {
         return location;
     }
+
 }
