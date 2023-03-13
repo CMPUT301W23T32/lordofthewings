@@ -6,6 +6,11 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
@@ -17,6 +22,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 import android.widget.ImageView;
 
 import androidx.core.app.ActivityCompat;
@@ -34,6 +40,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
+import com.google.maps.android.ui.IconGenerator;
 import com.project.lordofthewings.Models.QRLocation.QRCodeCallback;
 import com.project.lordofthewings.Models.QRLocation.QRLocation;
 import com.project.lordofthewings.Models.QRcode.QRCode;
@@ -167,9 +174,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            Address address = addressList.get(0);
-            LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f));
+            if (addressList.size() == 0) {
+                Toast.makeText(this, "No location found", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                Address address = addressList.get(0);
+                LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f));
+            }
         }
 
     }
@@ -198,18 +210,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         }
     }
-//
-//    public Bitmap bitmap_returner(String _get_hash) {
-//        ImageView imageView = findViewById(R.id.vis_rep_temp);
-//
-//        String url = "https://api.dicebear.com/5.x/bottts-neutral/png?seed=";
-//        Picasso.get().load(url + _get_hash).into(imageView);
-//
-//        BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
-//        Bitmap bitmap = drawable.getBitmap();
-//
-//        return bitmap;
-//    }
 
     public static Bitmap getBitmapFromURL(String src) {
         if (android.os.Build.VERSION.SDK_INT > 9) {
@@ -224,11 +224,47 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             connection.connect();
             InputStream input = connection.getInputStream();
             Bitmap myBitmap = BitmapFactory.decodeStream(input);
+
             return myBitmap;
         } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
+    }
+
+    private Bitmap getRoundedCornerBitmap(Bitmap bitmap) {
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+
+        final int color = 0xff424242;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+        final RectF rectF = new RectF(rect);
+        final float roundPx = 10; // adjust this value for the desired corner radius
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+
+        return output;
+    }
+
+    private Bitmap makeIconFromBitmap(Bitmap result){
+        ImageView mImageView = new ImageView(getApplicationContext());
+        IconGenerator mIconGenerator = new IconGenerator(getApplicationContext());
+        int size = getResources().getDimensionPixelSize(R.dimen.marker_icon); // adjust this value for the desired size
+        Bitmap resizedBitmap = Bitmap.createScaledBitmap(result, size, size, false);
+        Bitmap roundedBitmap = getRoundedCornerBitmap(resizedBitmap);
+        mImageView.setImageBitmap(roundedBitmap);
+        mImageView.setBackground(getApplicationContext().getDrawable(R.drawable.rounded_md));
+        mIconGenerator.setContentView(mImageView);
+        Bitmap iconBitmap = mIconGenerator.makeIcon();
+
+        return iconBitmap;
     }
 
     @Override
@@ -239,11 +275,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (mMap != null && locatedCodes != null && !locatedCodes.isEmpty()) {
             mMap.clear();
             for (int i = 0; i < locatedCodes.size(); i++) {
+                Bitmap result =  getBitmapFromURL(url + locatedCodes.get(i).getHash());
+                Bitmap iconBitmap = makeIconFromBitmap(result);
+
                 mMap.addMarker(new MarkerOptions()
                         .position(locatedCodes.get(i).getLocation())
                         .title(locatedCodes.get(i).getQRName())
                         .snippet(String.valueOf(locatedCodes.get(i).getQRScore()))
-                        .icon(BitmapDescriptorFactory.fromBitmap(getBitmapFromURL(url + locatedCodes.get(i).getHash()))));
+                        .icon(BitmapDescriptorFactory.fromBitmap(iconBitmap)));
             }
         }
     }

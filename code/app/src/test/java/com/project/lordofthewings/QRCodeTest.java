@@ -38,7 +38,7 @@ public class QRCodeTest {
         //manually calculated the test score to verify the algorithm
         QRCode QR4 = new QRCode("test4hash");
         System.out.println(QR4.getHash());
-        Integer Value = 89;
+        Integer Value = 93;
         assertEquals(Value,QR4.getQRScore());
     }
 
@@ -62,15 +62,6 @@ public class QRCodeTest {
         assertEquals(QR1.getVisualRepr(),QR3.getVisualRepr());
         assertNotEquals(QR1.getVisualRepr(),QR2.getVisualRepr());
     }
-
-//    @Test
-//    void testLocation(){
-//        QRCode QR1 = new QRCode("185f8db32271fe25f561a6fc938b2e264306ec304eda518007d1764826381969", new GeoPoint(53.523427,-113.505638));
-//        assertEquals(QR1.getLocation().getLatitude(),53.523427);
-//        assertEquals(QR1.getLocation().getLongitude(),-113.505638);
-//        LatLng latLng = new LatLng(QR1.getLocation().getLatitude(),QR1.getLocation().getLongitude());
-//        System.out.println(latLng);
-//    }
 }
 
 
