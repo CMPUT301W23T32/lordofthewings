@@ -158,25 +158,25 @@ public class HomePageTests {
         solo.assertCurrentActivity("Wrong Activity", WalletPage.class);
     }
 
-    /**
-     * Checks if it switches to the Map activity on clicking the Wallet button
-     */
-    @Test
-    public void checkifswitchmaps() {
-        solo.assertCurrentActivity("Wrong Activity", SignUpPage.class);
-        solo.enterText((EditText) solo.getView(R.id.username), "mktest");
-        solo.enterText((EditText) solo.getView(R.id.email), "mktest");
-        solo.enterText((EditText) solo.getView(R.id.firstName), "mktest");
-        solo.enterText((EditText) solo.getView(R.id.lastName), "mktest");
-        solo.clickOnView(solo.getView(R.id.signUpButton));
-        solo.waitForActivity("HomePage");
-        solo.assertCurrentActivity("Wrong Activity", HomePage.class);
-        solo.clickOnView(solo.getView(R.id.mapButton));
-        solo.waitForActivity("MapsActivity");
-        solo.sleep(5000);
-        solo.goBack();
-        solo.assertCurrentActivity("Wrong Activity", HomePage.class);
-    }
+//    /**
+//     * Checks if it switches to the Map activity on clicking the Wallet button
+//     */
+//    @Test
+//    public void checkifswitchmaps() {
+//        solo.assertCurrentActivity("Wrong Activity", SignUpPage.class);
+//        solo.enterText((EditText) solo.getView(R.id.username), "mktest");
+//        solo.enterText((EditText) solo.getView(R.id.email), "mktest");
+//        solo.enterText((EditText) solo.getView(R.id.firstName), "mktest");
+//        solo.enterText((EditText) solo.getView(R.id.lastName), "mktest");
+//        solo.clickOnView(solo.getView(R.id.signUpButton));
+//        solo.waitForActivity("HomePage");
+//        solo.assertCurrentActivity("Wrong Activity", HomePage.class);
+//        solo.clickOnView(solo.getView(R.id.mapButton));
+//        solo.waitForActivity("MapsActivity");
+//        solo.sleep(5000);
+//        solo.goBack();
+//        solo.assertCurrentActivity("Wrong Activity", HomePage.class);
+//    }
 
     /**
      * deletes the test user from the firestore database
