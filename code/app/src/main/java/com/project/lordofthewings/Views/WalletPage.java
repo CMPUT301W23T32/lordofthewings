@@ -41,6 +41,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Class that models the wallet page of the app. This page stores all
+ * the QR codes that the user has scanned.
+ * Known Issues: None
+ */
 public class WalletPage extends AppCompatActivity{
     private ListView qrCodeList;
     private ArrayAdapter<QRCode> qrCodeAdapter;
@@ -112,9 +117,9 @@ public class WalletPage extends AppCompatActivity{
 
 
     /**
-     * Function to fetch data from Firestore and refresh the UI
+     * Function to fetch data from Firestore and refresh the UI on data change
      *
-     * Essentially just the implementation of code up there, should help with refactoring later
+     *
      */
     public void fetchDataAndRefreshUI() {
         SharedPreferences sh = getSharedPreferences("sharedPrefs", MODE_PRIVATE);

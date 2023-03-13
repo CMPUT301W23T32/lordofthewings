@@ -45,6 +45,10 @@ import com.project.lordofthewings.Views.StartUpPages.StartUpPage;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * Class for the home page of the app. This is the first page that the user sees after signing up.
+ */
+
 public class HomePage extends AppCompatActivity {
     TextView usernametext;
     String username;
@@ -78,7 +82,6 @@ public class HomePage extends AppCompatActivity {
             integrator.initiateScan();
 
         });
-
         ImageButton settingsButton = findViewById(R.id.settingsButton);
         settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,7 +114,6 @@ public class HomePage extends AppCompatActivity {
             }
     });
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -132,6 +134,9 @@ public class HomePage extends AppCompatActivity {
         }
     }
 
+    /**
+     *  Clears the shared preferences to log out the user (testing purposes)
+     */
     private void clearSharedPreferences() {
         SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();

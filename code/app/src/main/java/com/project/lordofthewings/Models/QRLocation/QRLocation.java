@@ -18,7 +18,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *  A class which deals with all the QRCodes in existence
+ *  Class that models the location of all the scanned QR codes in the game
+ *  Also handles all location based operations between the QR code objects and the map
  */
 public class QRLocation {
     ArrayList<QRCode> qrCodes;
@@ -49,7 +50,12 @@ public class QRLocation {
 
     }
 
-    // fetches QR codes that are to be located on the map
+
+    /**
+     * Returns the list of QRCodes that have been found by all users of the game to locate
+     * on the map
+     * @return list of all known QRCode objects
+     */
     public ArrayList<QRCode> getLocatedQRArray(){
         ArrayList<QRCode> locatedQrs = new ArrayList<>();
         for (QRCode code: this.qrCodes) {

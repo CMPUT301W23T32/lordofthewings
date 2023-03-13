@@ -56,6 +56,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * An activity that implements the map functionality of the app to display the QRCodes.
+ * Known Issues: Takes a long time to render the QRCode objects and their visual representation
+ * on the map due to all the work being done on the main thread. Will be fixed in the next update.
+ */
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, QRCodeCallback {
 
     private GoogleMap mMap;

@@ -54,6 +54,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+/**
+ * Class to handle the QRCode Scanning Activity and it's related functions.
+ * Known Issues: Linking of the QRCode Image to the QRCode Object is not implemented yet.
+ */
 public class QRCodeScan extends AppCompatActivity implements walletCallback {
     private String url = "https://api.dicebear.com/5.x/bottts-neutral/png?seed=";
     private static final int CAMERA_REQUEST = 1888;
@@ -188,13 +192,16 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
     }
 
 
-
-
+    /**
+     * Method to request location permissions from the user
+     */
     private void requestPermissions() {
         ActivityCompat.requestPermissions(this, new String[]{
                 Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION}, 44);
     }
+
+
     private boolean checkPermissions() {
         return ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
     }
@@ -267,14 +274,25 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
         }
     };
 
-    // method to check
-    // if location is enabled
+    /**
+     * Method to check if location is enabled or not
+     * @return
+     *  Boolean value based on result
+     */
     private boolean isLocationEnabled() {
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
 
-    // If everything is alright then
+    /**
+     * Callback for the result from requesting permissions.
+     * @param requestCode The request code passed in {@link #requestPermissions(
+     * android.app.Activity, String[], int)}
+     * @param permissions The requested permissions. Never null.
+     * @param grantResults The grant results for the corresponding permissions
+     *
+     *
+     */
     @Override
     public void
     onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
