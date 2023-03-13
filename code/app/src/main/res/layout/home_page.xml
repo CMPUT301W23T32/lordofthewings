@@ -1,6 +1,5 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
@@ -49,26 +48,15 @@
         android:layout_below="@id/topLayout"
         android:background="#9B9B9B" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_margin="10dp">
-
-        <Button
-            android:id="@+id/scanButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/rounded_md"
-            android:text="Scan New QR code"
-            android:textColor="@color/white"
-            android:textSize="10sp"
-            android:gravity="center"/>
-    </LinearLayout>
-
-
+    <Button
+        android:id="@+id/scanButton"
+        android:layout_width="350dp"
+        android:layout_height="150dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/rounded_md"
+        android:text="Scan New QR code"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
 
     <!-- QR code scanner button -->
     <!--        android:drawableTop="@drawable/qr_code_icon"-->
@@ -77,11 +65,9 @@
     <LinearLayout
         android:id="@+id/navbarLayout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="72dp"
         android:layout_alignParentBottom="true"
-        android:layout_weight="1"
         android:background="@color/white"
-        android:gravity="bottom"
         android:orientation="horizontal"
         android:padding="8dp">
 
@@ -120,5 +106,5 @@
 
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>
 
