@@ -21,7 +21,7 @@
 
 
 ## About The Project
-An Android app built for scanning QRCodes and barcodes to get maximum points and competing with other Players to rank first in the neighbourhood. This project is part of the University of Alberta CMPUT 301 course built by students of Team 32 for the Winter 2023 term.
+An Android app built for scanning QRCodes and Barcodes to get maximum points and competing with other Players to rank first in the neighbourhood. This project is part of the University of Alberta CMPUT 301 course built by students of Team 32 for the Winter 2023 term.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Documentation
@@ -75,4 +75,4 @@ Distributed under the Apache 2.0 License. See `LICENSE.txt` for more information
 
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
-See `refenences.md` for all our refenrces.
+See `references.md` for all our references.
