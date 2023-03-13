@@ -3,6 +3,7 @@
 plugins {
     id 'com.android.application'
     id 'com.google.gms.google-services'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
 
 android {
@@ -34,6 +35,11 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    buildFeatures {
+        viewBinding true
+        dataBinding true
+    }
+
 }
 dependencies {
     // https://mvnrepository.com/artifact/commons-codec/commons-codec
@@ -63,8 +69,20 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore:24.4.4'
     implementation platform('com.google.firebase:firebase-bom:31.2.2')
 
+    // google maps libraries
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
+    implementation 'com.google.android.gms:play-services-location:21.0.1'
+    implementation 'com.google.android.libraries.places:places:3.0.0'
+    implementation 'com.google.maps.android:android-maps-utils:0.4'
+
     //other libraries
     implementation 'com.squareup.picasso:picasso:2.8'
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    //Robotium
+    androidTestImplementation "androidx.test:runner:1.5.2"
+    androidTestImplementation "androidx.test:rules:1.5.0"
+    androidTestImplementation "com.jayway.android.robotium:robotium-solo:5.2.1"
 }
 apply plugin: 'com.google.gms.google-services'
 

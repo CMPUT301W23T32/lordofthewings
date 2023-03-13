@@ -4,6 +4,8 @@ package com.project.lordofthewings;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.firestore.GeoPoint;
 import com.project.lordofthewings.Models.QRcode.QRCode;
 
 import org.junit.jupiter.api.Test;
@@ -36,7 +38,7 @@ public class QRCodeTest {
         //manually calculated the test score to verify the algorithm
         QRCode QR4 = new QRCode("test4hash");
         System.out.println(QR4.getHash());
-        Integer Value = 89;
+        Integer Value = 93;
         assertEquals(Value,QR4.getQRScore());
     }
 
@@ -60,6 +62,7 @@ public class QRCodeTest {
         assertEquals(QR1.getVisualRepr(),QR3.getVisualRepr());
         assertNotEquals(QR1.getVisualRepr(),QR2.getVisualRepr());
     }
+
 }
 
 

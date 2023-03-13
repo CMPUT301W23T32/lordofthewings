@@ -4,8 +4,10 @@ import static android.content.ContentValues.TAG;
 import android.app.Dialog;
 import android.content.Intent;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -56,6 +58,12 @@ public class HomePage extends AppCompatActivity {
         String username = sh.getString("username", "");
         usernametext = findViewById(R.id.usernameTextView);
         usernametext.setText("Welcome " + username + "!");
+
+        ImageButton mapButton= findViewById(R.id.mapButton);
+        mapButton.setOnClickListener(v -> {
+            Intent intent = new Intent(HomePage.this, MapsActivity.class);
+            startActivity(intent);});
+
         this.username = username;
         ImageButton wallet_page = findViewById(R.id.walletButton);
         wallet_page.setOnClickListener(c -> {
@@ -101,7 +109,7 @@ public class HomePage extends AppCompatActivity {
                 });
                 popupMenuSettings.show();
             }
-        });
+    });
     }
 
     @Override

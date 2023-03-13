@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/map"
+        tools:context=".Views.MapsActivity"
+        android:name="com.google.android.gms.maps.SupportMapFragment" />
+    <RelativeLayout
+        android:id="@+id/topLayout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/maptextbg">
+
+        <ImageButton
+            android:id="@+id/back_button_map"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/back_arrow" />
+
+        <TextView
+            android:id="@+id/central_title_map"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textSize="24sp"
+            android:textColor="@color/orange_700"
+            android:textStyle="bold"
+            android:text="QRMAP" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/topLayout"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:elevation="10dp"
+        android:background="@drawable/rounded_md">
+
+        <ImageView
+            android:id="@+id/search_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/search_icon"
+            app:tint="#9e9e9e" />
+
+        <EditText
+            android:id="@+id/search_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:layout_toEndOf="@+id/search_icon"
+            android:background="@null"
+            android:hint="Search here"
+            android:imeOptions="actionSearch"
+            android:singleLine="true"
+            android:textColor="#000"
+            android:textSize="16sp"
+            android:privateImeOptions="actionSearch"/>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
+
+
+<!--<RelativeLayout-->
+<!--android:id="@+id/search_bar"-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="50dp"-->
+<!--android:layout_below="@id/topLayout"-->
+<!--android:layout_marginTop="10dp"-->
+<!--android:layout_marginLeft="16dp"-->
+<!--android:layout_marginRight="16dp"-->
+<!--android:elevation="10dp"-->
+<!--android:background="@drawable/rounded_md">-->
+
+<!--<ImageView-->
+<!--    android:id="@+id/search_icon"-->
+<!--    android:layout_width="wrap_content"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:layout_centerVertical="true"-->
+<!--    android:layout_marginStart="16dp"-->
+<!--    android:src="@drawable/search_icon"-->
+<!--    app:tint="#9e9e9e" />-->
+
+<!--<EditText-->
+<!--    android:id="@+id/search_text"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    android:layout_centerVertical="true"-->
+<!--    android:layout_marginStart="8dp"-->
+<!--    android:layout_toEndOf="@+id/search_icon"-->
+<!--    android:background="@null"-->
+<!--    android:hint="Search here"-->
+<!--    android:imeOptions="actionSearch"-->
+<!--    android:textColor="#000"-->
+<!--    android:textSize="16sp"-->
+<!--    android:privateImeOptions="actionSearch"/>-->
+
+<!--</RelativeLayout>-->
+
+<!--<RelativeLayout-->
+<!--android:id="@+id/search_bar"-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="50dp"-->
+<!--android:layout_below="@id/topLayout"-->
+<!--android:layout_marginTop="10dp"-->
+<!--android:layout_marginLeft="16dp"-->
+<!--android:layout_marginRight="16dp"-->
+<!--android:elevation="10dp"-->
+<!--android:background="@drawable/rounded_md">-->
+
+<!--<fragment android:id="@+id/autocomplete_fragment"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    android:layout_centerVertical="true"-->
+<!--    android:layout_marginStart="8dp"-->
+<!--    android:background="@null"-->
+<!--    android:imeOptions="actionSearch"-->
+<!--    android:textColor="#000"-->
+<!--    android:textSize="16sp"-->
+<!--    android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"-->
+<!--    />-->
+<!--</RelativeLayout>-->

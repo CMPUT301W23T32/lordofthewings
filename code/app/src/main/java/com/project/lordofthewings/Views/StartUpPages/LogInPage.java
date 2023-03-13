@@ -21,6 +21,7 @@ import com.project.lordofthewings.Controllers.FirebaseController;
 import com.project.lordofthewings.R;
 import com.project.lordofthewings.Views.HomePage;
 
+import org.apache.commons.codec.binary.Hex;
 public class LogInPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstance){
@@ -44,7 +45,8 @@ public class LogInPage extends AppCompatActivity {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
                             Log.d("TAG", "DocumentSnapshot data: " + document.getData());
-                            if (document.getData().get("password").equals(DigestUtils.sha256Hex(passwordRes))) {
+                            String pass = new String(Hex.encodeHex(DigestUtils.sha256(passwordRes)));
+                            if (document.getData().get("password").equals(pass)) {
                                 Intent intent = new Intent(LogInPage.this, HomePage.class);
                                 SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
                                 SharedPreferences.Editor editor = sharedPreferences.edit();
