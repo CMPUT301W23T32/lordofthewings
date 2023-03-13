@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <uses-feature android:name="android.hardware.camera"
+
+    <uses-feature
+        android:name="android.hardware.camera"
         android:required="true" />
+
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -18,6 +23,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Lordofthewings"
         tools:targetApi="31">
+        <activity
+            android:name=".Views.LeaderBoardPage"
+            android:exported="false" />
         <activity
             android:name=".Views.MainActivity"
             android:exported="true">
@@ -31,36 +39,34 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-        <activity android:name=".Views.StartUpPages.StartUpPage"
-            android:label="StartUpPage"
+        <activity
+            android:name=".Views.StartUpPages.StartUpPage"
             android:exported="true"
-            >
-        </activity>
-        <activity android:name=".Views.WalletPage"
-            android:label="WalletPage"
+            android:label="StartUpPage"></activity>
+        <activity
+            android:name=".Views.WalletPage"
             android:exported="true"
-            />
-        <activity android:name=".Views.HomePage"
-            android:label="HomePage"
+            android:label="WalletPage" />
+        <activity
+            android:name=".Views.HomePage"
             android:exported="true"
-            />
-        <activity android:name=".Views.StartUpPages.LogInPage"
-            android:label="LoginPage"
+            android:label="HomePage" />
+        <activity
+            android:name=".Views.StartUpPages.LogInPage"
             android:exported="true"
-            />
-        <activity android:name=".Views.StartUpPages.SignUpPage"
-            android:label="SignUpPage"
+            android:label="LoginPage" />
+        <activity
+            android:name=".Views.StartUpPages.SignUpPage"
             android:exported="true"
-            />
-        <activity android:name=".Views.CameraPages.QRCodeScan"
-            android:label="QRCodeScan"
+            android:label="SignUpPage" />
+        <activity
+            android:name=".Views.CameraPages.QRCodeScan"
             android:exported="true"
-            />
+            android:label="QRCodeScan" />
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:screenOrientation="portrait"
             tools:replace="screenOrientation" />
-
     </application>
 
 </manifest>

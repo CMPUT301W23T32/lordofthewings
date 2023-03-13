@@ -26,7 +26,7 @@ import java.util.List;
 public class Leaderboard {
     FirebaseController fbController = new FirebaseController();
     FirebaseFirestore db = fbController.getDb();
-    private ArrayList<Player> leaderboard = new ArrayList<Player>();
+    public ArrayList<String> leaderboard = new ArrayList<String>();
 
     /**
      * initializes an object representing the leaderboard
@@ -46,6 +46,7 @@ public class Leaderboard {
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        Log.d(TAG, "on success: we getting data");
                         List<DocumentSnapshot> users = queryDocumentSnapshots.getDocuments();
                         for (DocumentSnapshot snapshot : users) {
                             String playerToBeInitialized = snapshot.getString("username");
