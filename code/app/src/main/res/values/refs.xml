@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <drawable name="shape_circle" />
+    <drawable name="marker_image_new" />
+    <drawable name="blur_circle" />
+    <drawable name="ic_custom_marker" />
+</resources>

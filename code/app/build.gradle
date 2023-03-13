@@ -1,6 +1,9 @@
+//noinspection GradleCompatible
+//noinspection GradleCompatible
 plugins {
     id 'com.android.application'
     id 'com.google.gms.google-services'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
 
 android {
@@ -32,14 +35,20 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    buildFeatures {
+        viewBinding true
+        dataBinding true
+    }
+
 }
 dependencies {
     // https://mvnrepository.com/artifact/commons-codec/commons-codec
     implementation 'commons-codec:commons-codec:1.15'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'com.google.firebase:firebase-crashlytics-buildtools:2.9.4'
+    //implementation 'androidx.annotation:annotation-jvm:1.6.0'
     //testImplementation 'junit:junit:4.13.2'
     //unit testing libraries
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.2'
@@ -47,15 +56,33 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-
     testImplementation "androidx.arch.core:core-testing:2.2.0"
+
+    // camera libraries
+    implementation "com.journeyapps:zxing-android-embedded:4.1.0"
+
     // firebase libraries
+    implementation "com.google.android.gms:play-services-location:21.0.1"
     implementation "com.google.firebase:firebase-core:21.1.1"
     implementation 'com.google.firebase:firebase-analytics:21.2.0'
     implementation 'com.google.firebase:firebase-auth:21.1.0'
-    implementation 'com.google.firebase:firebase-firestore:24.4.3'
+    implementation 'com.google.firebase:firebase-firestore:24.4.4'
     implementation platform('com.google.firebase:firebase-bom:31.2.2')
 
+    // google maps libraries
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
+    implementation 'com.google.android.gms:play-services-location:21.0.1'
+    implementation 'com.google.android.libraries.places:places:3.0.0'
+    implementation 'com.google.maps.android:android-maps-utils:0.4'
+
+    //other libraries
+    implementation 'com.squareup.picasso:picasso:2.8'
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    //Robotium
+    androidTestImplementation "androidx.test:runner:1.5.2"
+    androidTestImplementation "androidx.test:rules:1.5.0"
+    androidTestImplementation "com.jayway.android.robotium:robotium-solo:5.2.1"
 }
 apply plugin: 'com.google.gms.google-services'
 
