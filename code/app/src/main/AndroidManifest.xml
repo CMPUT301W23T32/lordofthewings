@@ -80,6 +80,10 @@
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:screenOrientation="portrait"
             tools:replace="screenOrientation" />
+        <activity android:name=".Views.ProfilePage"
+            android:label="ProfilePage"
+            android:exported="true"
+            />
     </application>
 
 </manifest>

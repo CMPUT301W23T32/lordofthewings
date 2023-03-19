@@ -62,6 +62,13 @@ public class HomePage extends AppCompatActivity {
         String username = sh.getString("username", "");
         usernametext = findViewById(R.id.usernameTextView);
         usernametext.setText("Welcome " + username + "!");
+        ImageButton profileButton = findViewById(R.id.profileButton);
+
+        profileButton.setOnClickListener(v -> {
+            Intent intent = new Intent(HomePage.this, ProfilePage.class);
+            intent.putExtra("username", username);
+            startActivity(intent);
+        });
 
         ImageButton mapButton= findViewById(R.id.mapButton);
         mapButton.setOnClickListener(v -> {
