@@ -60,17 +60,6 @@ public class WalletPage extends AppCompatActivity{
     protected void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
         setContentView(R.layout.walletpage);
-        //TextView hometext = findViewById(R.id.TextView01);
-//        SharedPreferences sh = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
-//        String username = sh.getString("username", "");
-//        qrCodeList = findViewById(R.id.qrCodeListView);
-//        qrCodeAdapter = new QRCodeArrayAdapter(this);
-//
-//        qrCodeList.setAdapter(qrCodeAdapter);
-//        usernametext = findViewById(R.id.usernameTextView);
-//        points = findViewById(R.id.points);
-//        qrCodeCount = findViewById(R.id.qrcodeCount);
-//        this.username = username;
         ImageButton back = findViewById(R.id.backIcon);
         back.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -12,6 +12,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.core.FirestoreClient;
 import com.project.lordofthewings.Controllers.FirebaseController;
+import com.project.lordofthewings.Models.Leaderboard.Leaderboard;
 import com.project.lordofthewings.Models.QRcode.QRCode;
 import com.project.lordofthewings.Models.Wallet.Wallet;
 
@@ -27,10 +28,13 @@ import java.util.concurrent.CompletableFuture;
  */
 
 public class Player {
+
     private String userName;
     private String firstName;
     private String lastName;
     private String email;
+
+    private int globalRank;
 
 
     private int score;
@@ -72,6 +76,8 @@ public class Player {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
+//        this.globalRank = getGlobalRank();
+
         //db.collection("Users").document(userName).set(this);
     }
 
@@ -89,6 +95,7 @@ public class Player {
             throw new Exception("Username does not exist!");
         }
         this.userName = userName;
+        //this.globalRank = getGlobalRank();
         db.collection("Users").document(userName).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Map<String, Object> data = task.getResult().getData();
@@ -155,5 +162,18 @@ public class Player {
     public void setUserName (String newUserName){
         this.userName = newUserName;
     }
+
+    /**
+     * return the global rank of the Player
+     * @return : an integer representing the global rank of the player
+     */
+//    public int getGlobalRank(){
+//        Leaderboard leaderboard = new Leaderboard();
+//        this.globalRank = leaderboard.getGlobalRankingOfPlayer(this);
+//
+//        return this.globalRank;
+//    }
+
+
 
 }

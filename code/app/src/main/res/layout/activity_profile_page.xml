@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:backgroundTint="#e9ecef">
 
@@ -24,7 +25,7 @@
             android:src="@drawable/back_icon" />
 
         <TextView
-            android:id="@+id/usernameTextView"
+            android:id="@+id/myProfileTextView"
             style="@style/TextAppearance.AppCompat.Body2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -33,32 +34,38 @@
             android:paddingLeft="5dp"
             android:text="My Profile"
             android:textSize="18sp" />
+
+        <ImageButton
+            android:id="@+id/editIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/edit_icon"
+            android:visibility="invisible"/>
     </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
-        android:background="@drawable/profile_rounded"
         android:layout_gravity="center"
-        android:gravity="center"
+        android:background="@drawable/profile_rounded"
         android:elevation="10dp"
-        android:padding="10dp">
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:layout_marginTop="40sp"
+        >
 
         <ImageView
             android:id="@+id/profileImage"
             android:layout_width="100sp"
             android:layout_height="100sp"
-            android:layout_marginTop="20dp"
             android:layout_gravity="center"
+            android:layout_marginTop="20dp"
             android:background="@drawable/profile_pic"
-            android:clipToOutline="true"
-            />
+            android:clipToOutline="true" />
 
         <TextView
             android:id="@+id/full_name_text"
@@ -66,50 +73,66 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="7dp"
             android:text="Full Name"
-            android:textSize="20dp"
-            />
+            android:textSize="20dp" />
+
         <TextView
             android:id="@+id/username_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="username"/>
+            android:text="username" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_gravity="center"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Score: "/>
+                android:text="Score: " />
+
             <TextView
                 android:id="@+id/score_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"/>
+                android:text="0" />
+
             <TextView
-                android:layout_marginLeft="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Rank: "/>
+                android:layout_marginLeft="10dp"
+                android:text="Rank: " />
+
             <TextView
                 android:id="@+id/rank_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"/>
+                android:text="0" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:text="QRCodes: "/>
+                android:text="QRCodes: " />
+
             <TextView
                 android:id="@+id/qrcodes_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"/>
+                android:text="0" />
         </LinearLayout>
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ListView
+        android:id="@+id/qr_codes_list_profile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="gone"
+        android:divider="@drawable/empty_tall_divider"
+        android:layout_margin="20dp"/>
+
+</LinearLayout>
