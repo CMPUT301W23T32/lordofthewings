@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public class Player {
+
     private String userName;
     private String firstName;
     private String lastName;
