@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
-    <uses-feature android:name="android.hardware.camera"
+    <uses-feature
+        android:name="android.hardware.camera"
         android:required="true" />
+
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -40,6 +43,9 @@
             android:exported="false"
             android:label="@string/title_activity_maps" />
         <activity
+            android:name=".Views.LeaderBoardPage"
+            android:exported="true" />
+        <activity
             android:name=".Views.MainActivity"
             android:exported="true">
             <intent-filter>
@@ -57,13 +63,14 @@
             android:exported="true"
             android:label="StartUpPage">
         </activity>
-        <activity android:name=".Views.WalletPage"
-            android:label="WalletPage"
+        <activity
+            android:name=".Views.WalletPage"
             android:exported="true"
-            />
-        <activity android:name=".Views.HomePage"
-            android:label="HomePage"
-            android:exported="true"/>
+            android:label="WalletPage" />
+        <activity
+            android:name=".Views.HomePage"
+            android:exported="true"
+            android:label="HomePage" />
         <activity
             android:name=".Views.StartUpPages.LogInPage"
             android:exported="true"
@@ -72,14 +79,17 @@
             android:name=".Views.StartUpPages.SignUpPage"
             android:exported="true"
             android:label="SignUpPage" />
-        <activity android:name=".Views.CameraPages.QRCodeScan"
-            android:label="QRCodeScan"
+        <activity
+            android:name=".Views.CameraPages.QRCodeScan"
             android:exported="true"
-            />
+            android:label="QRCodeScan" />
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:screenOrientation="portrait"
             tools:replace="screenOrientation" />
+        <activity android:name=".Views.ProfilePage"
+            android:label="ProfilePage"
+            android:exported="true"
+            />
     </application>
-
 </manifest>
