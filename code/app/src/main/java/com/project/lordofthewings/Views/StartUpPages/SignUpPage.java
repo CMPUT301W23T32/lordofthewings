@@ -81,6 +81,7 @@ public class SignUpPage extends AppCompatActivity {
                                     SharedPreferences.Editor editor = sh.edit();
                                     editor.putString("username", usernameRes);
                                     editor.apply();
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     startActivity(intent);
                                 })
                                 .addOnFailureListener(e -> {
