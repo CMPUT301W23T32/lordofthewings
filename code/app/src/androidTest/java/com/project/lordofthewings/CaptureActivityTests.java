@@ -9,6 +9,9 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -57,7 +60,6 @@ public class CaptureActivityTests {
      */
     @Before
     public void setUp() throws Exception {
-
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
     }
 
@@ -77,40 +79,25 @@ public class CaptureActivityTests {
     @Test
     public void checkIfReturnsToHomeFromCaptureActivity() {
         solo.assertCurrentActivity("Wrong Activity", SignUpPage.class);
-        solo.enterText((EditText) solo.getView(R.id.username), "mktest");
-        solo.enterText((EditText) solo.getView(R.id.email), "mktest");
-        solo.enterText((EditText) solo.getView(R.id.firstName), "mktest");
-        solo.enterText((EditText) solo.getView(R.id.lastName), "mktest");
-        solo.clickOnView(solo.getView(R.id.signUpButton));
+        SharedPreferences sh = rule.getActivity().getSharedPreferences("sharedPrefs", 0);
+        SharedPreferences.Editor editor = sh.edit();
+        editor.putString("username", "ntt");
+        Intent homeIntent = new Intent(solo.getCurrentActivity(), HomePage.class);
+        solo.getCurrentActivity().startActivity(homeIntent);
+        // solo.clickOnView(solo.getView(R.id.signUpButton));
         solo.waitForActivity("HomePage");
+
         solo.assertCurrentActivity("HomePage", HomePage.class);
+        // Button click give a result data
         solo.clickOnView(solo.getView(R.id.scanButton));
+        Intent intent = new Intent(solo.getCurrentActivity(), QRCodeScan.class);
+        // go to intent
+        intent.putExtra("qr_code", "qr_code");
+        solo.getCurrentActivity().startActivity(intent);
         solo.waitForActivity("QRCodeScan");
         solo.assertCurrentActivity("QRCodeScan", CaptureActivity.class);
         solo.goBack();
         solo.assertCurrentActivity("HomePage", HomePage.class);
-    }
-
-
-
-    /**
-     * deletes the test user from the firestore database
-     */
-    public void deleteTestUser(){
-        db.collection("Users").document("mktest")
-                .delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "DocumentSnapshot successfully deleted!");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error deleting document", e);
-                    }
-                });
     }
 
     /**
@@ -120,6 +107,5 @@ public class CaptureActivityTests {
     @After
     public void tearDown() throws Exception{
         solo.finishOpenedActivities();
-        deleteTestUser();
     }
 }
