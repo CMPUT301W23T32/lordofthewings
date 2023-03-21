@@ -1,110 +1,221 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+    android:layout_weight="4">
 
-    <!-- Username and icon -->
-    <RelativeLayout
-        android:id="@+id/topLayout"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/const2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="8dp">
-<!--        add a new user image here whenever we let them upload one-->
-        <ImageView
-            android:id="@+id/userIcon"
+        android:layout_height="220dp"
+        android:background="#EE8D71"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        tools:ignore="MissingConstraints" >
+
+        <ImageButton
+            android:id="@+id/settingsButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/baseline_menu_24"
+            tools:layout_editor_absoluteX="5dp"
+            tools:layout_editor_absoluteY="6dp" />
+
+        <TextView
+            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/user_icon"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="8dp" />
+            android:backgroundTint="#993C39"
+            android:text="Welcome back !!"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="#993C39"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.196"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.775" />
 
         <TextView
             android:id="@+id/usernameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/userIcon"
-            android:layout_centerVertical="true"
-            android:text="Username"
-            android:textSize="18sp" />
+            android:text="Hello "
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="#993C39"
+            android:textSize="34sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.132"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.611" />
 
-        <ImageButton
-            android:id="@+id/settingsButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/settings_icon"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-    </RelativeLayout>
-
-    <!-- Separator line -->
-    <View
-        android:id="@+id/separatorView"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@id/topLayout"
-        android:background="#9B9B9B" />
-
-    <Button
+    <ImageButton
         android:id="@+id/scanButton"
-        android:layout_width="350dp"
-        android:layout_height="150dp"
-        android:layout_centerInParent="true"
+        android:layout_width="370dp"
+        android:layout_gravity="center"
+        android:scaleType="fitEnd"
+        android:layout_height="200dp"
         android:background="@drawable/rounded_md"
-        android:text="Scan New QR code"
-        android:textColor="@color/white"
-        android:textSize="20sp" />
+        android:backgroundTint="#EE8D71"
+        app:layout_constraintBottom_toTopOf="@+id/const3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/const2"
+        app:layout_constraintVertical_bias="0.195"
+        android:src="@mipmap/scanner_pic_foreground">
 
-    <!-- QR code scanner button -->
-    <!--        android:drawableTop="@drawable/qr_code_icon"-->
-    <!--        android:drawablePadding="50dp"-->
-    <!-- Navbar -->
-    <LinearLayout
-        android:id="@+id/navbarLayout"
+    </ImageButton>
+
+    <ImageButton
+        android:id="@+id/leaderboardButton"
+        android:layout_width="370dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:scaleType="fitStart"
+        android:background="@drawable/rounded_md"
+        android:backgroundTint="#EE8D71"
+        app:layout_constraintBottom_toTopOf="@+id/const3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scanButton"
+        app:layout_constraintVertical_bias="0.444"
+        android:src="@mipmap/scanner_pic_foreground" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/const3"
         android:layout_width="match_parent"
-        android:layout_height="72dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/white"
-        android:orientation="horizontal"
-        android:padding="8dp">
+        android:layout_height="80dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        tools:ignore="MissingConstraints">
 
-        <ImageButton
-            android:id="@+id/walletButton"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:src="@drawable/wallet_icon" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="395dp"
+            android:layout_height="55dp"
+            android:background="@drawable/rounded_md"
+            android:backgroundTint="#EE8D71"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.487"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <ImageButton
-            android:id="@+id/leaderboardButton"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:src="@drawable/leaderboard_icon" />
+            <ImageButton
+                android:id="@+id/mapButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="3dp"
+                android:background="@drawable/map_icon"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.168"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
 
-        <ImageButton
-            android:id="@+id/profileButton"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:src="@drawable/user_icon" />
+            <ImageButton
+                android:id="@+id/profileButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="3dp"
+                android:background="@drawable/user_icon"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.863"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/circular"
+            android:backgroundTint="@color/material_dynamic_neutral80"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <ImageButton
-            android:id="@+id/mapButton"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:src="@drawable/map_icon" />
+            <ImageButton
+                android:id="@+id/walletButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/wallet_icon"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-    </LinearLayout>
+            </ImageButton>
 
-</RelativeLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/usernameTextView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Scan a"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="#993C39"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toTopOf="@+id/leaderboardButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.161"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/const2"
+        app:layout_constraintVertical_bias="0.447" />
+
+    <TextView
+        android:id="@+id/usernameTextView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="LeaderBoard"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="#993C39"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/const3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.874"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/const2"
+        app:layout_constraintVertical_bias="0.756" />
+
+    <TextView
+        android:id="@+id/usernameTextView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="QR Code"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="#993C39"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toTopOf="@+id/leaderboardButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.128"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/const2"
+        app:layout_constraintVertical_bias="0.6" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

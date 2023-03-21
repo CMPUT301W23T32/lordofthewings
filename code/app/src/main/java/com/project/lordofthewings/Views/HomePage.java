@@ -65,7 +65,7 @@ public class HomePage extends AppCompatActivity {
             Intent intent = new Intent(HomePage.this, WalletPage.class);
             startActivity(intent);
         });
-        Button scan_qr_code = findViewById(R.id.scanButton);
+        ImageButton scan_qr_code = findViewById(R.id.scanButton);
         scan_qr_code.setOnClickListener(c -> {
             IntentIntegrator integrator = new IntentIntegrator(this);
             integrator.setPrompt("Scan a QR Code");
