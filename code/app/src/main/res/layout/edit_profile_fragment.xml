@@ -12,6 +12,13 @@
         android:layout_height="wrap_content"
         android:padding="16dp">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="First Name:"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
         <EditText
             android:id="@+id/first_name_edit_text"
             android:layout_width="match_parent"
@@ -20,6 +27,13 @@
             android:inputType="text"
             android:maxLines="1"/>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Last Name:"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
         <EditText
             android:id="@+id/last_name_edit_text"
             android:layout_width="match_parent"
@@ -27,6 +41,13 @@
             android:hint="Last Name"
             android:inputType="text"
             android:maxLines="1"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="E-Mail:"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
 
         <EditText
             android:id="@+id/email_edit_text"
