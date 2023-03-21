@@ -15,9 +15,15 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.project.lordofthewings.Models.QRcode.QRCode;
@@ -118,9 +124,28 @@ public class HomePage extends AppCompatActivity {
             } else {
                 Log.d("MainActivity", "Scanned");
                 String qr_code = result.getContents();
-                Intent intent = new Intent(HomePage.this, QRCodeScan.class);
-                intent.putExtra("qr_code", qr_code);
-                startActivity(intent);
+
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                DocumentReference docRef = db.collection("Users").document(qr_code);
+                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                Intent intent = new Intent(HomePage.this, ProfilePage.class);
+                                intent.putExtra("username", qr_code);
+                                startActivity(intent);
+                            } else {
+                                Intent intent = new Intent(HomePage.this, QRCodeScan.class);
+                                intent.putExtra("qr_code", qr_code);
+                                startActivity(intent);
+                            }
+                        } else {
+                            Log.d( "get failed with ", String.valueOf(task.getException()));
+                        }
+                    }
+                });
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
