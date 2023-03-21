@@ -64,7 +64,8 @@ import java.util.Map;
 public class QRCodeScan extends AppCompatActivity implements walletCallback {
     private String url = "https://api.dicebear.com/5.x/bottts-neutral/png?seed=";
     private static final int CAMERA_REQUEST = 1888;
-
+    // change this value when not debugging for qr codes
+    boolean debug = false;
     ImageView imageView;
     Button add_photo;
     Button remove_photo;
@@ -132,8 +133,8 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
                         if (document.exists()) {
                             ArrayList<String> authors;
                             authors = (ArrayList<String>) document.get("Authors");
-
-                            if (authors.contains(username)) {
+                            // change debug value to true when debugging
+                            if (authors.contains(username) && !debug) {
                                 Toast.makeText(QRCodeScan.this, "QRCode already added", Toast.LENGTH_LONG).show();
                             }else{
                                 DocumentReference docRef = db.collection("Users").document(username);
@@ -144,10 +145,6 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
                                             DocumentSnapshot document = task.getResult();
                                             if (document.exists()) {
                                                 wallet = new Wallet(username, (ArrayList<QRCode>) document.get("QRCodes"), Math.toIntExact(((Long) document.get("Score"))));
-                                                if (wallet.haveQRCode(qr)) {
-                                                    Toast.makeText(QRCodeScan.this, "QRCode already added", Toast.LENGTH_LONG).show();
-                                                    return;
-                                                }
                                                 wallet.addQRCode(qr, latitude, longitude);
                                                 Intent intent = new Intent(QRCodeScan.this, HomePage.class);
                                                 startActivity(intent);
