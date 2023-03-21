@@ -40,6 +40,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 import com.project.lordofthewings.Models.QRLocation.QRLocation;
 import com.project.lordofthewings.Models.QRcode.QRCode;
 import com.project.lordofthewings.Models.Wallet.Wallet;
@@ -53,6 +54,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Class to handle the QRCode Scanning Activity and it's related functions.
@@ -120,20 +123,44 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
             SharedPreferences sh = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
             String username = sh.getString("username", "");
             FirebaseFirestore db = FirebaseFirestore.getInstance();
-            DocumentReference docRef = db.collection("Users").document(username);
-
-            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            DocumentReference qrdocRef = db.collection("QRCodes").document(qr.getHash());
+            qrdocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
-                            wallet = new Wallet(username, (ArrayList<QRCode>) document.get("QRCodes"), Math.toIntExact(((Long) document.get("Score"))));
-                            wallet.addQRCode(qr, latitude, longitude);
-                            Log.e("This is wallet", wallet.toString());
-                            Intent intent = new Intent(QRCodeScan.this, HomePage.class);
-                            startActivity(intent);
-                            finish();
+                            ArrayList<String> authors;
+                            authors = (ArrayList<String>) document.get("Authors");
+
+                            if (authors.contains(username)) {
+                                Toast.makeText(QRCodeScan.this, "QRCode already added", Toast.LENGTH_LONG).show();
+                            }else{
+                                DocumentReference docRef = db.collection("Users").document(username);
+                                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            DocumentSnapshot document = task.getResult();
+                                            if (document.exists()) {
+                                                wallet = new Wallet(username, (ArrayList<QRCode>) document.get("QRCodes"), Math.toIntExact(((Long) document.get("Score"))));
+                                                if (wallet.haveQRCode(qr)) {
+                                                    Toast.makeText(QRCodeScan.this, "QRCode already added", Toast.LENGTH_LONG).show();
+                                                    return;
+                                                }
+                                                wallet.addQRCode(qr, latitude, longitude);
+                                                Intent intent = new Intent(QRCodeScan.this, HomePage.class);
+                                                startActivity(intent);
+                                                finish();
+                                            } else {
+                                                Log.d(TAG, "No such document");
+                                            }
+                                        } else {
+                                            Log.d(TAG, "get failed with ", task.getException());
+                                        }
+                                    }
+                                });
+                            }
                         } else {
                             Log.d(TAG, "No such document");
                         }
@@ -142,6 +169,7 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
                     }
                 }
             });
+
         });
 
         remove_location.setOnClickListener(c -> {
