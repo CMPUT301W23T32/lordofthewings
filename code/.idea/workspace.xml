@@ -96,21 +96,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "cidr.known.project.marker": "true",
-    "dart.analysis.tool.window.visible": "false",
-    "last_opened_file_path": "C:/Users/lalkr/AndroidStudioProjects/CMPUT301Project/lordofthewings/code",
-    "memory.settings.postsync.last.time.stamp": "1679287418766",
-    "project.structure.last.edited": "Dependencies",
-    "project.structure.proportion": "0.17",
-    "project.structure.side.proportion": "0.2"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/lalkr/AndroidStudioProjects/CMPUT301Project/lordofthewings/code&quot;,
+    &quot;memory.settings.postsync.last.time.stamp&quot;: &quot;1679287418766&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Dependencies&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.17&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;
   }
-}]]></component>
-  <component name="RunManager" selected="Android Instrumented Tests.checkIfReturnsToHomeFromCaptureActivity()">
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/src/main/res" />
+      <recent name="$PROJECT_DIR$/app/src/main/res/drawable" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Android Instrumented Tests.CaptureActivityTests">
     <configuration name="app" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
       <module name="lordofthewings.app.main" />
       <option name="DEPLOY" value="true" />
@@ -222,11 +228,11 @@
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="HomePageTests" type="AndroidTestRunConfigurationType" factoryName="Android Instrumented Tests" temporary="true" nameIsGenerated="true">
+    <configuration name="WalletPageTests" type="AndroidTestRunConfigurationType" factoryName="Android Instrumented Tests" temporary="true" nameIsGenerated="true">
       <module name="lordofthewings.app.androidTest" />
       <option name="TESTING_TYPE" value="2" />
       <option name="METHOD_NAME" value="" />
-      <option name="CLASS_NAME" value="com.project.lordofthewings.HomePageTests" />
+      <option name="CLASS_NAME" value="com.project.lordofthewings.WalletPageTests" />
       <option name="PACKAGE_NAME" value="" />
       <option name="TEST_NAME_REGEX" value="" />
       <option name="INSTRUMENTATION_RUNNER_CLASS" value="" />
@@ -275,11 +281,11 @@
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="WalletPageTests" type="AndroidTestRunConfigurationType" factoryName="Android Instrumented Tests" temporary="true" nameIsGenerated="true">
+    <configuration name="checkCorrectQRCodeName()" type="AndroidTestRunConfigurationType" factoryName="Android Instrumented Tests" temporary="true" nameIsGenerated="true">
       <module name="lordofthewings.app.androidTest" />
-      <option name="TESTING_TYPE" value="2" />
-      <option name="METHOD_NAME" value="" />
-      <option name="CLASS_NAME" value="com.project.lordofthewings.WalletPageTests" />
+      <option name="TESTING_TYPE" value="3" />
+      <option name="METHOD_NAME" value="checkCorrectQRCodeName" />
+      <option name="CLASS_NAME" value="com.project.lordofthewings.CaptureActivityTests" />
       <option name="PACKAGE_NAME" value="" />
       <option name="TEST_NAME_REGEX" value="" />
       <option name="INSTRUMENTATION_RUNNER_CLASS" value="" />
@@ -436,11 +442,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Android Instrumented Tests.checkIfReturnsToHomeFromCaptureActivity()" />
         <item itemvalue="Android Instrumented Tests.CaptureActivityTests" />
+        <item itemvalue="Android Instrumented Tests.checkCorrectQRCodeName()" />
+        <item itemvalue="Android Instrumented Tests.checkIfReturnsToHomeFromCaptureActivity()" />
         <item itemvalue="Android Instrumented Tests.WalletPageTests" />
         <item itemvalue="Android Instrumented Tests.deleteTestUser()" />
-        <item itemvalue="Android Instrumented Tests.HomePageTests" />
       </list>
     </recent_temporary>
   </component>
