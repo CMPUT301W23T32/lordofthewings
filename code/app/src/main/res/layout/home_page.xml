@@ -59,6 +59,20 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.611" />
 
+        <ImageView
+            android:id="@+id/profile_pic_image_view"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@drawable/profile_pic"
+            android:clipToOutline="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.948"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.133"
+            android:contentDescription="TODO" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageButton

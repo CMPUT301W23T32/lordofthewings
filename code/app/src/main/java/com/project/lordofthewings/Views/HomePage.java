@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,12 +23,15 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.project.lordofthewings.R;
 import com.project.lordofthewings.Views.CameraPages.QRCodeScan;
+import com.squareup.picasso.Picasso;
 
 /**
  * Class for the home page of the app. This is the first page that the user sees after signing up.
  */
 
 public class HomePage extends AppCompatActivity {
+    String url = "https://api.dicebear.com/5.x/pixel-art/png?seed=";
+    ImageView profile_pic;
     TextView usernametext;
     String username;
     @SuppressLint("SetTextI18n")
@@ -40,6 +44,8 @@ public class HomePage extends AppCompatActivity {
         String username = sh.getString("username", "");
         usernametext = findViewById(R.id.usernameTextView);
         usernametext.setText("Welcome " + username + "!");
+        profile_pic = findViewById(R.id.profile_pic_image_view);
+        Picasso.get().load(url + username).into(profile_pic);
         ImageButton profileButton = findViewById(R.id.profileButton);
         ImageButton leaderBoard = findViewById(R.id.leaderboardButton);
 
