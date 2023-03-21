@@ -74,6 +74,7 @@ public class CaptureActivityTests {
         solo.getCurrentActivity().startActivity(intent);
         solo.waitForActivity("QRCodeScan");
         solo.assertCurrentActivity("QRCodeScan", QRCodeScan.class);
+        solo.sleep(5000);
         solo.clickOnView(solo.getView(R.id.cancel_button));
         solo.assertCurrentActivity("HomePage", HomePage.class);
     }
@@ -91,6 +92,7 @@ public class CaptureActivityTests {
         solo.waitForActivity("QRCodeScan");
         solo.assertCurrentActivity("QRCodeScan", QRCodeScan.class);
         // Button click give a result data
+        solo.sleep(5000);
         solo.clickOnView(solo.getView(R.id.save_button));
         solo.assertCurrentActivity("HomePage", HomePage.class);
     }
