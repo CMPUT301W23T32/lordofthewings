@@ -32,8 +32,10 @@
             android:layout_centerVertical="true"
             android:layout_toEndOf="@id/backIcon"
             android:paddingLeft="5dp"
+            android:textColor="@color/orange_700"
+            android:textStyle="bold"
             android:text="My Profile"
-            android:textSize="18sp" />
+            android:textSize="22sp" />
 
         <ImageButton
             android:id="@+id/editIcon"
@@ -44,6 +46,13 @@
             android:background="@drawable/edit_icon"
             android:visibility="invisible"/>
     </RelativeLayout>
+
+    <View
+        android:id="@+id/separatorView"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/topLayout"
+        android:background="#9B9B9B" />
 
     <LinearLayout
         android:id="@+id/linearLayout"

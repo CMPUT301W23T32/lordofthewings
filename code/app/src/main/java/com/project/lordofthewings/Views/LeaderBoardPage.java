@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
@@ -36,6 +37,8 @@ public class LeaderBoardPage extends AppCompatActivity {
     ListView leaderboardList;
     ArrayAdapter<String> learderboardAdapter;
     SearchView search_bar;
+
+    ImageButton back;
     ArrayList<String> stringLeaderboard = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +60,16 @@ public class LeaderBoardPage extends AppCompatActivity {
         TextView main_rank = findViewById(R.id.position_leaderboard_main);
 
         main_rank.setText("#"+rankString);
+
+        back = findViewById(R.id.backIcon2);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LeaderBoardPage.this, HomePage.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
 
         search_bar = findViewById(R.id.search_leaderboard);
