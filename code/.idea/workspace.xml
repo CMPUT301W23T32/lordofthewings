@@ -117,7 +117,7 @@
       <recent name="$PROJECT_DIR$/app/src/main/res/drawable" />
     </key>
   </component>
-  <component name="RunManager" selected="Android Instrumented Tests.CaptureActivityTests">
+  <component name="RunManager" selected="Android App.app">
     <configuration name="app" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
       <module name="lordofthewings.app.main" />
       <option name="DEPLOY" value="true" />
@@ -443,10 +443,10 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Android Instrumented Tests.WalletPageTests" />
         <item itemvalue="Android Instrumented Tests.CaptureActivityTests" />
         <item itemvalue="Android Instrumented Tests.checkCorrectQRCodeName()" />
         <item itemvalue="Android Instrumented Tests.checkIfReturnsToHomeFromCaptureActivity()" />
-        <item itemvalue="Android Instrumented Tests.WalletPageTests" />
         <item itemvalue="Android Instrumented Tests.deleteTestUser()" />
       </list>
     </recent_temporary>
