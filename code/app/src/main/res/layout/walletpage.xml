@@ -133,9 +133,7 @@
         android:layout_width="match_parent"
         android:layout_height="489dp"
         android:layout_margin="8dp"
+        android:divider="@drawable/empty_tall_divider"
         android:layout_weight="1" />
-
-
-
 </LinearLayout>
 

@@ -110,11 +110,10 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
         TextView qr_code_name = findViewById(R.id.qr_code_name);
         qr_code_name.setText(qr.getQRName());
 
-        cancel_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
+        cancel_button.setOnClickListener(c -> {
+            Intent intent = new Intent(QRCodeScan.this, HomePage.class);
+            startActivity(intent);
+            finish();
         });
 
         save_button.setOnClickListener(c -> {
