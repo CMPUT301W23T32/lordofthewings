@@ -76,7 +76,6 @@ public class WalletPage extends AppCompatActivity{
             integrator.setPrompt("Scan a QR Code");
             integrator.setOrientationLocked(false);
             integrator.initiateScan();
-
         });
     }
     @Override

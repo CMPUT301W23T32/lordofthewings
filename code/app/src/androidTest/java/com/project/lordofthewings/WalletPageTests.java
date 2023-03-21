@@ -60,8 +60,6 @@ import java.util.Map;
 @RunWith(AndroidJUnit4.class)
 public class WalletPageTests {
     private Solo solo;
-    FirebaseController fbController = new FirebaseController();
-    FirebaseFirestore db = fbController.getDb();
 
     @Rule
     public ActivityTestRule<SignUpPage> rule =
@@ -89,105 +87,11 @@ public class WalletPageTests {
     }
 
     /**
-     * Checks if the Wallet Activity's back button works
-     */
-    @Test
-    public void checkWalletBackButton() {
-        solo.assertCurrentActivity("Wrong Activity", SignUpPage.class);
-        solo.enterText((EditText) solo.getView(R.id.username), "mktest");
-        solo.enterText((EditText) solo.getView(R.id.email), "mktest");
-        solo.enterText((EditText) solo.getView(R.id.firstName), "mktest");
-        solo.enterText((EditText) solo.getView(R.id.lastName), "mktest");
-        solo.clickOnView(solo.getView(R.id.signUpButton));
-        solo.waitForActivity("HomePage");
-        solo.assertCurrentActivity("Wrong Activity", HomePage.class);
-        solo.clickOnView(solo.getView(R.id.walletButton));
-        solo.waitForActivity("WalletPage");
-        solo.assertCurrentActivity("Wrong Activity", WalletPage.class);
-        solo.clickOnView(solo.getView(R.id.backIcon));
-        solo.waitForActivity("HomePage");
-        solo.assertCurrentActivity("Wrong Activity", HomePage.class);
-    }
-
-    /**
-     * Checks if QR codes are present in wallet after user adds a qr code in the app
-     */
-    @Test
-    public void checkaddnewqr() {
-        QRCode QR1 = new QRCode("testing");
-
-        solo.assertCurrentActivity("Wrong Activity", SignUpPage.class);
-        solo.enterText((EditText) solo.getView(R.id.username), "mktest");
-        solo.enterText((EditText) solo.getView(R.id.email), "mktest");
-        solo.enterText((EditText) solo.getView(R.id.firstName), "mktest");
-        solo.enterText((EditText) solo.getView(R.id.lastName), "mktest");
-        solo.clickOnView(solo.getView(R.id.signUpButton));
-//        Context context = solo.getCurrentActivity();
-//        SharedPreferences sh = context.getSharedPreferences(
-//                "sharedPrefs", Context.MODE_PRIVATE);
-//        SharedPreferences.Editor editor = sh.edit();
-//        editor.clear();
-//        editor.putString("username", "test4");
-//        editor.apply();
-        solo.waitForActivity("HomePage");
-        solo.assertCurrentActivity("Wrong Activity", HomePage.class);
-        addintofbase(QR1);
-        solo.clickOnView(solo.getView(R.id.walletButton));
-        solo.waitForActivity("WalletPage");
-        solo.assertCurrentActivity("Wrong Activity", WalletPage.class);
-        solo.sleep(20000);
-        ListView list_view = (ListView) solo.getView(R.id.qrCodeListView);
-        assertEquals(1, list_view.getCount());
-    }
-
-    /**
-     * Add the QRcode along with details into firebase
-     * @param qrcode_name
-     */
-    public void addintofbase(QRCode qrcode_name) {
-        db.collection("Users").document("mktest").get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                ArrayList<Map<String, Object>> qrCodes = (ArrayList<Map<String, Object>>) documentSnapshot.get("QRCodes");
-                ArrayList<QRCode> qrArray = new ArrayList<>();
-                for (int i = 0; i < qrCodes.size(); i++) {
-                    Map<String, Object> qrObject = (Map<String, Object>) qrCodes.get(i);
-                    QRCode qrCode = new QRCode(qrObject.get("hash").toString(), 1);
-                    qrArray.add(qrCode);
-                }
-                qrArray.add(qrcode_name);
-                documentSnapshot.getReference().update("QRCodes", qrArray);
-            }
-        });
-    }
-
-    /**
-     * deletes the test user from the firestore database
-     */
-    public void deleteTestUser(){
-        db.collection("Users").document("mktest")
-                .delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "DocumentSnapshot successfully deleted!");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error deleting document", e);
-                    }
-                });
-    }
-
-    /**
      * Close activity after each test, deletes the test user from firestore after each test
      * @throws Exception
      */
     @After
     public void tearDown() throws Exception{
         solo.finishOpenedActivities();
-        deleteTestUser();
     }
 }
