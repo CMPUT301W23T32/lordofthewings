@@ -65,7 +65,7 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
     private String url = "https://api.dicebear.com/5.x/bottts-neutral/png?seed=";
     private static final int CAMERA_REQUEST = 1888;
     // change this value when not debugging for qr codes
-    boolean debug = false;
+    boolean debug = true;
     ImageView imageView;
     Button add_photo;
     Button remove_photo;

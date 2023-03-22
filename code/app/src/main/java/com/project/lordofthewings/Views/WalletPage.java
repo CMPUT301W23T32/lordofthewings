@@ -77,11 +77,27 @@ public class WalletPage extends AppCompatActivity{
             integrator.setOrientationLocked(false);
             integrator.initiateScan();
         });
+
+
+        qrCodeList.setOnItemClickListener((parent, view, position, id) -> {
+            Log.e("Reaching","check");
+            QRCode qrCode = qrCodeAdapter.getItem(position);
+            Intent intent = new Intent(WalletPage.this, QRCodePage.class);
+            intent.putExtra("hash", qrCode.getHash());
+            startActivity(intent);
+        });
     }
     @Override
     protected void onResume() {
         super.onResume();
         fetchDataAndRefreshUI();
+        qrCodeList.setOnItemClickListener((parent, view, position, id) -> {
+            Log.e("Reaching","check2");
+            QRCode qrCode = qrCodeAdapter.getItem(position);
+            Intent intent = new Intent(WalletPage.this, QRCodePage.class);
+            intent.putExtra("hash", qrCode.getHash());
+            startActivity(intent);
+        });
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

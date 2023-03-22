@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: org.junit.jupiter:junit-jupiter:5.8.0-M1">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter/5.8.0-M1/93a2ac05e5d1503e5276f97aa92093c3411180d6/junit-jupiter-5.8.0-M1.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter/5.8.0-M1/3c791495768512669e0463f7be775c1ee4ea10c3/junit-jupiter-5.8.0-M1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter/5.8.0-M1/5fd01c33132462aab3905cb74bd1097a713ab91a/junit-jupiter-5.8.0-M1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

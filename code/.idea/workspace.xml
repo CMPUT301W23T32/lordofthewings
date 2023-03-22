@@ -12,7 +12,13 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3a865224-a684-49b7-86de-eb685a5d87ad" name="Changes" comment="" />
+    <list default="true" id="3a865224-a684-49b7-86de-eb685a5d87ad" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/project/lordofthewings/Views/CameraPages/QRCodeScan.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/project/lordofthewings/Views/CameraPages/QRCodeScan.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/project/lordofthewings/Views/WalletPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/project/lordofthewings/Views/WalletPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/qrcodecontent.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/qrcodecontent.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -70,8 +76,8 @@
       <list>
         <option value="Interface" />
         <option value="resourceFile" />
-        <option value="layoutResourceFile" />
         <option value="Class" />
+        <option value="layoutResourceFile" />
       </list>
     </option>
   </component>
