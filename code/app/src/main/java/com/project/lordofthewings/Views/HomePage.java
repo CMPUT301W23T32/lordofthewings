@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,12 +36,12 @@ public class HomePage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
-        setContentView(R.layout.home_page);
+        setContentView(R.layout.new_homepage);
         //TextView hometext = findViewById(R.id.TextView01);
         SharedPreferences sh = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
         String username = sh.getString("username", "");
         usernametext = findViewById(R.id.usernameTextView);
-        usernametext.setText("Welcome " + username + "!");
+        usernametext.setText(username);
         ImageButton profileButton = findViewById(R.id.profileButton);
         ImageButton leaderBoard = findViewById(R.id.leaderboardButton);
 
@@ -66,7 +67,7 @@ public class HomePage extends AppCompatActivity {
             Intent intent = new Intent(HomePage.this, WalletPage.class);
             startActivity(intent);
         });
-        Button scan_qr_code = findViewById(R.id.scanButton);
+        LinearLayout scan_qr_code = findViewById(R.id.scanButton);
         scan_qr_code.setOnClickListener(c -> {
             IntentIntegrator integrator = new IntentIntegrator(this);
             integrator.setPrompt("Scan a QR Code");
