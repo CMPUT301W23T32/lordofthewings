@@ -60,6 +60,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
+        android:background="@drawable/rounded_md"
         android:padding="16dp"
         android:elevation="8dp">
 
@@ -99,6 +100,26 @@
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="16dp"
+        android:paddingTop="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="16dp">
+
+        <ExpandableListView
+            android:id="@+id/authorNames"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@android:color/darker_gray"
+            android:dividerHeight="0.5dp"
+            android:padding="10dp"
+            android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft" />
+
+    </RelativeLayout>
 
 
 
