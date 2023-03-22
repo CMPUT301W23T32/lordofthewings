@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="170sp"
+        android:id="@+id/header"
+        android:background="@drawable/homepage_header">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/user_icon"
+                android:background="@drawable/user_icon"
+                android:layout_margin="10dp"
+                android:padding="20dp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_md"
+                android:layout_margin="30dp"
+                android:orientation="horizontal">
+                <ImageButton
+                    android:layout_gravity="end"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:padding="20dp"
+                    android:id="@+id/qr_code_scan"
+                    android:background="@drawable/rounded_md"
+                    />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="end"
+                android:layout_margin="10dp"
+                android:src="@drawable/settings_icon" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="20dp"
+                android:text="Welcome Back!"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginRight="20dp"
+                android:text="Username"
+                android:textSize="39sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/navbar"
+        android:layout_below="@+id/header"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="40sp"
+        android:layout_marginEnd="40sp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="200sp"
+            android:layout_height="120sp"
+            android:layout_margin="20sp"
+            android:background="@drawable/home_background_button"
+            android:backgroundTint="#F2C8BC">
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:id="@+id/navbar"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:elevation="10dp"
+            android:gravity="center"
+            android:background="@drawable/homepage_footer"
+
+            android:orientation="horizontal">
+            <ImageButton
+                android:id="@+id/walletButton"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:paddingLeft="15sp"
+                android:layout_marginRight="20sp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/wallet_icon" />
+
+            <ImageButton
+                android:id="@+id/leaderboardButton"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginRight="40sp"
+                android:layout_marginLeft="40sp"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:src="@drawable/leaderboard_icon" />
+
+            <ImageButton
+                android:id="@+id/mapButton"
+                android:layout_marginLeft="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:paddingRight="15sp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/map_icon" />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
