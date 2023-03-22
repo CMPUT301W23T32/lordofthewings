@@ -22,8 +22,10 @@ import com.journeyapps.barcodescanner.CaptureActivity;
 import com.project.lordofthewings.Controllers.FirebaseController;
 import com.project.lordofthewings.Views.CameraPages.QRCodeScan;
 import com.project.lordofthewings.Views.HomePage;
+import com.project.lordofthewings.Views.LeaderBoardPage;
 import com.project.lordofthewings.Views.MainActivity;
 import com.project.lordofthewings.Views.MapsActivity;
+import com.project.lordofthewings.Views.ProfilePage;
 import com.project.lordofthewings.Views.StartUpPages.SignUpPage;
 import com.project.lordofthewings.Views.StartUpPages.StartUpPage;
 import com.project.lordofthewings.Views.WalletPage;
@@ -106,6 +108,20 @@ public class HomePageTests {
 //        solo.waitForActivity("UserProfilePage");
 //        solo.assertCurrentActivity("UserProfilePage", .class);
 //    }
+
+    @Test
+    public void checkProfileButton() {
+        solo.clickOnView(solo.getView(R.id.profileButton));
+        solo.waitForActivity("UserProfilePage");
+        solo.assertCurrentActivity("UserProfilePage", ProfilePage.class);
+    }
+
+    @Test
+    public void checkLeaderBoardButton() {
+        solo.clickOnView(solo.getView(R.id.leaderboardButton));
+        solo.waitForActivity("LeaderBoardPage");
+        solo.assertCurrentActivity("LeaderBoardPage", LeaderBoardPage.class);
+    }
 
     @Test
     public void checkUsername(){

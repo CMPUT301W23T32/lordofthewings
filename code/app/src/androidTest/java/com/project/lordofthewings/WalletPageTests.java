@@ -72,8 +72,15 @@ public class WalletPageTests {
      */
     @Before
     public void setUp() throws Exception {
-
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
+        SharedPreferences sh = rule.getActivity().getSharedPreferences("sharedPrefs", 0);
+        SharedPreferences.Editor editor = sh.edit();
+        editor.putString("username", "ntt");
+        Intent walletIntent = new Intent(solo.getCurrentActivity(), WalletPage.class);
+        solo.getCurrentActivity().startActivity(walletIntent);
+        solo.waitForActivity("WalletPage");
+        solo.assertCurrentActivity("WalletPage", WalletPage.class);
+
     }
 
     /**
@@ -84,6 +91,28 @@ public class WalletPageTests {
     @Test
     public void start() throws Exception {
         Activity activity = rule.getActivity();
+    }
+
+    /**
+     * CHecks if the page switches from WalletPage to HomePage
+     */
+    @Test
+    public void checkIfReturnsHome() {
+        solo.waitForActivity("WalletPage");
+        solo.assertCurrentActivity("WalletPage", WalletPage.class);
+        solo.clickOnView(solo.getView(R.id.backIcon));
+        solo.waitForActivity("HomePage");
+        solo.assertCurrentActivity("HomePage", HomePage.class);
+    }
+
+    /**
+     * Checks if the app displays the correct amount of QR Codes
+     */
+    @Test
+    public void checkNumberOfQR() {
+        ListView list_view = (ListView) solo.getView(R.id.qrCodeListView);
+        solo.sleep(5000);
+        assertEquals(2, list_view.getCount());
     }
 
     /**
