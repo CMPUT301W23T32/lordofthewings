@@ -126,26 +126,37 @@ public class HomePage extends AppCompatActivity {
                 String qr_code = result.getContents();
 
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
-                DocumentReference docRef = db.collection("Users").document(qr_code);
-                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
-                                Intent intent = new Intent(HomePage.this, ProfilePage.class);
-                                intent.putExtra("username", qr_code);
-                                startActivity(intent);
+                try{
+                    DocumentReference docRef = db.collection("Users").document(qr_code);
+                    docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                if (document.exists()) {
+                                    Intent intent = new Intent(HomePage.this, ProfilePage.class);
+                                    intent.putExtra("username", qr_code);
+                                    finish();
+                                    startActivity(intent);
+                                } else {
+                                    Log.d("MainActivity", "No such document");
+                                }
                             } else {
-                                Intent intent = new Intent(HomePage.this, QRCodeScan.class);
-                                intent.putExtra("qr_code", qr_code);
-                                startActivity(intent);
+                                Log.d( "get failed with ", String.valueOf(task.getException()));
                             }
-                        } else {
-                            Log.d( "get failed with ", String.valueOf(task.getException()));
                         }
-                    }
-                });
+                    });
+                }catch(Exception e){
+                    Log.e("error is", String.valueOf(e));
+                    Intent intent = new Intent(HomePage.this, QRCodeScan.class);
+                    intent.putExtra("qr_code", qr_code);
+                    finish();
+                    startActivity(intent);
+                }
+                Intent intent = new Intent(HomePage.this, QRCodeScan.class);
+                intent.putExtra("qr_code", qr_code);
+                finish();
+                startActivity(intent);
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
