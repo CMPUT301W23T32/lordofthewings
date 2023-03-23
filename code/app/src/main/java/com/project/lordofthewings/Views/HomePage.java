@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +17,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +38,8 @@ import com.project.lordofthewings.R;
 import com.project.lordofthewings.Views.CameraPages.QRCodeScan;
 import com.squareup.picasso.Picasso;
 
+import java.util.Map;
+
 /**
  * Class for the home page of the app. This is the first page that the user sees after signing up.
  */
@@ -41,11 +47,16 @@ import com.squareup.picasso.Picasso;
 public class HomePage extends AppCompatActivity {
     TextView usernametext;
     String username;
+    ProgressBar progressBar;
+    private AnimationDrawable animationDrawable;
+    private RelativeLayout relativeLayout;
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
         setContentView(R.layout.new_homepage);
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
         //TextView hometext = findViewById(R.id.TextView01);
         SharedPreferences sh = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
         String username = sh.getString("username", "");
@@ -54,9 +65,12 @@ public class HomePage extends AppCompatActivity {
         ImageButton profileButton = findViewById(R.id.profileButton);
         ImageButton leaderBoard = findViewById(R.id.leaderboardButton);
 
+
+
         ImageView profileQR = findViewById(R.id.qr_code_scan_profile);
         String url ="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=";
         Picasso.get().load(url + username ).into(profileQR);
+        progressBar.setVisibility(View.GONE);
         profileQR.setOnClickListener(v -> {
             ProfileQRCodeFragment dialog = new ProfileQRCodeFragment();
             dialog.show(getSupportFragmentManager(), "Profile QR Code");
@@ -141,6 +155,7 @@ public class HomePage extends AppCompatActivity {
                 try{
                     DocumentReference docRef = db.collection("Users").document(qr_code);
                     docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                             if (task.isSuccessful()) {
@@ -184,8 +199,5 @@ public class HomePage extends AppCompatActivity {
         editor.clear();
         editor.apply();
     }
-
-
-
 
 }

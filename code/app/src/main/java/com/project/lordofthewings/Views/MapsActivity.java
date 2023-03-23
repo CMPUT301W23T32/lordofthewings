@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.widget.ImageView;
 
@@ -70,11 +71,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private QRLocation qrLocation = new QRLocation(this);
     private ArrayList<QRCode> locatedCodes;
     private EditText search_bar;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
         binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());

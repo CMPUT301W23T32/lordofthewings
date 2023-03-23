@@ -134,24 +134,6 @@
                 android:text="0" />
         </LinearLayout>
     </LinearLayout>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_gravity="center"
-        android:visibility="gone"
-        android:text="Scan QRCode to share your profile"
-        android:id="@+id/text_qr_code_profile"/>
-    <ImageView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_gravity="center"
-        android:id="@+id/profile_qr_code"
-        android:layout_margin="20dp"
-        android:elevation="10dp"
-        android:background="@drawable/rounded_md"
-        android:visibility="gone"
-        />
     <ListView
         android:id="@+id/qr_codes_list_profile"
         android:layout_width="match_parent"

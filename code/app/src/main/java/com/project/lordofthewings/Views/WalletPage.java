@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.PopupMenu;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,7 +51,7 @@ public class WalletPage extends AppCompatActivity{
     private ListView qrCodeList;
     private ArrayAdapter<QRCode> qrCodeAdapter;
     TextView points;
-
+    ProgressBar progressBar;
     TextView qrCodeCount;
     TextView usernametext;
     String username;
@@ -61,6 +62,7 @@ public class WalletPage extends AppCompatActivity{
         super.onCreate(savedInstance);
         setContentView(R.layout.walletpage);
         ImageButton back = findViewById(R.id.backIcon);
+        progressBar = findViewById(R.id.progressBar);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,6 +112,7 @@ public class WalletPage extends AppCompatActivity{
      *
      */
     public void fetchDataAndRefreshUI() {
+        progressBar.setVisibility(View.VISIBLE);
         SharedPreferences sh = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
         String username = sh.getString("username", "");
         qrCodeList = findViewById(R.id.qrCodeListView);
@@ -143,6 +146,7 @@ public class WalletPage extends AppCompatActivity{
                             points.setText(document.get("Score").toString() + " Points");
                             qrCodeCount.setText(count.toString());
                         }
+                        progressBar.setVisibility(View.GONE);
                     } else {
                         Log.d("No Doc", "No such document");
                     }

@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -75,6 +76,7 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
     TextView location_text;
     String qr_code;
     Wallet wallet;
+    ProgressBar progressBar;
     QRCode qr;
     protected LocationManager locationManager;
     protected LocationListener locationListener;
@@ -102,6 +104,7 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
         location_text.setText("Location Not Added");
         location_text.setVisibility(TextView.VISIBLE);
         save_button = findViewById(R.id.save_button);
+        progressBar = findViewById(R.id.progressBar);
         Button cancel_button = findViewById(R.id.cancel_button);
 
         // using the QRCode Class
@@ -121,6 +124,7 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
         });
 
         save_button.setOnClickListener(c -> {
+            progressBar.setVisibility(ProgressBar.VISIBLE);
             SharedPreferences sh = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
             String username = sh.getString("username", "");
             FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -147,6 +151,7 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
                                                 wallet = new Wallet(username, (ArrayList<QRCode>) document.get("QRCodes"), Math.toIntExact(((Long) document.get("Score"))));
                                                 wallet.addQRCode(qr, latitude, longitude);
                                                 Intent intent = new Intent(QRCodeScan.this, HomePage.class);
+                                                progressBar.setVisibility(ProgressBar.GONE);
                                                 startActivity(intent);
                                                 finish();
                                             } else {
@@ -310,8 +315,7 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
 
     /**
      * Callback for the result from requesting permissions.
-     * @param requestCode The request code passed in {@link #requestPermissions(
-     * android.app.Activity, String[], int)}
+     * @param requestCode The request code is passed
      * @param permissions The requested permissions. Never null.
      * @param grantResults The grant results for the corresponding permissions
      *
