@@ -53,6 +53,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Class to handle the QRCode Scanning Activity and it's related functions.
@@ -68,6 +69,7 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
     Button save_location;
     Button remove_location;
     Button save_button;
+    Button cancel_button;
     TextView location_text;
     String qr_code;
     Wallet wallet;
@@ -98,7 +100,7 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
         location_text.setText("Location Not Added");
         location_text.setVisibility(TextView.VISIBLE);
         save_button = findViewById(R.id.save_button);
-        Button cancel_button = findViewById(R.id.cancel_button);
+        cancel_button = findViewById(R.id.cancel_button);
 
         // using the QRCode Class
         this.qr = new QRCode(qr_code);
@@ -128,12 +130,27 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
-                            wallet = new Wallet(username, (ArrayList<QRCode>) document.get("QRCodes"), Math.toIntExact(((Long) document.get("Score"))));
-                            wallet.addQRCode(qr, latitude, longitude);
-                            Log.e("This is wallet", wallet.toString());
-                            Intent intent = new Intent(QRCodeScan.this, HomePage.class);
-                            startActivity(intent);
-                            finish();
+                            ArrayList<Map<String, Object>> qrCodes = (ArrayList<Map<String, Object>>) document.get("QRCodes");
+                            Integer count = qrCodes.size();
+                            Integer present = 0;
+                            for (int i = 0; i < count; i++){
+                                if (qrCodes.get(i).get("hash").toString().equals(qr.getHash())){
+                                    present = 1;
+                                }
+                            }
+                            if (present == 0){
+                                wallet = new Wallet(username, (ArrayList<QRCode>) document.get("QRCodes"), Math.toIntExact(((Long) document.get("Score"))));
+                                wallet.addQRCode(qr, latitude, longitude);
+                                Log.e("This is wallet", wallet.toString());
+                                Intent intent = new Intent(QRCodeScan.this, HomePage.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                            if (present == 1){
+                                Toast.makeText(getApplicationContext(), "QR ALREADY ADDED", Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
+
                         } else {
                             Log.d(TAG, "No such document");
                         }
