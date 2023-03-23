@@ -16,6 +16,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.project.lordofthewings.Controllers.AuthorArrayAdapter;
 import com.project.lordofthewings.Controllers.FirebaseController;
+import com.project.lordofthewings.Models.Authors.AuthorNamesCallback;
 import com.project.lordofthewings.Models.QRcode.QRCode;
 import com.project.lordofthewings.R;
 import com.squareup.picasso.Picasso;
@@ -25,14 +26,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class QRCodePage extends AppCompatActivity {
+public class QRCodePage extends AppCompatActivity implements AuthorNamesCallback {
     String url = "https://api.dicebear.com/5.x/bottts-neutral/png?seed=";
     String hash;
 
     ExpandableListView authorList;
     AuthorArrayAdapter authorArrayAdapter;
 
-    List<String> TitleList;
+    List<String> authors = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,18 +60,10 @@ public class QRCodePage extends AppCompatActivity {
         qrcodeName.setText(qr.getQRName());
         qrcodeScore.setText("Points: " + qr.getQRScore() );
          authorList = findViewById(R.id.authorNames);
-        //creating dummy data to test authors
-        List<String> authors = new ArrayList<>();
-        for(int i = 0; i < 5; i++){
-            authors.add("author" + i);
-        }
-        HashMap<String, List<String>> authorNames = new HashMap<>();
-        authorNames.put("Scanned By", authors);
 
-        TitleList = new ArrayList<>(authorNames.keySet());
+        getAuthorNames(this);
+        Log.d("Hash",hash);
 
-        authorArrayAdapter = new AuthorArrayAdapter(this, TitleList, authorNames);
-        authorList.setAdapter(authorArrayAdapter);
 
         authorList.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             @Override
@@ -88,56 +81,37 @@ public class QRCodePage extends AppCompatActivity {
         });
 
 
-        Log.d("AUTHORS", authorNames.toString());
-
     }
 
-    //potential ways to get the author names listed below, will check tomorrow hella sleepy rn
 
-//    public Map<String, List<String>> getAuthorNames(){
-//        FirebaseFirestore db = FirebaseFirestore.getInstance();
-//        Map<String, List<String>> authorNames = new HashMap<>();
-//        db.collection("QRCodes").document(hash).get().addOnCompleteListener(task -> {
-//            if (task.isSuccessful()) {
-//                DocumentSnapshot document = task.getResult();
-//                if (document.exists()) {
-//                    Map<String, Object> data = document.getData();
-//                    List<String> authors = (List<String>) data.get("Authors");
+    public void getAuthorNames(AuthorNamesCallback callback){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        HashMap<String, List<String>> authorNames = new HashMap<>();
+        db.collection("QRCodes").document(hash).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    ArrayList<String> authorsDB = (ArrayList<String>) document.get("Authors");
+                    for (int i = 0; i < authorsDB.size(); i++) {
+                        String author;
+                        author = authorsDB.get(i);
+                        authors.add(author);
+                    }
+//                    authors = (List<String>) document.get("Authors");
 //                    authorNames.put("Scanned By", authors);
-//                }
-//            }
-//        });
-//        return authorNames;
-//    }
-//
-//    public interface AuthorNamesCallback {
-//        void onAuthorNamesReceived(Map<String, List<String>> authorNames);
-//    }
-//
-//    public void getAuthorNames(AuthorNamesCallback callback) {
-//        FirebaseFirestore db = FirebaseFirestore.getInstance();
-//        db.collection("QRCodes").document(hash).get().addOnCompleteListener(task -> {
-//            if (task.isSuccessful()) {
-//                DocumentSnapshot document = task.getResult();
-//                if (document.exists()) {
-//                    Map<String, Object> data = document.getData();
-//                    List<String> authors = (List<String>) data.get("Authors");
-//                    Map<String, List<String>> authorNames = new HashMap<>();
-//                    authorNames.put("Scanned By", authors);
-//                    callback.onAuthorNamesReceived(authorNames);
-//                }
-//            }
-//        });
-//    }
+                }
+                callback.onAuthorNamesReceived();
+            }
+        });
+    }
 
-    //usage:
-
-//    getAuthorNames(new AuthorNamesCallback() {
-//        @Override
-//        public void onAuthorNamesReceived(Map<String, List<String>> authorNames) {
-//            // handle authorNames object
-//        }
-//    });
-
+    @Override
+    public void onAuthorNamesReceived() {
+        HashMap<String, List<String>> authorNames = new HashMap<>();
+        authorNames.put("Scanned By", authors);
+        List<String> TitleList = new ArrayList<>(authorNames.keySet());
+        authorArrayAdapter = new AuthorArrayAdapter(this, TitleList, authorNames);
+        authorList.setAdapter(authorArrayAdapter);
+    }
 
 }

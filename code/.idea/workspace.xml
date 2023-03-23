@@ -15,7 +15,6 @@
     <list default="true" id="3a865224-a684-49b7-86de-eb685a5d87ad" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/project/lordofthewings/Views/QRCodePage.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/project/lordofthewings/Views/QRCodePage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_qrcode_page.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_qrcode_page.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,10 +71,10 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="resourceFile" />
         <option value="Class" />
         <option value="layoutResourceFile" />
+        <option value="Interface" />
       </list>
     </option>
   </component>

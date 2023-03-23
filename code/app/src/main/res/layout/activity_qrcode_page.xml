@@ -76,7 +76,8 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="16dp"
                 android:scaleType="centerCrop"
-                android:background="@drawable/rounded_md"/>
+                android:background="@drawable/rounded_md"
+                android:clipToOutline="true" />
 
             <TextView
                 android:id="@+id/qrcode_name"

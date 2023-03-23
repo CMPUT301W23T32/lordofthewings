@@ -116,6 +116,7 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
 
         cancel_button.setOnClickListener(c -> {
             Intent intent = new Intent(QRCodeScan.this, HomePage.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
         });
@@ -147,6 +148,7 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
                                                 wallet = new Wallet(username, (ArrayList<QRCode>) document.get("QRCodes"), Math.toIntExact(((Long) document.get("Score"))));
                                                 wallet.addQRCode(qr, latitude, longitude);
                                                 Intent intent = new Intent(QRCodeScan.this, HomePage.class);
+                                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                                 startActivity(intent);
                                                 finish();
                                             } else {
