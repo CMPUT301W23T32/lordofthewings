@@ -1,4 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <RelativeLayout
+        android:id="@+id/topLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+        <ImageButton
+            android:id="@+id/backIcon2"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/back_icon"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/rounded_md"/>
+
+        <TextView
+            android:id="@+id/leaderboardactivity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/backIcon2"
+            android:layout_centerVertical="true"
+            android:textSize="22sp"
+            android:textColor="@color/orange_700"
+            android:textStyle="bold"
+            android:text="QRLeaderboard" />
+
+    </RelativeLayout>
+
+    <!-- Separator line -->
+    <View
+        android:id="@+id/separatorView"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/topLayout"
+        android:background="#9B9B9B" />
+
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -6,6 +50,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".Views.LeaderBoardPage">
+
 
     <SearchView
         android:id="@+id/search_leaderboard"
@@ -86,3 +131,5 @@
          />
 
 </RelativeLayout>
+
+</LinearLayout>

@@ -53,7 +53,6 @@ public class Wallet {
      */
     public Wallet(String user, ArrayList<QRCode> qrCodes, int score){
         this.username = user;
-        Log.e("This is user", qrCodes.toString());
         this.qrCodes = qrCodes;
         this.score = score;
         this.qrCodesCount = qrCodes.size();
@@ -73,7 +72,6 @@ public class Wallet {
         Map<String, Object> newData = new HashMap<>();
         newData.put("QRCodes", qrCodes);
         newData.put("Score", score);
-        Log.e("This is qrcodes", qrCodes.toString());
         db.collection("Users").document(username)
                 .update(newData);
 
@@ -195,6 +193,7 @@ public class Wallet {
         return this.qrCodes;
 
     }
+
 
     /**
      * Checks whether the user has already scanned the QR code

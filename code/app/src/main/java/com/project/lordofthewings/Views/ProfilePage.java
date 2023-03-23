@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.project.lordofthewings.Controllers.QRCodeArrayAdapter;
 import com.project.lordofthewings.Models.QRcode.QRCode;
 import com.project.lordofthewings.R;
+import com.project.lordofthewings.Views.StartUpPages.SignUpPage;
 import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
@@ -52,6 +54,12 @@ public class ProfilePage extends AppCompatActivity {
             finish();
         });
 
+//        ImageButton editButton = findViewById(R.id.editIcon);
+//        editButton.setOnClickListener(v -> {
+//
+//        });
+
+
         this.fetchDataAndRefreshUI();
         if (savedUsername.equals(username)) {
             ImageButton editButton = findViewById(R.id.editIcon);
@@ -69,6 +77,13 @@ public class ProfilePage extends AppCompatActivity {
         text_username.setText("@"+ username);
         ImageView profilePic = findViewById(R.id.profileImage);
         Picasso.get().load(url + username ).into(profilePic);
+
+        ImageButton editButton = findViewById(R.id.editIcon);
+        editButton.setOnClickListener(v -> {
+            new EditProfileFragment().show(getSupportFragmentManager(), "Edit Profile");
+            fetchDataAndRefreshUI();
+        });
+
     }
     public void fetchDataAndRefreshUI(){
         TextView name = findViewById(R.id.full_name_text);
