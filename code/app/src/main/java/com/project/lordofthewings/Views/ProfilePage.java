@@ -64,6 +64,12 @@ public class ProfilePage extends AppCompatActivity {
         if (savedUsername.equals(username)) {
             ImageButton editButton = findViewById(R.id.editIcon);
             editButton.setVisibility(ImageButton.VISIBLE);
+            ImageView profileQRCode = findViewById(R.id.profile_qr_code);
+            TextView prof_text = findViewById(R.id.text_qr_code_profile);
+            prof_text.setVisibility(TextView.VISIBLE);
+            profileQRCode.setVisibility(ImageButton.VISIBLE);
+            String url ="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=";
+            Picasso.get().load(url + username ).into(profileQRCode);
         }else{
             ImageButton editButton = findViewById(R.id.editIcon);
             editButton.setVisibility(ImageButton.INVISIBLE);

@@ -1,5 +1,6 @@
 package com.project.lordofthewings.Views;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -11,19 +12,27 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.project.lordofthewings.Models.QRcode.QRCode;
 import com.project.lordofthewings.R;
 import com.project.lordofthewings.Views.CameraPages.QRCodeScan;
+import com.squareup.picasso.Picasso;
 
 /**
  * Class for the home page of the app. This is the first page that the user sees after signing up.
@@ -44,6 +53,14 @@ public class HomePage extends AppCompatActivity {
         usernametext.setText(username);
         ImageButton profileButton = findViewById(R.id.profileButton);
         ImageButton leaderBoard = findViewById(R.id.leaderboardButton);
+
+        ImageView profileQR = findViewById(R.id.qr_code_scan_profile);
+        String url ="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=";
+        Picasso.get().load(url + username ).into(profileQR);
+        profileQR.setOnClickListener(v -> {
+            ProfileQRCodeFragment dialog = new ProfileQRCodeFragment();
+            dialog.show(getSupportFragmentManager(), "Profile QR Code");
+        });
 
         profileButton.setOnClickListener(v -> {
             Intent intent = new Intent(HomePage.this, ProfilePage.class);
@@ -119,8 +136,38 @@ public class HomePage extends AppCompatActivity {
             } else {
                 Log.d("MainActivity", "Scanned");
                 String qr_code = result.getContents();
+
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                try{
+                    DocumentReference docRef = db.collection("Users").document(qr_code);
+                    docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                if (document.exists()) {
+                                    Intent intent = new Intent(HomePage.this, ProfilePage.class);
+                                    intent.putExtra("username", qr_code);
+                                    finish();
+                                    startActivity(intent);
+                                } else {
+                                    Log.d("MainActivity", "No such document");
+                                }
+                            } else {
+                                Log.d( "get failed with ", String.valueOf(task.getException()));
+                            }
+                        }
+                    });
+                }catch(Exception e){
+                    Log.e("error is", String.valueOf(e));
+                    Intent intent = new Intent(HomePage.this, QRCodeScan.class);
+                    intent.putExtra("qr_code", qr_code);
+                    finish();
+                    startActivity(intent);
+                }
                 Intent intent = new Intent(HomePage.this, QRCodeScan.class);
                 intent.putExtra("qr_code", qr_code);
+                finish();
                 startActivity(intent);
             }
         } else {
