@@ -1,19 +1,17 @@
 package com.project.lordofthewings.Views;
 
-import static android.content.ContentValues.TAG;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.PopupMenu;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,14 +20,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.project.lordofthewings.Controllers.QRCodeArrayAdapter;
@@ -38,7 +32,6 @@ import com.project.lordofthewings.R;
 import com.project.lordofthewings.Views.CameraPages.QRCodeScan;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -46,13 +39,13 @@ import java.util.Map;
  * the QR codes that the user has scanned.
  * Known Issues: None
  */
-public class WalletPage extends AppCompatActivity{
+public class WalletPage extends AppCompatActivity {
     private ListView qrCodeList;
     private ArrayAdapter<QRCode> qrCodeAdapter;
     TextView points;
-
     TextView qrCodeCount;
     TextView usernametext;
+    Spinner order_selector;
     String username;
 
     @SuppressLint("SetTextI18n")
@@ -69,20 +62,24 @@ public class WalletPage extends AppCompatActivity{
                 finish();
             }
         });
-        fetchDataAndRefreshUI();
+        fetchDataAndRefreshUIdefault();
         Button scan_qr_code = findViewById(R.id.scanButton);
         scan_qr_code.setOnClickListener(c -> {
             IntentIntegrator integrator = new IntentIntegrator(this);
             integrator.setPrompt("Scan a QR Code");
             integrator.setOrientationLocked(false);
             integrator.initiateScan();
-
         });
+
+        order_selector = findViewById(R.id.sorting_spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.orders, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        order_selector.setAdapter(adapter);
     }
     @Override
     protected void onResume() {
         super.onResume();
-        fetchDataAndRefreshUI();
+        fetchDataAndRefreshUIdefault();
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -110,7 +107,7 @@ public class WalletPage extends AppCompatActivity{
      *
      *
      */
-    public void fetchDataAndRefreshUI() {
+    public void fetchDataAndRefreshUIdefault() {
         SharedPreferences sh = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
         String username = sh.getString("username", "");
         qrCodeList = findViewById(R.id.qrCodeListView);
@@ -129,15 +126,17 @@ public class WalletPage extends AppCompatActivity{
                     if (document.exists()) {
                         Log.e("data", document.get("QRCodes").toString());
                         ArrayList<Map<String, Object>> qrCodes = (ArrayList<Map<String, Object>>) document.get("QRCodes");
+                        ArrayList<Map<String, Object>> qrCodes2 = new ArrayList<>();
                         if (qrCodes != null) {
                             qrCodeAdapter.clear();
+                            Integer count = qrCodes.size();
                             for (Map<String, Object> qrCode : qrCodes) {
-                                Integer count = qrCodes.size();
+                                Integer noOfQrCodes = qrCodes.size();
                                 String hash = qrCode.get("hash").toString();
                                 qrCodeAdapter.add(new QRCode(hash, 0));
                                 qrCodeAdapter.notifyDataSetChanged();
                                 points.setText(document.get("Score").toString() + " Points");
-                                qrCodeCount.setText(count.toString());
+                                qrCodeCount.setText(noOfQrCodes.toString());
                             }
                         } if (qrCodes.size() == 0 && qrCodes != null) {
                             Integer count = qrCodes.size();
@@ -150,6 +149,100 @@ public class WalletPage extends AppCompatActivity{
                 } else {
                     Log.d("Err", "get failed with ", task.getException());
                 }
+                order_selector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int location, long l) {
+                        if (location == 1) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                if (document.exists()) {
+                                    Log.e("data", document.get("QRCodes").toString());
+                                    ArrayList<Map<String, Object>> qrCodes = (ArrayList<Map<String, Object>>) document.get("QRCodes");
+                                    ArrayList<Map<String, Object>> qrCodes2 = new ArrayList<>();
+                                    if (qrCodes != null) {
+                                        qrCodeAdapter.clear();
+                                        Integer count = qrCodes.size();
+                                        for (int i = 0; i < count; i++){
+                                            Integer key = 0;
+                                            for (int j = 1; j < qrCodes.size(); j++){
+                                                if (new QRCode(qrCodes.get(key).get("hash").toString(), 0).getQRScore() > new QRCode(qrCodes.get(j).get("hash").toString(), 0).getQRScore())
+                                                    key = j;
+                                            }
+                                            qrCodes2.add(qrCodes.get(key));
+                                            qrCodes.remove(qrCodes.get(key));
+                                        }
+                                        for (int i = 0; i < count; i++){
+                                            qrCodes.add(qrCodes2.get(i));
+                                        }
+                                        for (Map<String, Object> qrCode : qrCodes) {
+                                            Integer noOfQrCodes = qrCodes.size();
+                                            String hash = qrCode.get("hash").toString();
+                                            qrCodeAdapter.add(new QRCode(hash, 0));
+                                            qrCodeAdapter.notifyDataSetChanged();
+                                            points.setText(document.get("Score").toString() + " Points");
+                                            qrCodeCount.setText(noOfQrCodes.toString());
+                                        }
+                                    } if (qrCodes.size() == 0 && qrCodes != null) {
+                                        Integer count = qrCodes.size();
+                                        points.setText(document.get("Score").toString() + " Points");
+                                        qrCodeCount.setText(count.toString());
+                                    }
+                                } else {
+                                    Log.d("No Doc", "No such document");
+                                }
+                            } else {
+                                Log.d("Err", "get failed with ", task.getException());
+                            }
+                        }
+                        if (location == 2) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                if (document.exists()) {
+                                    Log.e("data", document.get("QRCodes").toString());
+                                    ArrayList<Map<String, Object>> qrCodes = (ArrayList<Map<String, Object>>) document.get("QRCodes");
+                                    ArrayList<Map<String, Object>> qrCodes2 = new ArrayList<>();
+                                    if (qrCodes != null) {
+                                        qrCodeAdapter.clear();
+                                        Integer count = qrCodes.size();
+                                        for (int i = 0; i < count; i++){
+                                            Integer key = 0;
+                                            for (int j = 1; j < qrCodes.size(); j++){
+                                                if (new QRCode(qrCodes.get(key).get("hash").toString(), 0).getQRScore() < new QRCode(qrCodes.get(j).get("hash").toString(), 0).getQRScore())
+                                                    key = j;
+                                            }
+                                            qrCodes2.add(qrCodes.get(key));
+                                            qrCodes.remove(qrCodes.get(key));
+                                        }
+                                        for (int i = 0; i < count; i++){
+                                            qrCodes.add(qrCodes2.get(i));
+                                        }
+                                        for (Map<String, Object> qrCode : qrCodes) {
+                                            Integer noOfQrCodes = qrCodes.size();
+                                            String hash = qrCode.get("hash").toString();
+                                            qrCodeAdapter.add(new QRCode(hash, 0));
+                                            qrCodeAdapter.notifyDataSetChanged();
+                                            points.setText(document.get("Score").toString() + " Points");
+                                            qrCodeCount.setText(noOfQrCodes.toString());
+                                        }
+                                    } if (qrCodes.size() == 0 && qrCodes != null) {
+                                        Integer count = qrCodes.size();
+                                        points.setText(document.get("Score").toString() + " Points");
+                                        qrCodeCount.setText(count.toString());
+                                    }
+                                } else {
+                                    Log.d("No Doc", "No such document");
+                                }
+                            } else {
+                                Log.d("Err", "get failed with ", task.getException());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
             }
         });
     }

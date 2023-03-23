@@ -95,20 +95,6 @@ public class HomePageTests {
         solo.assertCurrentActivity("MapsActivity", MapsActivity.class);
     }
 
-//    @Test
-//    public void checkUserProfileButton() {
-//        solo.clickOnView(solo.getView(R.id.profileButton));
-//        solo.waitForActivity("UserProfilePage");
-//        solo.assertCurrentActivity("UserProfilePage", .class);
-//    }
-
-//    @Test
-//    public void checkUserLeaderBoardButton() {
-//        solo.clickOnView(solo.getView(R.id.profileButton));
-//        solo.waitForActivity("UserProfilePage");
-//        solo.assertCurrentActivity("UserProfilePage", .class);
-//    }
-
     @Test
     public void checkProfileButton() {
         solo.clickOnView(solo.getView(R.id.profileButton));
@@ -125,7 +111,7 @@ public class HomePageTests {
 
     @Test
     public void checkUsername(){
-        solo.searchText("ntt");
+        solo.searchText("lal");
     }
 
     /**
