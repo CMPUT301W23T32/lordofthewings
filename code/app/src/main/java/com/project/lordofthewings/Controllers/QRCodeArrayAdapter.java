@@ -99,7 +99,7 @@ public class QRCodeArrayAdapter extends ArrayAdapter<QRCode> {
                                             Toast.makeText(getContext(), "QRCode deleted successfully!", Toast.LENGTH_SHORT).show();
                                             if (getContext() instanceof WalletPage) {
                                                 Log.d("breakpoint", "breakpoint");
-                                                ((WalletPage)getContext()).fetchDataAndRefreshUI();
+                                                ((WalletPage)getContext()).fetchDataAndRefreshUIdefault();
                                             }
                                         }
                                     }).addOnFailureListener(new OnFailureListener() {

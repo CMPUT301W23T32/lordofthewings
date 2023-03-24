@@ -73,6 +73,7 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
     Button save_location;
     Button remove_location;
     Button save_button;
+    Button cancel_button;
     TextView location_text;
     String qr_code;
     Wallet wallet;
@@ -106,6 +107,7 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
         save_button = findViewById(R.id.save_button);
         progressBar = findViewById(R.id.progressBar);
         Button cancel_button = findViewById(R.id.cancel_button);
+        cancel_button = findViewById(R.id.cancel_button);
 
         // using the QRCode Class
         this.qr = new QRCode(qr_code);

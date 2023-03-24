@@ -3,5 +3,9 @@
     <string name="title_activity_maps">MapsActivity</string>
     <string name="settings_title">Settings</string>
     <string name="logout_title">Logout</string>
-
+    <string-array name="orders">
+        <item>default</item>
+        <item>ascending</item>
+        <item>descending</item>
+    </string-array>
 </resources>

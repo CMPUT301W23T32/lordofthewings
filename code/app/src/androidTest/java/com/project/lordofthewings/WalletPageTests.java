@@ -18,6 +18,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -27,6 +28,7 @@ import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.codec
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.journeyapps.barcodescanner.CameraPreview;
 import com.journeyapps.barcodescanner.CaptureActivity;
 import com.project.lordofthewings.Controllers.FirebaseController;
 import com.project.lordofthewings.Models.QRcode.QRCode;
@@ -72,8 +74,15 @@ public class WalletPageTests {
      */
     @Before
     public void setUp() throws Exception {
-
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
+        SharedPreferences sh = rule.getActivity().getSharedPreferences("sharedPrefs", 0);
+        SharedPreferences.Editor editor = sh.edit();
+        editor.putString("username", "ntt");
+        Intent walletIntent = new Intent(solo.getCurrentActivity(), WalletPage.class);
+        solo.getCurrentActivity().startActivity(walletIntent);
+        solo.waitForActivity("WalletPage");
+        solo.assertCurrentActivity("WalletPage", WalletPage.class);
+
     }
 
     /**
@@ -84,6 +93,61 @@ public class WalletPageTests {
     @Test
     public void start() throws Exception {
         Activity activity = rule.getActivity();
+    }
+
+    /**
+     * CHecks if the page switches from WalletPage to HomePage
+     */
+    @Test
+    public void checkIfReturnsHome() {
+        solo.waitForActivity("WalletPage");
+        solo.assertCurrentActivity("WalletPage", WalletPage.class);
+        solo.clickOnView(solo.getView(R.id.backIcon));
+        solo.waitForActivity("HomePage");
+        solo.assertCurrentActivity("HomePage", HomePage.class);
+    }
+
+    /**
+     * Checks if the app displays the correct amount of QR Codes in the listview
+     */
+    @Test
+    public void checkNumberOfQRListView() {
+        ListView listView = (ListView) solo.getView(R.id.qrCodeListView);
+        solo.sleep(5000);
+        assertEquals(2, listView.getCount());
+    }
+
+    /**
+     * Checks if the app displays the correct amount of QR Codes in the QRCodes textview
+     */
+    @Test
+    public void checkNumberOfQRTextView() {
+        TextView textView = (TextView) solo.getView(R.id.qrcodeCount);
+        solo.sleep(5000);
+        assertEquals("2", textView.getText());
+    }
+
+    /**
+     * Checks if switches to comeraview on clicking scan a new QR code
+     */
+    @Test
+    public void checkScanANewQr() {
+        solo.clickOnView(solo.getView(R.id.scanButton));
+        solo.waitForActivity("CameraPage");
+        solo.assertCurrentActivity("CameraPage", CaptureActivity.class);
+    }
+
+    /**
+     * Checks if returns back to wallet trying to go back from Capture Activity
+     */
+    @Test
+    public void checkifReturnWallet() {
+        solo.clickOnView(solo.getView(R.id.scanButton));
+        solo.waitForActivity("CameraPage");
+        solo.assertCurrentActivity("CameraPage", CaptureActivity.class);
+        solo.goBack();
+        solo.waitForActivity("WalletPage");
+        solo.assertCurrentActivity("WalletPage", WalletPage.class);
     }
 
     /**
