@@ -37,6 +37,7 @@
             android:layout_gravity="center"
             android:background="@drawable/rounded_md"
             android:hint="Username"
+            android:inputType="text"
             android:textColorHint="#9B9B9B"
             android:paddingLeft="10dp" />
         <EditText
