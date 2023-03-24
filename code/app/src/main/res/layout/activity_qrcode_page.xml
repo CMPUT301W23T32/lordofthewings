@@ -59,9 +59,10 @@
         android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:background="@drawable/rounded_md"
-        android:padding="16dp"
+        android:layout_margin="20dp"
+        android:background="@drawable/rounded_lg"
+        android:padding="20dp"
+        app:cardElevation="10dp"
         android:elevation="8dp">
 
         <LinearLayout
