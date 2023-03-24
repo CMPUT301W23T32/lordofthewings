@@ -66,7 +66,7 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
     private String url = "https://api.dicebear.com/5.x/bottts-neutral/png?seed=";
     private static final int CAMERA_REQUEST = 1888;
     // change this value when not debugging for qr codes
-    boolean debug = false;
+    boolean debug = true;
     ImageView imageView;
     Button add_photo;
     Button remove_photo;
@@ -130,41 +130,20 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
             SharedPreferences sh = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
             String username = sh.getString("username", "");
             FirebaseFirestore db = FirebaseFirestore.getInstance();
-            DocumentReference qrdocRef = db.collection("QRCodes").document(qr.getHash());
-            qrdocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//            #kjsabdkjasbk
+            DocumentReference docRef = db.collection("Users").document(username);
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
-                            ArrayList<String> authors;
-                            authors = (ArrayList<String>) document.get("Authors");
-                            // change debug value to true when debugging
-                            if (authors.contains(username) && !debug) {
-                                Toast.makeText(QRCodeScan.this, "QRCode already added", Toast.LENGTH_LONG).show();
-                            }else{
-                                DocumentReference docRef = db.collection("Users").document(username);
-                                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                        if (task.isSuccessful()) {
-                                            DocumentSnapshot document = task.getResult();
-                                            if (document.exists()) {
-                                                wallet = new Wallet(username, (ArrayList<QRCode>) document.get("QRCodes"), Math.toIntExact(((Long) document.get("Score"))));
-                                                wallet.addQRCode(qr, latitude, longitude);
-                                                Intent intent = new Intent(QRCodeScan.this, HomePage.class);
-                                                progressBar.setVisibility(ProgressBar.GONE);
-                                                startActivity(intent);
-                                                finish();
-                                            } else {
-                                                Log.d(TAG, "No such document");
-                                            }
-                                        } else {
-                                            Log.d(TAG, "get failed with ", task.getException());
-                                        }
-                                    }
-                                });
-                            }
+                            wallet = new Wallet(username, (ArrayList<QRCode>) document.get("QRCodes"), Math.toIntExact(((Long) document.get("Score"))));
+                            wallet.addQRCode(qr, latitude, longitude);
+                            Intent intent = new Intent(QRCodeScan.this, HomePage.class);
+                            progressBar.setVisibility(ProgressBar.GONE);
+                            startActivity(intent);
+                            finish();
                         } else {
                             Log.d(TAG, "No such document");
                         }
