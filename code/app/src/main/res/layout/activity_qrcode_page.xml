@@ -46,6 +46,7 @@
             android:layout_alignParentRight="true"
             android:background="@drawable/delete_icon"
             android:visibility="invisible"/>
+
     </RelativeLayout>
 
     <View
@@ -55,7 +56,7 @@
         android:layout_below="@id/topLayout"
         android:background="#9B9B9B" />
 
-    <androidx.cardview.widget.CardView
+    <LinearLayout
         android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -101,7 +102,7 @@
 
         </LinearLayout>
 
-    </androidx.cardview.widget.CardView>
+    </LinearLayout>
 
 
     <RelativeLayout

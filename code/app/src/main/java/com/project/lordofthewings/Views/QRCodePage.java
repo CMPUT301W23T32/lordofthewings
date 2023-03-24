@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.common.base.Joiner;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.project.lordofthewings.Controllers.AuthorArrayAdapter;
@@ -33,7 +34,10 @@ public class QRCodePage extends AppCompatActivity implements AuthorNamesCallback
     ExpandableListView authorList;
     AuthorArrayAdapter authorArrayAdapter;
 
+
+
     List<String> authors = new ArrayList<>();
+    List<String> QRComments = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +52,6 @@ public class QRCodePage extends AppCompatActivity implements AuthorNamesCallback
             finish();
         });
         hash = getIntent().getStringExtra("hash");
-        //say i have a hash
 
         QRCode qr = new QRCode(hash,0);
 
@@ -97,8 +100,15 @@ public class QRCodePage extends AppCompatActivity implements AuthorNamesCallback
                         author = authorsDB.get(i);
                         authors.add(author);
                     }
-//                    authors = (List<String>) document.get("Authors");
-//                    authorNames.put("Scanned By", authors);
+
+
+                    ArrayList<HashMap<String,String>> comments = (ArrayList<HashMap<String,String>>) document.get("Comments");
+                    for (int i = 0; i < comments.size(); i++) {
+                        String comment;
+                        //use joiner on a single comment object key and val
+                        comment = Joiner.on(" ").withKeyValueSeparator(": ").join(comments.get(i));
+                        QRComments.add(comment);
+                    }
                 }
                 callback.onAuthorNamesReceived();
             }
@@ -109,7 +119,9 @@ public class QRCodePage extends AppCompatActivity implements AuthorNamesCallback
     public void onAuthorNamesReceived() {
         HashMap<String, List<String>> authorNames = new HashMap<>();
         authorNames.put("Scanned By", authors);
+        authorNames.put("Comments", QRComments);
         List<String> TitleList = new ArrayList<>(authorNames.keySet());
+        Log.d("Title Check", TitleList.toString());
         authorArrayAdapter = new AuthorArrayAdapter(this, TitleList, authorNames);
         authorList.setAdapter(authorArrayAdapter);
     }

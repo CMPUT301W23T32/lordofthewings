@@ -65,7 +65,7 @@ public class Wallet {
      * @param lat the latitude of the location where the QR code was scanned
      * @param lon the longitude of the location where the QR code was scanned
      */
-    public void addQRCode(QRCode qr, String lat, String lon){
+    public void addQRCode(QRCode qr, String lat, String lon, String comment){
         this.qrCodesCount +=1;
         this.score += qr.getQRScore();
         qrCodes.add(qr);
@@ -90,6 +90,14 @@ public class Wallet {
                             float lonInt = (float) (Float.parseFloat(lon));
                             GeoPoint geoPoint = new GeoPoint(latInt, lonInt);
                             task.getResult().getReference().update("Location", geoPoint);
+                        }
+                        if (!comment.equals("")){
+                            ArrayList<Map<String, String>> comments;
+                            comments = (ArrayList<Map<String, String>>) document.get("Comments");
+                            Map<String, String> newComment = new HashMap<>();
+                            newComment.put(username, comment);
+                            comments.add(newComment);
+                            task.getResult().getReference().update("Comments", comments);
                         }
                         task.getResult().getReference().update("Authors", authors);
                     } else {

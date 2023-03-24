@@ -20,6 +20,7 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -103,7 +104,7 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
         location_text.setVisibility(TextView.VISIBLE);
         save_button = findViewById(R.id.save_button);
         Button cancel_button = findViewById(R.id.cancel_button);
-
+        EditText comment = findViewById(R.id.comment);
         // using the QRCode Class
         this.qr = new QRCode(qr_code);
         ImageView visual_rep = findViewById(R.id.qr_code_visual_representation);
@@ -146,7 +147,7 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
                                             DocumentSnapshot document = task.getResult();
                                             if (document.exists()) {
                                                 wallet = new Wallet(username, (ArrayList<QRCode>) document.get("QRCodes"), Math.toIntExact(((Long) document.get("Score"))));
-                                                wallet.addQRCode(qr, latitude, longitude);
+                                                wallet.addQRCode(qr, latitude, longitude,comment.getText().toString());
                                                 Intent intent = new Intent(QRCodeScan.this, HomePage.class);
                                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                                 startActivity(intent);
