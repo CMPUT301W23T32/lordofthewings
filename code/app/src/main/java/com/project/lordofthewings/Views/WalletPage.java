@@ -158,6 +158,36 @@ public class WalletPage extends AppCompatActivity {
                 order_selector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int location, long l) {
+                        if (location == 0) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                if (document.exists()) {
+                                    Log.e("data", document.get("QRCodes").toString());
+                                    ArrayList<Map<String, Object>> qrCodes = (ArrayList<Map<String, Object>>) document.get("QRCodes");
+                                    ArrayList<Map<String, Object>> qrCodes2 = new ArrayList<>();
+                                    if (qrCodes != null) {
+                                        qrCodeAdapter.clear();
+                                        Integer count = qrCodes.size();
+                                        for (Map<String, Object> qrCode : qrCodes) {
+                                            Integer noOfQrCodes = qrCodes.size();
+                                            String hash = qrCode.get("hash").toString();
+                                            qrCodeAdapter.add(new QRCode(hash, 0));
+                                            qrCodeAdapter.notifyDataSetChanged();
+                                            points.setText(document.get("Score").toString() + " Points");
+                                            qrCodeCount.setText(noOfQrCodes.toString());
+                                        }
+                                    } if (qrCodes.size() == 0 && qrCodes != null) {
+                                        Integer count = qrCodes.size();
+                                        points.setText(document.get("Score").toString() + " Points");
+                                        qrCodeCount.setText(count.toString());
+                                    }
+                                } else {
+                                    Log.d("No Doc", "No such document");
+                                }
+                            } else {
+                                Log.d("Err", "get failed with ", task.getException());
+                            }
+                        }
                         if (location == 1) {
                             if (task.isSuccessful()) {
                                 DocumentSnapshot document = task.getResult();
