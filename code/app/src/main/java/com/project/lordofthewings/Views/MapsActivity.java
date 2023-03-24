@@ -18,6 +18,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -67,6 +68,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
     FusedLocationProviderClient fusedLocationProviderClient;
+
+//    Log.d("manan", "1");
     private QRLocation qrLocation = new QRLocation(this);
     private ArrayList<QRCode> locatedCodes;
     private EditText search_bar;
@@ -108,9 +111,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
+        Log.d("manan", "6");
         // checks if permission is granted or not
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            onQrCodesRecieved();
             enableUserLocation();
             snapToUserLocation();
             search_bar.setOnEditorActionListener((v, actionId, event) -> {
@@ -198,6 +202,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 1) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Log.d("manan", "7");
                 // permission was granted snap to user location
                 enableUserLocation();
                 snapToUserLocation();
@@ -275,10 +280,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onQrCodesRecieved() {
+        Log.d("manan", "4");
         String url = "https://api.dicebear.com/5.x/bottts-neutral/png?seed=";
         locatedCodes = qrLocation.getLocatedQRArray();
+        Log.d("manan", "locatedCodes: " + locatedCodes.size());
         // nvm this is the issue
         if (mMap != null && locatedCodes != null && !locatedCodes.isEmpty()) {
+            Log.d("manan", "5");
             mMap.clear();
             for (int i = 0; i < locatedCodes.size(); i++) {
                 Bitmap result =  getBitmapFromURL(url + locatedCodes.get(i).getHash());
@@ -293,3 +301,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 }
+
+
+// read my above code and check why the markers are not showing up
+// I think it's because the onQrCodesRecieved() is not being called
+// where would you suggest I put the call to onQrCodesRecieved()?
+

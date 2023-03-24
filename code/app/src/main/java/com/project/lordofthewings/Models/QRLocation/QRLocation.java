@@ -28,6 +28,7 @@ public class QRLocation {
     FirebaseFirestore db = fbController.getDb();
 
     public QRLocation(QRCodeCallback callback){
+        Log.d("manan", "2");
         this.qrCodes = new ArrayList<>();
         this.callback = callback;
         // get QRCodes from Firebase
@@ -36,14 +37,12 @@ public class QRLocation {
                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                     List<DocumentSnapshot> snapshotList = queryDocumentSnapshots.getDocuments();
                     for (DocumentSnapshot snapshot : snapshotList) {
-                        Log.d("loop", "onSuccess: " + snapshot.get("hash"));
                         LatLng pos = snapshot.get("Location") == null ? null : new LatLng(snapshot.getGeoPoint("Location").getLatitude(), snapshot.getGeoPoint("Location").getLongitude());
                         Map<String, Object> qrObject = (Map<String, Object>) snapshot.get("QRCode");
                         QRCode qrCode = new QRCode(qrObject.get("hash").toString(), pos);
-                        System.out.println("1st check: " + qrCodes);
                         qrCodes.add(qrCode);
-                        System.out.println("2nd check: " + qrCodes);
                     }
+                    Log.d("manan", "3");
                     callback.onQrCodesRecieved();
                 }
             });
