@@ -71,13 +71,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private QRLocation qrLocation = new QRLocation(this);
     private ArrayList<QRCode> locatedCodes;
     private EditText search_bar;
-    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        progressBar = findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.VISIBLE);
 
         binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());

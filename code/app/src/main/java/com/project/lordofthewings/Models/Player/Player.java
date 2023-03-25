@@ -42,8 +42,7 @@ public class Player {
 
     private Wallet QRWallet;
     //private Leaderboard leaderboard;
-    FirebaseController fbcontroller = new FirebaseController();
-    FirebaseFirestore db = fbcontroller.getDb();
+    FirebaseFirestore db;
 
 //    public Player(String userName){
 //        this.userName = userName;
@@ -88,6 +87,7 @@ public class Player {
      * @throws Exception if the username does not exist
      */
     public Player(String userName) throws Exception{
+        db = FirebaseFirestore.getInstance();
         CompletableFuture<Boolean> future = checkIfUserExists(userName, db);
         Boolean exists = future.get();
 

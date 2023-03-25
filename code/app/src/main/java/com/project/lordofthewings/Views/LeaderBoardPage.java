@@ -124,6 +124,7 @@ public class LeaderBoardPage extends AppCompatActivity {
                         learderboardAdapter.addAll(stringLeaderboard);
                         learderboardAdapter.notifyDataSetChanged();
                         progressBar.setVisibility(View.GONE);
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
