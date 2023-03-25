@@ -64,8 +64,6 @@ import java.util.Map;
 public class QRCodeScan extends AppCompatActivity implements walletCallback {
     private String url = "https://api.dicebear.com/5.x/bottts-neutral/png?seed=";
     private static final int CAMERA_REQUEST = 1888;
-    // change this value when not debugging for qr codes
-    boolean debug = false;
     ImageView imageView;
     Button add_photo;
     Button remove_photo;
@@ -86,7 +84,6 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
     String provider;
     protected String latitude, longitude;
     protected boolean gps_enabled, network_enabled;
-
     @Override
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
@@ -114,51 +111,43 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
         points.setText('+' + qr.getQRScore().toString() + " Points");
         TextView qr_code_name = findViewById(R.id.qr_code_name);
         qr_code_name.setText(qr.getQRName());
-
         cancel_button.setOnClickListener(c -> {
             Intent intent = new Intent(QRCodeScan.this, HomePage.class);
             startActivity(intent);
             finish();
         });
-
         save_button.setOnClickListener(c -> {
             SharedPreferences sh = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
             String username = sh.getString("username", "");
             FirebaseFirestore db = FirebaseFirestore.getInstance();
-            DocumentReference qrdocRef = db.collection("QRCodes").document(qr.getHash());
-            qrdocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            DocumentReference docRef = db.collection("Users").document(username);
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
-                            ArrayList<String> authors;
-                            authors = (ArrayList<String>) document.get("Authors");
-                            // change debug value to true when debugging
-                            if (authors.contains(username) && !debug) {
-                                Toast.makeText(QRCodeScan.this, "QRCode already added", Toast.LENGTH_LONG).show();
-                            }else{
-                                DocumentReference docRef = db.collection("Users").document(username);
-                                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                        if (task.isSuccessful()) {
-                                            DocumentSnapshot document = task.getResult();
-                                            if (document.exists()) {
-                                                wallet = new Wallet(username, (ArrayList<QRCode>) document.get("QRCodes"), Math.toIntExact(((Long) document.get("Score"))));
-                                                wallet.addQRCode(qr, latitude, longitude);
-                                                Intent intent = new Intent(QRCodeScan.this, HomePage.class);
-                                                startActivity(intent);
-                                                finish();
-                                            } else {
-                                                Log.d(TAG, "No such document");
-                                            }
-                                        } else {
-                                            Log.d(TAG, "get failed with ", task.getException());
-                                        }
-                                    }
-                                });
+                            ArrayList<Map<String, Object>> qrCodes = (ArrayList<Map<String, Object>>) document.get("QRCodes");
+                            Integer count = qrCodes.size();
+                            Integer present = 0;
+                            for (int i = 0; i < count; i++){
+                                if (qrCodes.get(i).get("hash").toString().equals(qr.getHash())){
+                                    present = 1;
+                                }
                             }
+                            if (present == 0){
+                                wallet = new Wallet(username, (ArrayList<QRCode>) document.get("QRCodes"), Math.toIntExact(((Long) document.get("Score"))));
+                                wallet.addQRCode(qr, latitude, longitude);
+                                Log.e("This is wallet", wallet.toString());
+                                Intent intent = new Intent(QRCodeScan.this, HomePage.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                            if (present == 1){
+                                Toast.makeText(getApplicationContext(), "QR ALREADY ADDED", Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
+
                         } else {
                             Log.d(TAG, "No such document");
                         }
@@ -167,9 +156,7 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
                     }
                 }
             });
-
         });
-
         remove_location.setOnClickListener(c -> {
             location_text.setText("Location Not Added");
             latitude = "";
@@ -201,10 +188,8 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
 //            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 //            latitude = String.valueOf(location.getLatitude());
 //            longitude = String.valueOf(location.getLongitude());
-
         });
     }
-
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAMERA_REQUEST) {
@@ -215,8 +200,6 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
             remove_photo.setVisibility(Button.VISIBLE);
         }
     }
-
-
     /**
      * Method to request location permissions from the user
      */
@@ -225,27 +208,19 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
                 Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION}, 44);
     }
-
-
     private boolean checkPermissions() {
         return ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
     }
-
-
-
     @SuppressLint("MissingPermission")
     private void getLastLocation(walletCallback callback) {
         // check if permissions are given
         if (checkPermissions()) {
-
             // check if location is enabled
             if (isLocationEnabled()) {
-
                 // getting last
                 // location from
                 // FusedLocationClient
                 // object
-
                 mFusedLocationClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
                     @Override
                     public void onComplete(@NonNull Task<Location> task) {
@@ -256,7 +231,6 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
                             latitude = String.valueOf(location.getLatitude());
                             longitude = String.valueOf(location.getLongitude());
                         }
-
                         callback.onCallback();
                     }
                 });
@@ -271,10 +245,8 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
             requestPermissions();
         }
     }
-
     @SuppressLint("MissingPermission")
     private void requestNewLocationData() {
-
         // Initializing LocationRequest
         // object with appropriate methods
         LocationRequest mLocationRequest = new LocationRequest();
@@ -282,15 +254,12 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
         mLocationRequest.setInterval(5);
         mLocationRequest.setFastestInterval(0);
         mLocationRequest.setNumUpdates(1);
-
         // setting LocationRequest
         // on FusedLocationClient
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
     }
-
     private LocationCallback mLocationCallback = new LocationCallback() {
-
         @Override
         public void onLocationResult(LocationResult locationResult) {
             Location mLastLocation = locationResult.getLastLocation();
@@ -298,7 +267,6 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
             longitude = String.valueOf(mLastLocation.getLongitude());
         }
     };
-
     /**
      * Method to check if location is enabled or not
      * @return
@@ -308,7 +276,6 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
-
     /**
      * Callback for the result from requesting permissions.
      * @param requestCode The request code passed in {@link #requestPermissions(
@@ -322,14 +289,12 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
     public void
     onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
         if (requestCode == PERMISSION_ID) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 getLastLocation(this);
             }
         }
     }
-
     @Override
     public void onCallback() {
         location_text.setText("Location Added: " + latitude + ", " + longitude);
