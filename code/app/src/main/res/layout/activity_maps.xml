@@ -86,19 +86,25 @@
             android:layout_height="400dp"
             android:layout_alignParentBottom="true"
             android:background="@drawable/pulloutlistbg"
-            android:elevation="10dp"
-            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior" >
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+            android:elevation="50dp">
             <ImageView
                 android:layout_width="70dp"
                 android:layout_height="7dp"
                 android:src="@drawable/pullout_list_bar"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="7dp"
                 android:layout_gravity="center|top">
             </ImageView>
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="380dp"
+                android:id="@+id/qrListForMap"
+                >
+            </ListView>
 
         </FrameLayout>
-
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 
 </RelativeLayout>
 

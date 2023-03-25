@@ -10,6 +10,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.location.Location;
 import android.os.StrictMode;
 import android.util.Log;
 import android.widget.ImageView;
@@ -31,7 +32,10 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -159,6 +163,33 @@ public class QRLocation {
         return locatedQrswithbm;
     }
 
-    public
+    public ArrayList<QRCode> sortLocatedQRArray(Location fromLocation){
+        HashMap<QRCode, Float> sortedQrsMap = new HashMap();
+
+        for (QRCode code: this.locatedQrs){
+            Location markerLocation = new Location("");
+            markerLocation.setLatitude(code.getLocation().latitude);
+            markerLocation.setLongitude(code.getLocation().longitude);
+            Float distance = fromLocation.distanceTo(markerLocation);
+            sortedQrsMap.put(code, distance);
+        }
+
+        // sort the hashmap by value
+        List<Map.Entry<QRCode, Float>> list = new LinkedList<Map.Entry<QRCode, Float>>(sortedQrsMap.entrySet());
+        Collections.sort(list, new Comparator<Map.Entry<QRCode, Float>>() {
+            public int compare(Map.Entry<QRCode, Float> o1, Map.Entry<QRCode, Float> o2) {
+                return (o1.getValue()).compareTo(o2.getValue());
+            }
+        });
+
+        // put data from sorted list to arraylist
+        ArrayList<QRCode> sortedQrs = new ArrayList<>();
+        for (Map.Entry<QRCode, Float> code : list) {
+            sortedQrs.add(code.getKey());
+        }
+
+        return sortedQrs;
+    }
+
 
 }

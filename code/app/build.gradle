@@ -49,6 +49,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'com.google.firebase:firebase-crashlytics-buildtools:2.9.4'
     implementation 'androidx.appcompat:appcompat:1.6.1'
+//    implementation 'androidx.databinding:compilerCommon:3.2.0-alpha11'
     //implementation 'androidx.annotation:annotation-jvm:1.6.0'
     //testImplementation 'junit:junit:4.13.2'
     //unit testing libraries
