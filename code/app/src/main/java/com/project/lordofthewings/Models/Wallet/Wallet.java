@@ -65,7 +65,7 @@ public class Wallet {
      * @param lat the latitude of the location where the QR code was scanned
      * @param lon the longitude of the location where the QR code was scanned
      */
-    public void addQRCode(QRCode qr, String lat, String lon){
+    public void addQRCode(QRCode qr, String lat, String lon, String comment){
         this.qrCodesCount +=1;
         this.score += qr.getQRScore();
         qrCodes.add(qr);
@@ -91,6 +91,14 @@ public class Wallet {
                             GeoPoint geoPoint = new GeoPoint(latInt, lonInt);
                             task.getResult().getReference().update("Location", geoPoint);
                         }
+                        if (!comment.equals("")){
+                            ArrayList<Map<String, String>> comments;
+                            comments = (ArrayList<Map<String, String>>) document.get("Comments");
+                            Map<String, String> newComment = new HashMap<>();
+                            newComment.put(username, comment);
+                            comments.add(newComment);
+                            task.getResult().getReference().update("Comments", comments);
+                        }
                         task.getResult().getReference().update("Authors", authors);
                     } else {
                         Log.d(TAG, "No such document");
@@ -99,12 +107,18 @@ public class Wallet {
                         Map<String, Object> data = new HashMap<>();
                         data.put("QRCode", qr);
                         data.put("Authors", authors);
+                        if (!comment.equals("")){
+                            Map<String, String> newComment = new HashMap<>();
+                            newComment.put(username, comment);
+                            comments.add(newComment);
+                        }
                         data.put("Comments", comments);
                         if (lat != null && lon != null) {
                             float latInt = (float) (Float.parseFloat(lat));
                             float lonInt = (float) (Float.parseFloat(lon));
                             GeoPoint geoPoint = new GeoPoint(latInt, lonInt);
                             data.put("Location", geoPoint);
+
                         } else{
                             data.put("Location", null);
                         }
