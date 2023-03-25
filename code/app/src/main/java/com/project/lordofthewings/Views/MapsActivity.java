@@ -55,7 +55,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * An activity that implements the map functionality of the app to display the QRCodes.
@@ -69,8 +72,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ActivityMapsBinding binding;
     FusedLocationProviderClient fusedLocationProviderClient;
 
-//    Log.d("manan", "1");
-    private QRLocation qrLocation = new QRLocation(this);
+    //    Log.d("manan", "1");
+    private QRLocation qrLocation = new QRLocation(this, this);
     private ArrayList<QRCode> locatedCodes;
     private EditText search_bar;
 
@@ -114,15 +117,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Log.d("manan", "6");
         // checks if permission is granted or not
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            onQrCodesRecieved();
+//            onQrCodesRecieved();
             enableUserLocation();
             snapToUserLocation();
             search_bar.setOnEditorActionListener((v, actionId, event) -> {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     search();
                     return true;
-                }
-                else{
+                } else {
                     return false;
                 }
             });
@@ -138,7 +140,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     }
-
 
 
     private void enableUserLocation() {
@@ -186,8 +187,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
             if (addressList.size() == 0) {
                 Toast.makeText(this, "No location found", Toast.LENGTH_SHORT).show();
-            }
-            else {
+            } else {
                 Address address = addressList.get(0);
                 LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f));
@@ -204,14 +204,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Log.d("manan", "7");
                 // permission was granted snap to user location
+                onQrCodesRecieved();
                 enableUserLocation();
                 snapToUserLocation();
                 search_bar.setOnEditorActionListener((v, actionId, event) -> {
                     if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                         search();
                         return true;
-                    }
-                    else{
+                    } else {
                         return false;
                     }
                 });
@@ -222,88 +222,40 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    public static Bitmap getBitmapFromURL(String src) {
-        if (android.os.Build.VERSION.SDK_INT > 9) {
-            StrictMode.ThreadPolicy gfgPolicy =
-                    new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(gfgPolicy);
-        }
-        try {
-            URL url = new URL(src);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-
-            return myBitmap;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    private Bitmap getRoundedCornerBitmap(Bitmap bitmap) {
-        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(output);
-
-        final int color = 0xff424242;
-        final Paint paint = new Paint();
-        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-        final RectF rectF = new RectF(rect);
-        final float roundPx = 10; // adjust this value for the desired corner radius
-
-        paint.setAntiAlias(true);
-        canvas.drawARGB(0, 0, 0, 0);
-        paint.setColor(color);
-        canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
-
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-        canvas.drawBitmap(bitmap, rect, rect, paint);
-
-        return output;
-    }
-
-    private Bitmap makeIconFromBitmap(Bitmap result){
-        ImageView mImageView = new ImageView(getApplicationContext());
-        IconGenerator mIconGenerator = new IconGenerator(getApplicationContext());
-        int size = getResources().getDimensionPixelSize(R.dimen.marker_icon); // adjust this value for the desired size
-        Bitmap resizedBitmap = Bitmap.createScaledBitmap(result, size, size, false);
-        Bitmap roundedBitmap = getRoundedCornerBitmap(resizedBitmap);
-        mImageView.setImageBitmap(roundedBitmap);
-        mImageView.setBackground(getApplicationContext().getDrawable(R.drawable.rounded_md));
-        mIconGenerator.setContentView(mImageView);
-        Bitmap iconBitmap = mIconGenerator.makeIcon();
-
-        return iconBitmap;
-    }
 
     @Override
     public void onQrCodesRecieved() {
-        Log.d("manan", "4");
-        String url = "https://api.dicebear.com/5.x/bottts-neutral/png?seed=";
-        locatedCodes = qrLocation.getLocatedQRArray();
-        Log.d("manan", "locatedCodes: " + locatedCodes.size());
-        // nvm this is the issue
-        if (mMap != null && locatedCodes != null && !locatedCodes.isEmpty()) {
-            Log.d("manan", "5");
-            mMap.clear();
-            for (int i = 0; i < locatedCodes.size(); i++) {
-                Bitmap result =  getBitmapFromURL(url + locatedCodes.get(i).getHash());
-                Bitmap iconBitmap = makeIconFromBitmap(result);
 
-                mMap.addMarker(new MarkerOptions()
-                        .position(locatedCodes.get(i).getLocation())
-                        .title(locatedCodes.get(i).getQRName())
-                        .snippet(String.valueOf(locatedCodes.get(i).getQRScore()))
-                        .icon(BitmapDescriptorFactory.fromBitmap(iconBitmap)));
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                Log.d("manan", "4");
+                locatedCodes = qrLocation.getLocatedQRArray();
+                Log.d("manan", "locatedCodes: " + locatedCodes.size());
+                HashMap<QRCode, Bitmap> locatedCodeswithbmap = qrLocation.locatedQRArraywithBitmap();
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mMap != null && locatedCodes != null && !locatedCodes.isEmpty()) {
+                            Log.d("manan", "5");
+                            mMap.clear();
+                            for (int i = 0; i < locatedCodes.size(); i++) {
+                                QRCode qrCode = locatedCodes.get(i);
+                                Bitmap iconBitmap = locatedCodeswithbmap.get(locatedCodes.get(i));
+                                mMap.addMarker(new MarkerOptions()
+                                        .position(qrCode.getLocation())
+                                        .title(qrCode.getQRName())
+                                        .snippet(String.valueOf(qrCode.getQRScore()))
+                                        .icon(BitmapDescriptorFactory.fromBitmap(iconBitmap)));
+                            }
+                        }
+                    }
+                });
+
             }
-        }
+        });
     }
 }
-
-
-// read my above code and check why the markers are not showing up
-// I think it's because the onQrCodesRecieved() is not being called
-// where would you suggest I put the call to onQrCodesRecieved()?
-
