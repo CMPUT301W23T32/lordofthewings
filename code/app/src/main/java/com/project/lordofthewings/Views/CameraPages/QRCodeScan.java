@@ -124,6 +124,8 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
             SharedPreferences sh = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
             String username = sh.getString("username", "");
             FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+
             DocumentReference qrdocRef = db.collection("QRCodes").document(qr.getHash());
             qrdocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
