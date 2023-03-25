@@ -45,7 +45,8 @@ public class CaptureActivityTests {
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
         SharedPreferences sh = rule.getActivity().getSharedPreferences("sharedPrefs", 0);
         SharedPreferences.Editor editor = sh.edit();
-        editor.putString("username", "ntt");
+        editor.putString("username", "bobtest");
+        editor.apply();
         Intent homeIntent = new Intent(solo.getCurrentActivity(), HomePage.class);
         solo.getCurrentActivity().startActivity(homeIntent);
         solo.waitForActivity("HomePage");

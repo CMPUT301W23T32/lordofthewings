@@ -73,10 +73,10 @@ public class ProfilePage extends AppCompatActivity {
             qrCodeList.setVisibility(ListView.VISIBLE);
             fetchQRCodes();
         }
+        ImageView profileImage = findViewById(R.id.profileImage);
+        Picasso.get().load(url+username).into(profileImage);
         TextView text_username = findViewById(R.id.username_text);
         text_username.setText("@"+ username);
-        ImageView profilePic = findViewById(R.id.profileImage);
-        Picasso.get().load(url + username ).into(profilePic);
 
         ImageButton editButton = findViewById(R.id.editIcon);
         editButton.setOnClickListener(v -> {
