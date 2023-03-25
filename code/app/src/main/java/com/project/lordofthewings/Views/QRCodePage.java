@@ -34,7 +34,9 @@ public class QRCodePage extends AppCompatActivity implements AuthorNamesCallback
     ExpandableListView authorList;
     AuthorArrayAdapter authorArrayAdapter;
 
+    String savedUsername;
 
+    ImageButton deleteButton;
 
     List<String> authors = new ArrayList<>();
     List<String> QRComments = new ArrayList<>();
@@ -44,14 +46,23 @@ public class QRCodePage extends AppCompatActivity implements AuthorNamesCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrcode_page);
         SharedPreferences sh = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
-        String savedUsername = sh.getString("username", "");
+        savedUsername = sh.getString("username", "");
             ImageButton backButton = findViewById(R.id.backIcon);
         backButton.setOnClickListener(v -> {
-            Intent intent = new Intent(QRCodePage.this, WalletPage.class);
-            startActivity(intent);
+//            Intent intent = new Intent(QRCodePage.this, WalletPage.class);
+//            startActivity(intent);
+            //dont uncomment the stuff up there, since the backbutton will go to wherever it was clicked from
+
             finish();
         });
         hash = getIntent().getStringExtra("hash");
+
+
+         deleteButton = findViewById(R.id.deleteIcon);
+
+
+
+
 
         QRCode qr = new QRCode(hash,0);
 
@@ -65,7 +76,8 @@ public class QRCodePage extends AppCompatActivity implements AuthorNamesCallback
          authorList = findViewById(R.id.authorNames);
 
         getAuthorNames(this);
-        Log.d("Hash",hash);
+
+        checkIfQRCodeIsOwned(this);
 
 
         authorList.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
@@ -115,6 +127,27 @@ public class QRCodePage extends AppCompatActivity implements AuthorNamesCallback
         });
     }
 
+
+
+    public void checkIfQRCodeIsOwned(AuthorNamesCallback callback){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("QRCodes").document(hash).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    ArrayList<String> authorsDB = (ArrayList<String>) document.get("Authors");
+                    if (authorsDB.contains(savedUsername)) {
+                        callback.checkQRCodeOwner();
+                    }
+                }
+            }
+        });
+    }
+
+
+
+
+
     @Override
     public void onAuthorNamesReceived() {
         HashMap<String, List<String>> authorNames = new HashMap<>();
@@ -124,6 +157,11 @@ public class QRCodePage extends AppCompatActivity implements AuthorNamesCallback
         Log.d("Title Check", TitleList.toString());
         authorArrayAdapter = new AuthorArrayAdapter(this, TitleList, authorNames);
         authorList.setAdapter(authorArrayAdapter);
+    }
+
+    @Override
+    public void checkQRCodeOwner() {
+        deleteButton.setVisibility(ImageButton.VISIBLE);
     }
 
 }

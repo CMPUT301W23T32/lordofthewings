@@ -107,12 +107,18 @@ public class Wallet {
                         Map<String, Object> data = new HashMap<>();
                         data.put("QRCode", qr);
                         data.put("Authors", authors);
+                        if (!comment.equals("")){
+                            Map<String, String> newComment = new HashMap<>();
+                            newComment.put(username, comment);
+                            comments.add(newComment);
+                        }
                         data.put("Comments", comments);
                         if (lat != null && lon != null) {
                             float latInt = (float) (Float.parseFloat(lat));
                             float lonInt = (float) (Float.parseFloat(lon));
                             GeoPoint geoPoint = new GeoPoint(latInt, lonInt);
                             data.put("Location", geoPoint);
+
                         } else{
                             data.put("Location", null);
                         }

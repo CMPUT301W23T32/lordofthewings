@@ -6,4 +6,6 @@ import java.util.Map;
 public interface AuthorNamesCallback {
 
     void onAuthorNamesReceived();
+
+    void checkQRCodeOwner();
 }
