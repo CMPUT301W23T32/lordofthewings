@@ -20,7 +20,9 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,16 +67,18 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
     private String url = "https://api.dicebear.com/5.x/bottts-neutral/png?seed=";
     private static final int CAMERA_REQUEST = 1888;
     // change this value when not debugging for qr codes
-    boolean debug = false;
+    boolean debug = true;
     ImageView imageView;
     Button add_photo;
     Button remove_photo;
     Button save_location;
     Button remove_location;
     Button save_button;
+    Button cancel_button;
     TextView location_text;
     String qr_code;
     Wallet wallet;
+    ProgressBar progressBar;
     QRCode qr;
     protected LocationManager locationManager;
     protected LocationListener locationListener;
@@ -102,8 +106,11 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
         location_text.setText("Location Not Added");
         location_text.setVisibility(TextView.VISIBLE);
         save_button = findViewById(R.id.save_button);
+        progressBar = findViewById(R.id.progressBar);
         Button cancel_button = findViewById(R.id.cancel_button);
+        cancel_button = findViewById(R.id.cancel_button);
 
+        EditText comment = findViewById(R.id.comment);
         // using the QRCode Class
         this.qr = new QRCode(qr_code);
         ImageView visual_rep = findViewById(R.id.qr_code_visual_representation);
@@ -116,48 +123,31 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
 
         cancel_button.setOnClickListener(c -> {
             Intent intent = new Intent(QRCodeScan.this, HomePage.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
         });
 
         save_button.setOnClickListener(c -> {
+            progressBar.setVisibility(ProgressBar.VISIBLE);
             SharedPreferences sh = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
             String username = sh.getString("username", "");
             FirebaseFirestore db = FirebaseFirestore.getInstance();
-            DocumentReference qrdocRef = db.collection("QRCodes").document(qr.getHash());
-            qrdocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+//            #kjsabdkjasbk
+            DocumentReference docRef = db.collection("Users").document(username);
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
-                            ArrayList<String> authors;
-                            authors = (ArrayList<String>) document.get("Authors");
-                            // change debug value to true when debugging
-                            if (authors.contains(username) && !debug) {
-                                Toast.makeText(QRCodeScan.this, "QRCode already added", Toast.LENGTH_LONG).show();
-                            }else{
-                                DocumentReference docRef = db.collection("Users").document(username);
-                                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                        if (task.isSuccessful()) {
-                                            DocumentSnapshot document = task.getResult();
-                                            if (document.exists()) {
-                                                wallet = new Wallet(username, (ArrayList<QRCode>) document.get("QRCodes"), Math.toIntExact(((Long) document.get("Score"))));
-                                                wallet.addQRCode(qr, latitude, longitude);
-                                                Intent intent = new Intent(QRCodeScan.this, HomePage.class);
-                                                startActivity(intent);
-                                                finish();
-                                            } else {
-                                                Log.d(TAG, "No such document");
-                                            }
-                                        } else {
-                                            Log.d(TAG, "get failed with ", task.getException());
-                                        }
-                                    }
-                                });
-                            }
+                            wallet = new Wallet(username, (ArrayList<QRCode>) document.get("QRCodes"), Math.toIntExact(((Long) document.get("Score"))));
+                            wallet.addQRCode(qr, latitude, longitude, comment.getText().toString());
+                            Intent intent = new Intent(QRCodeScan.this, HomePage.class);
+                            progressBar.setVisibility(ProgressBar.GONE);
+                            startActivity(intent);
+                            finish();
                         } else {
                             Log.d(TAG, "No such document");
                         }
@@ -310,8 +300,7 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
 
     /**
      * Callback for the result from requesting permissions.
-     * @param requestCode The request code passed in {@link #requestPermissions(
-     * android.app.Activity, String[], int)}
+     * @param requestCode The request code is passed
      * @param permissions The requested permissions. Never null.
      * @param grantResults The grant results for the corresponding permissions
      *

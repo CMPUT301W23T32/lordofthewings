@@ -64,6 +64,8 @@ public class ProfilePage extends AppCompatActivity {
         if (savedUsername.equals(username)) {
             ImageButton editButton = findViewById(R.id.editIcon);
             editButton.setVisibility(ImageButton.VISIBLE);
+            qrCodeList = findViewById(R.id.qr_codes_list_profile);
+            qrCodeList.setVisibility(ListView.INVISIBLE);
         }else{
             ImageButton editButton = findViewById(R.id.editIcon);
             editButton.setVisibility(ImageButton.INVISIBLE);
@@ -73,15 +75,23 @@ public class ProfilePage extends AppCompatActivity {
             qrCodeList.setVisibility(ListView.VISIBLE);
             fetchQRCodes();
         }
+        ImageView profileImage = findViewById(R.id.profileImage);
+        Picasso.get().load(url+username).into(profileImage);
         TextView text_username = findViewById(R.id.username_text);
         text_username.setText("@"+ username);
-        ImageView profilePic = findViewById(R.id.profileImage);
-        Picasso.get().load(url + username ).into(profilePic);
 
         ImageButton editButton = findViewById(R.id.editIcon);
         editButton.setOnClickListener(v -> {
             new EditProfileFragment().show(getSupportFragmentManager(), "Edit Profile");
             fetchDataAndRefreshUI();
+        });
+
+        qrCodeList.setOnItemClickListener((parent, view, position, id) -> {
+            Log.e("Reaching","check");
+            QRCode qrCode = qrCodeAdapter.getItem(position);
+            Intent intent = new Intent(ProfilePage.this, QRCodePage.class);
+            intent.putExtra("hash", qrCode.getHash());
+            startActivity(intent);
         });
 
     }

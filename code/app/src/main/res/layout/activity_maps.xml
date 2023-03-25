@@ -6,11 +6,12 @@
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/map"
-        tools:context=".Views.MapsActivity"
-        android:name="com.google.android.gms.maps.SupportMapFragment" />
+        tools:context=".Views.MapsActivity" />
+
     <RelativeLayout
         android:id="@+id/topLayout"
         android:layout_width="match_parent"
@@ -32,10 +33,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:textSize="24sp"
+            android:text="QRMAP"
             android:textColor="@color/orange_700"
-            android:textStyle="bold"
-            android:text="QRMAP" />
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
     </RelativeLayout>
 
@@ -69,15 +70,44 @@
             android:background="@null"
             android:hint="Search here"
             android:imeOptions="actionSearch"
+            android:inputType="text"
             android:singleLine="true"
             android:textColor="#000"
             android:textSize="16sp"
             android:privateImeOptions="actionSearch"/>
 
     </RelativeLayout>
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <FrameLayout
+            android:id="@+id/pulloutList"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/pulloutlistbg"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+            android:elevation="50dp">
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="7dp"
+                android:src="@drawable/pullout_list_bar"
+                android:layout_marginTop="7dp"
+                android:layout_gravity="center|top">
+            </ImageView>
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="380dp"
+                android:id="@+id/qrListForMap"
+                >
+            </ListView>
+
+        </FrameLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
 </RelativeLayout>
+
 
 
 <!--<RelativeLayout-->
