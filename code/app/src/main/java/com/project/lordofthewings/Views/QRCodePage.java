@@ -4,16 +4,24 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.common.base.Joiner;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.project.lordofthewings.Controllers.AuthorArrayAdapter;
 import com.project.lordofthewings.Controllers.FirebaseController;
@@ -62,7 +70,7 @@ public class QRCodePage extends AppCompatActivity implements AuthorNamesCallback
 
 
 
-
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         QRCode qr = new QRCode(hash,0);
 
@@ -78,6 +86,62 @@ public class QRCodePage extends AppCompatActivity implements AuthorNamesCallback
         getAuthorNames(this);
 
         checkIfQRCodeIsOwned(this);
+
+
+        //touch this later ngl
+//        deleteButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                QRCode qrCode = new QRCode(hash, 0);
+//                DocumentReference userRef = db.collection("Users").document(savedUsername);
+//                final Integer[] Score = new Integer[1];
+//                userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                        if (task.isSuccessful()) {
+//                            DocumentSnapshot document = task.getResult();
+//                            if (document.exists()) {
+//                                ArrayList<QRCode> qrCodes = (ArrayList<QRCode>) document.get("QRCodes");
+//                                if (qrCodes != null) {
+//                                    for (int i = 0; i < qrCodes.size(); i++) {
+//                                        Map<String, Object> qrObject = (Map<String, Object>) qrCodes.get(i);
+//                                        QRCode qrCode = new QRCode(qrObject.get("hash").toString(), 1);
+//                                        if (qrCode.getHash().equals(hash)) {
+//                                            qrCodes.remove(i);
+//                                            Score[0] = qrCode.getQRScore();
+//                                            break;
+//                                        }
+//                                    }
+//                                    userRef.update("Score", FieldValue.increment(-Score[0]));
+//                                    userRef.update("QRCodes", qrCodes).addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                        @Override
+//                                        public void onSuccess(Void aVoid) {
+//                                            remove(qrCode);
+//                                            notifyDataSetChanged();
+//                                            Toast.makeText(getContext(), "QRCode deleted successfully!", Toast.LENGTH_SHORT).show();
+//                                            if (getContext() instanceof WalletPage) {
+//                                                Log.d("breakpoint", "breakpoint");
+//                                                ((WalletPage)getContext()).fetchDataAndRefreshUI();
+//                                            }
+//                                        }
+//                                    }).addOnFailureListener(new OnFailureListener() {
+//                                        @Override
+//                                        public void onFailure(@NonNull Exception e) {
+//                                            Toast.makeText(getContext(), "Error deleting QRCode: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+//                                        }
+//                                    });
+//                                }
+//                            }
+//                        }
+//                    }
+//                });
+//            }
+//        });
+
+
+
+
+
 
 
         authorList.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {

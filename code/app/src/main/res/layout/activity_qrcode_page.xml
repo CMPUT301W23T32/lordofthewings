@@ -61,7 +61,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:background="@drawable/rounded_lg"
+        android:background="@drawable/rounded_md"
         android:padding="20dp"
         app:cardElevation="10dp"
         android:elevation="8dp">
