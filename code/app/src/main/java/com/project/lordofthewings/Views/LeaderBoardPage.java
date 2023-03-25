@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -37,13 +38,15 @@ public class LeaderBoardPage extends AppCompatActivity {
     ListView leaderboardList;
     ArrayAdapter<String> learderboardAdapter;
     SearchView search_bar;
-
+    ProgressBar progressBar;
     ImageButton back;
     ArrayList<String> stringLeaderboard = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leader_board_page);
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
         getLeaderboard();
         SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
         String username = sharedPreferences.getString("username", "");
@@ -120,6 +123,7 @@ public class LeaderBoardPage extends AppCompatActivity {
                         }
                         learderboardAdapter.addAll(stringLeaderboard);
                         learderboardAdapter.notifyDataSetChanged();
+                        progressBar.setVisibility(View.GONE);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

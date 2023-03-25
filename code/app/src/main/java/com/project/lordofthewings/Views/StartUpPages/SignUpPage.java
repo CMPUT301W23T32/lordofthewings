@@ -8,8 +8,10 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -37,13 +39,16 @@ import java.util.concurrent.CompletableFuture;
  * Class to handle to sign up for new users
  */
 public class SignUpPage extends AppCompatActivity {
+    ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
         setContentView(R.layout.signup_page);
         Log.d("Breakpoint","Reached here69");
         Button signUpButton = findViewById(R.id.signUpButton);
+        progressBar = findViewById(R.id.progressBar);
         signUpButton.setOnClickListener(v -> {
+            progressBar.setVisibility(View.VISIBLE);
             EditText username = findViewById(R.id.username);
             EditText email = findViewById(R.id.email);
             EditText firstName = findViewById(R.id.firstName);
@@ -53,7 +58,6 @@ public class SignUpPage extends AppCompatActivity {
             String emailRes = email.getText().toString();
             String firstNameRes = firstName.getText().toString();
             String lastNameRes = lastName.getText().toString();
-
 
 
             if (!usernameRes.equals("") && !firstNameRes.equals("") && !lastNameRes.equals("") && !emailRes.equals("")) {
@@ -82,6 +86,7 @@ public class SignUpPage extends AppCompatActivity {
                                     editor.putString("username", usernameRes);
                                     editor.apply();
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    progressBar.setVisibility(View.GONE);
                                     startActivity(intent);
                                 })
                                 .addOnFailureListener(e -> {
@@ -90,10 +95,12 @@ public class SignUpPage extends AppCompatActivity {
                     return null;
                 }).exceptionally(e -> {
                     Log.e("Error in creating player","Error" , e);
+                    progressBar.setVisibility(View.GONE);
                     runOnUiThread(() -> Toast.makeText(SignUpPage.this, "Username already exists!", Toast.LENGTH_SHORT).show());
                     return null;
                 });
             } else {
+                progressBar.setVisibility(View.GONE);
                 Toast.makeText(SignUpPage.this, "Please fill in all the fields!", Toast.LENGTH_SHORT).show();
             }
 

@@ -19,10 +19,12 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.widget.ImageView;
 
@@ -41,6 +43,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.maps.android.ui.IconGenerator;
 import com.project.lordofthewings.Models.QRLocation.QRCodeCallback;
 import com.project.lordofthewings.Models.QRLocation.QRLocation;
@@ -76,14 +79,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private QRLocation qrLocation = new QRLocation(this, this);
     private ArrayList<QRCode> locatedCodes;
     private EditText search_bar;
+    private BottomSheetBehavior bottomSheetBehavior;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        bottomSheetBehavior = BottomSheetBehavior.from(findViewById(R.id.pulloutList));
+        bottomSheetBehavior.setPeekHeight(150);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         search_bar = findViewById(R.id.search_text);
@@ -118,16 +124,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // checks if permission is granted or not
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 //            onQrCodesRecieved();
-            enableUserLocation();
-            snapToUserLocation();
-            search_bar.setOnEditorActionListener((v, actionId, event) -> {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    search();
-                    return true;
-                } else {
-                    return false;
-                }
-            });
+            mainMap();
 
         } else {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
@@ -137,10 +134,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1); // requests permission if not granted jump to onRequestPermissionsResult
             }
         }
-
-
     }
-
 
     private void enableUserLocation() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -171,12 +165,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         locationTask.addOnSuccessListener(location -> {
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+
         });
     }
 
     private void search() {
         String location_text = search_bar.getText().toString();
-        List<Address> addressList = null;
+        List<Address> addressList = new ArrayList<>();
 
         if (location_text != null || !location_text.equals("")) {
             Geocoder geocoder = new Geocoder(this);
@@ -191,9 +186,48 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Address address = addressList.get(0);
                 LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f));
+                search_bar.setText("");
             }
         }
 
+    }
+
+    private void mainMap(){
+        enableUserLocation();
+        snapToUserLocation();
+
+        // set the bottomsheet to collapsed when anything other than the bottomsheet is clicked
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            }
+        });
+
+        // set the bottomsheet to collapsed when the map is clicked or swiped on without onMapClick
+        mMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
+            @Override
+            public void onCameraMove() {
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            }
+        });
+
+        search_bar.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                return false;
+            }
+        });
+
+        search_bar.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                search();
+                return true;
+            } else {
+                return false;
+            }
+        });
     }
 
     @Override
@@ -205,16 +239,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Log.d("manan", "7");
                 // permission was granted snap to user location
                 onQrCodesRecieved();
-                enableUserLocation();
-                snapToUserLocation();
-                search_bar.setOnEditorActionListener((v, actionId, event) -> {
-                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                        search();
-                        return true;
-                    } else {
-                        return false;
-                    }
-                });
+                mainMap();
             } else {
                 // permission denied, boo! Disable the
                 // functionality that depends on this permission.

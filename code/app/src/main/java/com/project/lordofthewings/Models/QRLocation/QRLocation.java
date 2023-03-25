@@ -159,4 +159,6 @@ public class QRLocation {
         return locatedQrswithbm;
     }
 
+    public
+
 }
