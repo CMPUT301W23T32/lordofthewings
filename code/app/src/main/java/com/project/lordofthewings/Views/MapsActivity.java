@@ -16,21 +16,28 @@ import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -41,6 +48,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.maps.android.ui.IconGenerator;
 import com.project.lordofthewings.Models.QRLocation.QRCodeCallback;
 import com.project.lordofthewings.Models.QRLocation.QRLocation;
@@ -55,7 +63,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * An activity that implements the map functionality of the app to display the QRCodes.
@@ -63,22 +75,28 @@ import java.util.List;
  * on the map due to all the work being done on the main thread. Will be fixed in the next update.
  */
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, QRCodeCallback {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, QRCodeCallback{
 
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
     FusedLocationProviderClient fusedLocationProviderClient;
-    private QRLocation qrLocation = new QRLocation(this);
+
+    private QRLocation qrLocation = new QRLocation(this, this);
     private ArrayList<QRCode> locatedCodes;
     private EditText search_bar;
-    private ProgressBar progressBar;
+    private BottomSheetBehavior bottomSheetBehavior;
+    private ArrayList<QRCode> sortedQrCodes;
+    private ArrayAdapter<QRCode> MapArrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        bottomSheetBehavior = BottomSheetBehavior.from(findViewById(R.id.pulloutList));
+        bottomSheetBehavior.setPeekHeight(150);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         search_bar = findViewById(R.id.search_text);
@@ -109,20 +127,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
+        Log.d("manan", "6");
         // checks if permission is granted or not
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            enableUserLocation();
-            snapToUserLocation();
-            search_bar.setOnEditorActionListener((v, actionId, event) -> {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    search();
-                    return true;
-                }
-                else{
-                    return false;
-                }
-            });
+//            onQrCodesRecieved();
+            mainMap();
 
         } else {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
@@ -132,11 +141,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1); // requests permission if not granted jump to onRequestPermissionsResult
             }
         }
-
-
     }
-
-
 
     private void enableUserLocation() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -163,17 +168,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        Task<Location> locationTask = fusedLocationProviderClient.getLastLocation();
+        Task<Location> locationTask = fusedLocationProviderClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, null);
         locationTask.addOnSuccessListener(location -> {
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-
         });
     }
 
     private void search() {
         String location_text = search_bar.getText().toString();
-        List<Address> addressList = null;
+        List<Address> addressList = new ArrayList<>();
 
         if (location_text != null || !location_text.equals("")) {
             Geocoder geocoder = new Geocoder(this);
@@ -184,13 +188,55 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
             if (addressList.size() == 0) {
                 Toast.makeText(this, "No location found", Toast.LENGTH_SHORT).show();
-            }
-            else {
+            } else {
                 Address address = addressList.get(0);
                 LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f));
+                search_bar.setText("");
             }
         }
+
+    }
+
+    private void mainMap() {
+        enableUserLocation();
+        snapToUserLocation();
+
+        // set the bottomsheet to collapsed when anything other than the bottomsheet is clicked
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            }
+        });
+
+        // set the bottomsheet to collapsed when the map is clicked or swiped on without onMapClick
+        mMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
+            @Override
+            public void onCameraMove() {
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            }
+        });
+
+        search_bar.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                }
+                return false;
+            }
+        });
+
+        search_bar.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                search();
+                return true;
+            } else {
+                return false;
+            }
+        });
+
 
     }
 
@@ -200,18 +246,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 1) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Log.d("manan", "7");
                 // permission was granted snap to user location
-                enableUserLocation();
-                snapToUserLocation();
-                search_bar.setOnEditorActionListener((v, actionId, event) -> {
-                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                        search();
-                        return true;
-                    }
-                    else{
-                        return false;
-                    }
-                });
+                onQrCodesRecieved();
+                mainMap();
             } else {
                 // permission denied, boo! Disable the
                 // functionality that depends on this permission.
@@ -219,79 +257,83 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    public static Bitmap getBitmapFromURL(String src) {
-        if (android.os.Build.VERSION.SDK_INT > 9) {
-            StrictMode.ThreadPolicy gfgPolicy =
-                    new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(gfgPolicy);
-        }
-        try {
-            URL url = new URL(src);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-
-            return myBitmap;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    private Bitmap getRoundedCornerBitmap(Bitmap bitmap) {
-        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(output);
-
-        final int color = 0xff424242;
-        final Paint paint = new Paint();
-        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-        final RectF rectF = new RectF(rect);
-        final float roundPx = 10; // adjust this value for the desired corner radius
-
-        paint.setAntiAlias(true);
-        canvas.drawARGB(0, 0, 0, 0);
-        paint.setColor(color);
-        canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
-
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-        canvas.drawBitmap(bitmap, rect, rect, paint);
-
-        return output;
-    }
-
-    private Bitmap makeIconFromBitmap(Bitmap result){
-        ImageView mImageView = new ImageView(getApplicationContext());
-        IconGenerator mIconGenerator = new IconGenerator(getApplicationContext());
-        int size = getResources().getDimensionPixelSize(R.dimen.marker_icon); // adjust this value for the desired size
-        Bitmap resizedBitmap = Bitmap.createScaledBitmap(result, size, size, false);
-        Bitmap roundedBitmap = getRoundedCornerBitmap(resizedBitmap);
-        mImageView.setImageBitmap(roundedBitmap);
-        mImageView.setBackground(getApplicationContext().getDrawable(R.drawable.rounded_md));
-        mIconGenerator.setContentView(mImageView);
-        Bitmap iconBitmap = mIconGenerator.makeIcon();
-
-        return iconBitmap;
-    }
 
     @Override
     public void onQrCodesRecieved() {
-        String url = "https://api.dicebear.com/5.x/bottts-neutral/png?seed=";
-        locatedCodes = qrLocation.getLocatedQRArray();
-        // nvm this is the issue
-        if (mMap != null && locatedCodes != null && !locatedCodes.isEmpty()) {
-            mMap.clear();
-            for (int i = 0; i < locatedCodes.size(); i++) {
-                Bitmap result =  getBitmapFromURL(url + locatedCodes.get(i).getHash());
-                Bitmap iconBitmap = makeIconFromBitmap(result);
 
-                mMap.addMarker(new MarkerOptions()
-                        .position(locatedCodes.get(i).getLocation())
-                        .title(locatedCodes.get(i).getQRName())
-                        .snippet(String.valueOf(locatedCodes.get(i).getQRScore()))
-                        .icon(BitmapDescriptorFactory.fromBitmap(iconBitmap)));
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                Log.d("manan", "4");
+                locatedCodes = qrLocation.getLocatedQRArray();
+                Log.d("manan", "locatedCodes: " + locatedCodes.size());
+                HashMap<QRCode, Bitmap> locatedCodeswithbmap = qrLocation.locatedQRArraywithBitmap();
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mMap != null && locatedCodes != null && !locatedCodes.isEmpty()) {
+                            Log.d("manan", "5");
+                            mMap.clear();
+                            for (int i = 0; i < locatedCodes.size(); i++) {
+                                QRCode qrCode = locatedCodes.get(i);
+                                Bitmap iconBitmap = locatedCodeswithbmap.get(locatedCodes.get(i));
+                                mMap.addMarker(new MarkerOptions()
+                                        .position(qrCode.getLocation())
+                                        .title(qrCode.getQRName())
+                                        .snippet(String.valueOf(qrCode.getQRScore()))
+                                        .icon(BitmapDescriptorFactory.fromBitmap(iconBitmap)));
+                            }
+                        }
+                        LocationListener locationListener = new LocationListener() {
+                            @Override
+                            public void onLocationChanged(Location location) {
+                                    if (ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                                        // TODO: Consider calling
+                                        //    ActivityCompat#requestPermissions
+                                        // here to request the missing permissions, and then overriding
+                                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                        //                                          int[] grantResults)
+                                        // to handle the case where the user grants the permission. See the documentation
+                                        // for ActivityCompat#requestPermissions for more details.
+                                        return;
+                                    }
+                                    Task<Location> locationTask = fusedLocationProviderClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, null);
+                                    locationTask.addOnSuccessListener(curlocation -> {
+                                        ArrayList<QRCode> sortedList = qrLocation.sortLocatedQRArray(curlocation);
+                                        sortedQrCodes = sortedList;
+                                        for (QRCode code: sortedQrCodes) {
+                                            Log.d("manan", "code: " + code.getQRName());
+                                        }
+                                    });
+                            }
+
+                            @Override
+                            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                            }
+
+                            @Override
+                            public void onProviderEnabled(String provider) {
+
+                            }
+
+                            @Override
+                            public void onProviderDisabled(String provider) {
+
+                            }
+                        };
+
+                        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 1, locationListener);
+                    }
+                });
+
+
+
             }
-        }
+        });
     }
 }
