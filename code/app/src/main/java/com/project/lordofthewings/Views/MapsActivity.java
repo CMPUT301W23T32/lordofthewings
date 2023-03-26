@@ -22,10 +22,12 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -53,6 +55,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.maps.android.ui.IconGenerator;
 import com.project.lordofthewings.Controllers.MapsArrayAdapter;
 import com.project.lordofthewings.Controllers.QRCodeArrayAdapter;
@@ -97,6 +102,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private TextView qrListTitle;
     private ImageButton listback;
     private ProgressBar progressBar;
+    private ChipGroup chipGroup;
+    private Chip chip_20;
+    private Chip chip_40;
+    private Chip chip_60;
+    private Chip chip_100;
+    private Chip chip_all;
+    private TextView noQrCodes;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +127,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         qrListTitle = findViewById(R.id.qrListTitle);
         listback = findViewById(R.id.map_list_back_button);
         progressBar = findViewById(R.id.progress_bar_map);
+        chipGroup = findViewById(R.id.chip_group);
+        chip_20 = findViewById(R.id.chip_1);
+        chip_40 = findViewById(R.id.chip_2);
+        chip_60 = findViewById(R.id.chip_3);
+        chip_100 = findViewById(R.id.chip_4);
+        chip_all = findViewById(R.id.chip_5);
+        noQrCodes = findViewById(R.id.noQrCodeFound);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -268,6 +288,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+        chipGroup.setOnCheckedStateChangeListener(new ChipGroup.OnCheckedStateChangeListener() {
+            @Override
+            public void onCheckedChanged(@NonNull ChipGroup group, @NonNull List<Integer> checkedIds) {
+
+                if (checkedIds.get(0) == R.id.chip_1) {
+                    listFilter( 20000);
+                } else if (checkedIds.get(0) == R.id.chip_2) {
+                    listFilter(40000);
+                } else if (checkedIds.get(0) == R.id.chip_3) {
+                    listFilter(60000);
+                } else if (checkedIds.get(0) == R.id.chip_4) {
+                    listFilter(100000);
+                } else if (checkedIds.get(0) == R.id.chip_5) {
+                    listFilter(Integer.MAX_VALUE);
+                }
+            }
+        });
 
     }
 
@@ -282,8 +319,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 onQrCodesRecieved();
                 mainMap();
             } else {
-                // permission denied, boo! Disable the
-                // functionality that depends on this permission.
+                // permission was denied
+                Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
+                finish();
             }
         }
     }
@@ -293,6 +331,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LocationListener locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
+
                 defaultCard();
             }
 
@@ -311,6 +350,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
         };
+        if (ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 1, locationListener);
     }
@@ -333,20 +382,59 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void cardUpdate(Location location, String place){
+
+
         if (!place.equals("Me")){
             listback.setVisibility(View.VISIBLE);
         }
         qrListTitle.setText("QRCodes near "+place);
-
+        chipGroup.setVisibility(View.VISIBLE);
         ArrayList<HashMap<QRCode, Float>> sortedList = qrLocation.sortLocatedQRArray(location);
         sortedQrCodes = sortedList;
         mapArrayAdapter = new MapsArrayAdapter(MapsActivity.this);
         qrListView.setAdapter(mapArrayAdapter);
         mapArrayAdapter.clear();
         for (HashMap<QRCode, Float> code: sortedQrCodes) {
-            mapArrayAdapter.add(code);
+                mapArrayAdapter.add(code);
+
         }
         mapArrayAdapter.notifyDataSetChanged();
+
+        if (chip_20.isChecked()){
+            listFilter(20000);
+        }
+        else if (chip_40.isChecked()){
+            listFilter(40000);
+        }
+        else if (chip_60.isChecked()){
+            listFilter(60000);
+        }
+        else if (chip_100.isChecked()){
+            listFilter(100000);
+        }
+        else if (chip_all.isChecked()){
+            listFilter(Integer.MAX_VALUE);
+        }
+
+    }
+
+    private void listFilter(Integer filterCode){
+        noQrCodes.setVisibility(View.GONE);
+        qrListView.setVisibility(View.VISIBLE);
+        mapArrayAdapter.clear();
+        for (HashMap<QRCode, Float> code: sortedQrCodes) {
+            if (code.get(code.keySet().toArray()[0]) < filterCode) {
+                mapArrayAdapter.add(code);
+            }
+
+        }
+        mapArrayAdapter.notifyDataSetChanged();
+
+        if (mapArrayAdapter.getCount() == 0){
+            noQrCodes.setVisibility(View.VISIBLE);
+            qrListView.setVisibility(View.GONE);
+        }
+
     }
 
     @Override
@@ -390,7 +478,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         progressBar.setVisibility(View.GONE);
                     }
                 });
-
             }
         });
     }

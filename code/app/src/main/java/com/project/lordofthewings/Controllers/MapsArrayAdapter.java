@@ -35,7 +35,7 @@ public class MapsArrayAdapter  extends ArrayAdapter<HashMap<QRCode, Float>> {
         // get first key from qrMap
         QRCode qrCode = (QRCode) qrMap.keySet().toArray()[0];
         Float distance = qrMap.get(qrCode);
-        Integer estimatedDistance = Math.round(distance)/1000;
+        Float estimatedDistance = distance/1000;
 
         String url = "https://api.dicebear.com/5.x/bottts-neutral/png?seed=";
         TextView qrCodeName = view.findViewById(R.id.qrcode_name);
@@ -48,7 +48,7 @@ public class MapsArrayAdapter  extends ArrayAdapter<HashMap<QRCode, Float>> {
             qrCodeDistance.setText(Math.round(distance) + " m");
         }
         else{
-            qrCodeDistance.setText(estimatedDistance + " km");
+            qrCodeDistance.setText(String.format("%.2f", estimatedDistance) + " km");
         }
 
 

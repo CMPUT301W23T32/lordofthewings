@@ -111,6 +111,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10sp"
+                    android:orientation="horizontal"
+                    android:weightSum="2"
                     >
 
                     <TextView
@@ -119,28 +121,84 @@
                         android:layout_height="wrap_content"
                         android:textSize="18sp"
                         android:paddingLeft="16dp"
-                        android:layout_gravity="left|top"/>
+                        android:layout_gravity="left|top"
+                        android:layout_weight="1"
+                        />
 
                     <ImageButton
                         android:id="@+id/map_list_back_button"
-                        android:layout_width="30dp"
+                        android:layout_width="5dp"
                         android:layout_height="30dp"
                         android:src="@drawable/back_icon"
                         android:padding="8dp"
                         android:visibility="gone"
                         android:background="@drawable/rounded_md"
-                        android:layout_marginStart="150sp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="16sp"
                         />
                 </LinearLayout>
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chip_group"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_margin="10sp"
+                    android:layout_marginBottom="0dp"
+                    android:visibility="gone"
+                    app:singleSelection="true"
+                    app:selectionRequired="true"
+                    >
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_1"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="20 km"/>
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_2"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="40 km"/>
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_3"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="60 km"/>
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_4"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="100 km"/>
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_5"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="all"/>
 
-            <ListView
-                android:id="@+id/qrListForMap"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30sp"
-                android:divider="@drawable/emptysmalldivider"/>
-
-            </LinearLayout>
+            </com.google.android.material.chip.ChipGroup>
+                <ListView
+                    android:id="@+id/qrListForMap"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20sp"
+                    android:divider="@drawable/emptysmalldivider"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/noQrCodeFound"
+                    android:gravity="center"
+                    android:text="No QR Code Found"
+                    android:textSize="18sp"
+                    android:visibility="gone"/>
+                </LinearLayout>
 
         </FrameLayout>
 
