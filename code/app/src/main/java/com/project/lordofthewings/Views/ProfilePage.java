@@ -39,6 +39,8 @@ import java.util.Map;
 
 public class ProfilePage extends AppCompatActivity {
     String url = "https://api.dicebear.com/5.x/pixel-art/png?seed=";
+    private String url2 = "https://api.dicebear.com/5.x/bottts-neutral/png?seed=";
+
     String username;
     ListView qrCodeList;
     private ArrayAdapter<QRCode> qrCodeAdapter;
@@ -94,7 +96,10 @@ public class ProfilePage extends AppCompatActivity {
         TextView name = findViewById(R.id.full_name_text);
         TextView score = findViewById(R.id.score_text);
         TextView rank = findViewById(R.id.rank_text);
+        TextView ranking = findViewById(R.id.qr_ranking);
+        TextView qr_naming = findViewById(R.id.qr_name_text);
         TextView qrcode_count = findViewById(R.id.qrcodes_text);
+        ImageView qrImage = findViewById(R.id.qr_image);
         final Integer[] rank_value = {0};
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -150,8 +155,11 @@ public class ProfilePage extends AppCompatActivity {
                                             qrCodes.add(qrCodes2.get(i));
                                         }
                                         rank_value[0] = (Integer) (qrCodes_test.indexOf(qrCodes.get(0).get("hash"))) + 1;
+                                        Picasso.get().load(url2+qrCodes.get(0).get("hash").toString()).into(qrImage);
+                                        QRCode qrCode = new QRCode(qrCodes.get(0).get("hash").toString(), 0);
+                                        qr_naming.setText(qrCode.getQRName());
                                         Log.d("TEST", rank_value[0].toString());
-                                        rank.setText(rank_value[0].toString());
+                                        ranking.setText(rank_value[0].toString());
                                     }
                                 } else {
                                     Log.d("No Doc", "No such document");
@@ -177,6 +185,7 @@ public class ProfilePage extends AppCompatActivity {
                         int userScore = document.getLong("Score").intValue();
                         String scoreString = Integer.toString(userScore);
                         score.setText(scoreString);
+                        rank.setText("N/A");
                         ArrayList<Map<String, Object>> qrcodes = (ArrayList<Map<String, Object>>)document.get("QRCodes");
                         int count = 0;
                         if (qrcodes != null) {
