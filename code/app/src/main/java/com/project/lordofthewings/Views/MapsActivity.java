@@ -96,6 +96,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ListView qrListView;
     private TextView qrListTitle;
     private ImageButton listback;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,6 +113,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         qrListView = findViewById(R.id.qrListForMap);
         qrListTitle = findViewById(R.id.qrListTitle);
         listback = findViewById(R.id.map_list_back_button);
+        progressBar = findViewById(R.id.progress_bar_map);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -355,6 +357,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         executorService.execute(new Runnable() {
             @Override
             public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressBar.setVisibility(View.VISIBLE);
+                    }
+                });
+
                 Log.d("manan", "4");
                 locatedCodes = qrLocation.getLocatedQRArray();
                 Log.d("manan", "locatedCodes: " + locatedCodes.size());
@@ -378,6 +387,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             }
                         }
                         listLoader();
+                        progressBar.setVisibility(View.GONE);
                     }
                 });
 

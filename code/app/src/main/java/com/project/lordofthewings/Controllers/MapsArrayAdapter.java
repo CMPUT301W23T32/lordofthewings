@@ -44,7 +44,14 @@ public class MapsArrayAdapter  extends ArrayAdapter<HashMap<QRCode, Float>> {
         ImageView qrCodeImage = view.findViewById(R.id.qrcode_image);
         qrCodeName.setText(qrCode.getQRName());
         qrCodePoints.setText(qrCode.getQRScore() + " Points");
-        qrCodeDistance.setText(estimatedDistance + " km");
+        if (distance < 1000) {
+            qrCodeDistance.setText(Math.round(distance) + " m");
+        }
+        else{
+            qrCodeDistance.setText(estimatedDistance + " km");
+        }
+
+
         Picasso.get().load(url + qrCode.getHash()).into(qrCodeImage);
 
         return view;
