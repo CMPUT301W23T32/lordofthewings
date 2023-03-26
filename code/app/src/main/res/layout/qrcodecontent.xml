@@ -50,14 +50,6 @@
             android:layout_height="0dp"
             android:layout_weight="1"/>
 
-        <ImageButton
-            android:id="@+id/qrDeleteButton"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:background="@android:color/transparent"
-            android:src="@drawable/delete_icon"
-            android:visibility="gone"
-            android:contentDescription="Deletes QRCode" />
     </LinearLayout>
 
 </LinearLayout>
