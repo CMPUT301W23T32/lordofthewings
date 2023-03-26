@@ -11,5 +11,6 @@ public class DatabaseInteractor {
     public DatabaseInteractor(FirebaseFirestore firestore) {
         db = firestore;
         userData = db.collection("users").document("test1");
+        System.out.println("DatabaseInteractor: " + userData);
     }
 }

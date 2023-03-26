@@ -138,7 +138,7 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
-                            wallet = new Wallet(username, (ArrayList<QRCode>) document.get("QRCodes"), Math.toIntExact(((Long) document.get("Score"))));
+                            wallet = new Wallet(username, (ArrayList<QRCode>) document.get("QRCodes"), Math.toIntExact(((Long) document.get("Score"))), db);
                             wallet.addQRCode(qr, latitude, longitude);
                             Intent intent = new Intent(QRCodeScan.this, HomePage.class);
                             progressBar.setVisibility(ProgressBar.GONE);
