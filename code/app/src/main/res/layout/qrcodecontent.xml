@@ -56,6 +56,7 @@
             android:layout_height="20dp"
             android:background="@android:color/transparent"
             android:src="@drawable/delete_icon"
+            android:visibility="gone"
             android:contentDescription="Deletes QRCode" />
     </LinearLayout>
 
