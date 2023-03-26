@@ -1,6 +1,7 @@
 package com.project.lordofthewings.Views;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -25,9 +26,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ImageView;
 
@@ -50,6 +54,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.maps.android.ui.IconGenerator;
+import com.project.lordofthewings.Controllers.MapsArrayAdapter;
+import com.project.lordofthewings.Controllers.QRCodeArrayAdapter;
 import com.project.lordofthewings.Models.QRLocation.QRCodeCallback;
 import com.project.lordofthewings.Models.QRLocation.QRLocation;
 import com.project.lordofthewings.Models.QRcode.QRCode;
@@ -85,8 +91,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ArrayList<QRCode> locatedCodes;
     private EditText search_bar;
     private BottomSheetBehavior bottomSheetBehavior;
-    private ArrayList<QRCode> sortedQrCodes;
-    private ArrayAdapter<QRCode> MapArrayAdapter;
+    private ArrayList<HashMap<QRCode, Float>> sortedQrCodes;
+    private ArrayAdapter<HashMap<QRCode, Float>> mapArrayAdapter;
+    private ListView qrListView;
+    private TextView qrListTitle;
+    private ImageButton listback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +109,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         search_bar = findViewById(R.id.search_text);
+        qrListView = findViewById(R.id.qrListForMap);
+        qrListTitle = findViewById(R.id.qrListTitle);
+        listback = findViewById(R.id.map_list_back_button);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -193,6 +205,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f));
                 search_bar.setText("");
+                Location addressLocation = new Location("");
+                addressLocation.setLatitude(address.getLatitude());
+                addressLocation.setLongitude(address.getLongitude());
+                String addressName = address.getLocality();
+                if (addressName == null) {
+                    addressName = address.getFeatureName();
+                }
+                cardUpdate(addressLocation, addressName);
             }
         }
 
@@ -237,6 +257,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+        listback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                defaultCard();
+                listback.setVisibility(View.GONE);
+                snapToUserLocation();
+            }
+        });
+
 
     }
 
@@ -257,6 +286,66 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    @SuppressLint("MissingPermission")
+    private void listLoader(){
+        LocationListener locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                defaultCard();
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 1, locationListener);
+    }
+
+    private void defaultCard(){
+        if (ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        Task<Location> locationTask = fusedLocationProviderClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, null);
+        locationTask.addOnSuccessListener(curlocation -> {
+            cardUpdate(curlocation, "Me");
+        });
+    }
+
+    private void cardUpdate(Location location, String place){
+        if (!place.equals("Me")){
+            listback.setVisibility(View.VISIBLE);
+        }
+        qrListTitle.setText("QRCodes near "+place);
+
+        ArrayList<HashMap<QRCode, Float>> sortedList = qrLocation.sortLocatedQRArray(location);
+        sortedQrCodes = sortedList;
+        mapArrayAdapter = new MapsArrayAdapter(MapsActivity.this);
+        qrListView.setAdapter(mapArrayAdapter);
+        mapArrayAdapter.clear();
+        for (HashMap<QRCode, Float> code: sortedQrCodes) {
+            mapArrayAdapter.add(code);
+        }
+        mapArrayAdapter.notifyDataSetChanged();
+    }
 
     @Override
     public void onQrCodesRecieved() {
@@ -270,6 +359,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 locatedCodes = qrLocation.getLocatedQRArray();
                 Log.d("manan", "locatedCodes: " + locatedCodes.size());
                 HashMap<QRCode, Bitmap> locatedCodeswithbmap = qrLocation.locatedQRArraywithBitmap();
+                Log.d("manan", "tick?");
 
                 runOnUiThread(new Runnable() {
                     @Override
@@ -287,51 +377,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                         .icon(BitmapDescriptorFactory.fromBitmap(iconBitmap)));
                             }
                         }
-                        LocationListener locationListener = new LocationListener() {
-                            @Override
-                            public void onLocationChanged(Location location) {
-                                    if (ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                                        // TODO: Consider calling
-                                        //    ActivityCompat#requestPermissions
-                                        // here to request the missing permissions, and then overriding
-                                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                                        //                                          int[] grantResults)
-                                        // to handle the case where the user grants the permission. See the documentation
-                                        // for ActivityCompat#requestPermissions for more details.
-                                        return;
-                                    }
-                                    Task<Location> locationTask = fusedLocationProviderClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, null);
-                                    locationTask.addOnSuccessListener(curlocation -> {
-                                        ArrayList<QRCode> sortedList = qrLocation.sortLocatedQRArray(curlocation);
-                                        sortedQrCodes = sortedList;
-                                        for (QRCode code: sortedQrCodes) {
-                                            Log.d("manan", "code: " + code.getQRName());
-                                        }
-                                    });
-                            }
-
-                            @Override
-                            public void onStatusChanged(String provider, int status, Bundle extras) {
-
-                            }
-
-                            @Override
-                            public void onProviderEnabled(String provider) {
-
-                            }
-
-                            @Override
-                            public void onProviderDisabled(String provider) {
-
-                            }
-                        };
-
-                        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 1, locationListener);
+                        listLoader();
                     }
                 });
-
-
 
             }
         });
