@@ -40,10 +40,12 @@ public class Wallet {
 
     private Player user;
 
+    FirebaseFirestore db;
 
-    FirebaseController fbController = new FirebaseController();
-    FirebaseFirestore db = fbController.getDb();
 
+    public String getUsername() {
+        return username;
+    }
 
     /**
      * Constructor for the Wallet class
@@ -51,7 +53,8 @@ public class Wallet {
      * @param qrCodes the list of QR codes that the user has collected
      * @param score the score of the user
      */
-    public Wallet(String user, ArrayList<QRCode> qrCodes, int score){
+    public Wallet(String user, ArrayList<QRCode> qrCodes, int score, FirebaseFirestore db){
+        this.db = db;
         this.username = user;
         this.qrCodes = qrCodes;
         this.score = score;
@@ -72,8 +75,7 @@ public class Wallet {
         Map<String, Object> newData = new HashMap<>();
         newData.put("QRCodes", qrCodes);
         newData.put("Score", score);
-        db.collection("Users").document(username)
-                .update(newData);
+        db.collection("Users").document(username).update(newData);
 
         DocumentReference docRef = db.collection("QRCodes").document(qr.getHash());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -103,6 +105,7 @@ public class Wallet {
                     } else {
                         Log.d(TAG, "No such document");
                         ArrayList<String> authors = new ArrayList<>();
+                        authors.add(username);
                         ArrayList<Map<String, String>> comments = new ArrayList<>();
                         Map<String, Object> data = new HashMap<>();
                         data.put("QRCode", qr);

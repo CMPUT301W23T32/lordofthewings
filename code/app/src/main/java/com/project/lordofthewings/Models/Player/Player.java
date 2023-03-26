@@ -42,8 +42,7 @@ public class Player {
 
     private Wallet QRWallet;
     //private Leaderboard leaderboard;
-    FirebaseController fbcontroller = new FirebaseController();
-    FirebaseFirestore db = fbcontroller.getDb();
+    FirebaseFirestore db;
 
 //    public Player(String userName){
 //        this.userName = userName;
@@ -108,8 +107,14 @@ public class Player {
             }
         });
     }
-
-
+    public Player(String userName, String email, String firstName, String lastName) {
+        this.score = 0;
+        this.QRList = new ArrayList<QRCode>();
+        this.userName = userName;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
     /**
      * Checks if a user exists in the database asynchronously
      *
@@ -162,7 +167,12 @@ public class Player {
     public void setUserName (String newUserName){
         this.userName = newUserName;
     }
-
+    public String getFirstName(){
+        return this.firstName;
+    }
+    public String getLastName(){
+        return this.lastName;
+    }
     /**
      * return the global rank of the Player
      * @return : an integer representing the global rank of the player
