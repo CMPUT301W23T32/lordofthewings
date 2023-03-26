@@ -20,9 +20,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.project.lordofthewings.Controllers.QRCodeArrayAdapter;
 import com.project.lordofthewings.Models.QRcode.QRCode;
 import com.project.lordofthewings.R;
@@ -39,6 +42,8 @@ public class ProfilePage extends AppCompatActivity {
     String username;
     ListView qrCodeList;
     private ArrayAdapter<QRCode> qrCodeAdapter;
+    ArrayList<String> qrCodes_test;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,8 +95,78 @@ public class ProfilePage extends AppCompatActivity {
         TextView score = findViewById(R.id.score_text);
         TextView rank = findViewById(R.id.rank_text);
         TextView qrcode_count = findViewById(R.id.qrcodes_text);
+        final Integer[] rank_value = {0};
+
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference docRef = db.collection("Users").document(username);
+
+        CollectionReference collectionReference = db.collection("QRCodes");
+        collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    qrCodes_test = new ArrayList<>(task.getResult().size());
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        qrCodes_test.add(document.getId());
+                    }
+                    if (qrCodes_test != null) {
+                        ArrayList<String> qrcodes_test_2 = new ArrayList<>();
+                        Integer count = qrCodes_test.size();
+                        for (int i = 0; i < count; i++) {
+                            Integer key = 0;
+                            for (int j = 1; j < qrCodes_test.size(); j++) {
+                                if (new QRCode(qrCodes_test.get(key), 0).getQRScore() < new QRCode(qrCodes_test.get(j), 0).getQRScore())
+                                    key = j;
+                            }
+                            qrcodes_test_2.add(qrCodes_test.get(key));
+                            qrCodes_test.remove(qrCodes_test.get(key));
+                        }
+                        for (int i = 0; i < count; i++) {
+                            qrCodes_test.add(qrcodes_test_2.get(i));
+                        }
+                    }
+                    Log.d("DATA: ", qrCodes_test.get(1));
+                    docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                if (document.exists()) {
+                                    Log.e("data", document.get("QRCodes").toString());
+                                    ArrayList<Map<String, Object>> qrCodes = (ArrayList<Map<String, Object>>) document.get("QRCodes");
+                                    ArrayList<Map<String, Object>> qrCodes2 = new ArrayList<>();
+                                    if (qrCodes != null) {
+                                        Integer count = qrCodes.size();
+                                        for (int i = 0; i < count; i++) {
+                                            Integer key = 0;
+                                            for (int j = 1; j < qrCodes.size(); j++) {
+                                                if (new QRCode(qrCodes.get(key).get("hash").toString(), 0).getQRScore() < new QRCode(qrCodes.get(j).get("hash").toString(), 0).getQRScore())
+                                                    key = j;
+                                            }
+                                            qrCodes2.add(qrCodes.get(key));
+                                            qrCodes.remove(qrCodes.get(key));
+                                        }
+                                        for (int i = 0; i < count; i++) {
+                                            qrCodes.add(qrCodes2.get(i));
+                                        }
+                                        rank_value[0] = (Integer) (qrCodes_test.indexOf(qrCodes.get(0).get("hash"))) + 1;
+                                        Log.d("TEST", rank_value[0].toString());
+                                        rank.setText(rank_value[0].toString());
+                                    }
+                                } else {
+                                    Log.d("No Doc", "No such document");
+                                }
+                            } else {
+                                Log.d("Err", "get failed with ", task.getException());
+                            }
+                        }
+                    });
+                } else {
+                    Log.d("error","Error getting documents: ");
+                }
+            }
+        });
+
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -102,7 +177,6 @@ public class ProfilePage extends AppCompatActivity {
                         int userScore = document.getLong("Score").intValue();
                         String scoreString = Integer.toString(userScore);
                         score.setText(scoreString);
-                        rank.setText("N/A");
                         ArrayList<Map<String, Object>> qrcodes = (ArrayList<Map<String, Object>>)document.get("QRCodes");
                         int count = 0;
                         if (qrcodes != null) {
