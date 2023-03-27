@@ -1,5 +1,7 @@
 package com.project.lordofthewings;
 
+import static org.junit.Assert.assertEquals;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -62,6 +64,23 @@ public class LeaderBoardTests {
 
     @Test
     public void checkIfGoesToUserProfile() {
+        solo.clickInList(0);
+        solo.waitForActivity("ProfilePage");
+        solo.assertCurrentActivity("ProfilePage", ProfilePage.class);
+    }
+
+    @Test
+    public void checkIfSearchBarWorks() {
+        solo.clickOnView(solo.getView(R.id.search_leaderboard));
+        solo.enterText(0, "bobtest");
+        solo.searchText("bobtest");
+    }
+
+    @Test
+    public void checkIfClickableOnSearch() {
+        solo.clickOnView(solo.getView(R.id.search_leaderboard));
+        solo.enterText(0, "bobtest");
+        solo.searchText("bobtest");
         solo.clickInList(0);
         solo.waitForActivity("ProfilePage");
         solo.assertCurrentActivity("ProfilePage", ProfilePage.class);
