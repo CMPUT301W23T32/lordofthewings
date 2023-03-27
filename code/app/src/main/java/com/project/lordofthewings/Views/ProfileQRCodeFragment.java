@@ -27,7 +27,7 @@ public class ProfileQRCodeFragment extends DialogFragment {
         String username = sh.getString("username", "");
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         ImageView qrCode = view.findViewById(R.id.qr_code_scan_profile);
-        String url ="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=";
+        String url ="https://quickchart.io/qr?text=";
         Picasso.get().load(url + username ).into(qrCode);
         return new MaterialAlertDialogBuilder(requireActivity(),R.style.MaterialAlertDialog_rounded)
                 .setView(view)

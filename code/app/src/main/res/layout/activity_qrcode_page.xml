@@ -118,19 +118,56 @@
         </LinearLayout>
 
     </LinearLayout>
+    <com.google.android.material.tabs.TabLayout
+        android:layout_width="match_parent"
+        android:id="@+id/tabLayout"
+        android:layout_height="wrap_content">
 
-    <ImageView
-        android:layout_width="150dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center"
-        android:id="@+id/qrCodeLocationImage"
-        />
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="QR Code Info"
+            android:id="@+id/qrcode_info_tab"
+            />
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Location Info"
+            android:id="@+id/location_info_tab"
+            />
+
+    </com.google.android.material.tabs.TabLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="20dp"
+        android:id="@+id/location_info_tab_layout"
+        android:visibility="gone"
+        android:layout_gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="No Location Info"
+            android:textSize="18sp"
+            android:id="@+id/noLocationInfoTextView"
+            android:visibility="gone"/>
+        <ImageView
+            android:layout_width="280sp"
+            android:layout_height="330sp"
+            android:layout_gravity="center"
+            android:id="@+id/qrCodeLocationImage"/>
+    </LinearLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingLeft="16dp"
         android:paddingTop="16dp"
         android:paddingRight="16dp"
+        android:id="@+id/qrcode_info_tab_layout"
         android:paddingBottom="16dp">
 
         <ExpandableListView

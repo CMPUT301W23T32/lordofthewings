@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +23,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.tabs.TabItem;
+import com.google.android.material.tabs.TabLayout;
 import com.google.common.base.Joiner;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -34,6 +38,8 @@ import com.project.lordofthewings.Models.Authors.AuthorNamesCallback;
 import com.project.lordofthewings.Models.QRcode.QRCode;
 import com.project.lordofthewings.R;
 import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -71,15 +77,45 @@ public class QRCodePage extends AppCompatActivity implements AuthorNamesCallback
 
             finish();
         });
+        TabLayout tabLayout = findViewById(R.id.tabLayout);
         ImageView qrCodeLocationImage = findViewById(R.id.qrCodeLocationImage);
+        TextView noLocationInfoTextView = findViewById(R.id.noLocationInfoTextView);
+        LinearLayout location_info_tab_layout = findViewById(R.id.location_info_tab_layout);
         hash = getIntent().getStringExtra("hash");
+        RelativeLayout qrcodeInfoTabLayout = findViewById(R.id.qrcode_info_tab_layout);
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                if (tabLayout.getSelectedTabPosition() == 0) {
+                    qrcodeInfoTabLayout.setVisibility(View.VISIBLE);
+                    location_info_tab_layout.setVisibility(View.GONE);
+                } else {
+                    qrcodeInfoTabLayout.setVisibility(View.GONE);
+                    location_info_tab_layout.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
         StorageReference qrCodeimageRef = storageRef.child("images/qrcodes/"+hash+".png");
 
         if (qrCodeimageRef != null) {
             qrCodeimageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+
                 Picasso.get().load(uri).into(qrCodeLocationImage);
+            }).addOnFailureListener(exception -> {
+                // Handle any errors
+                noLocationInfoTextView.setVisibility(View.VISIBLE);
             });
         }
          deleteButton = findViewById(R.id.deleteIcon);

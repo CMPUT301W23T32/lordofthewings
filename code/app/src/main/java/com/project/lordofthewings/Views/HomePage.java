@@ -47,7 +47,6 @@ import java.util.Map;
 public class HomePage extends AppCompatActivity {
     TextView usernametext;
     String username;
-    ProgressBar progressBar;
     private AnimationDrawable animationDrawable;
     private RelativeLayout relativeLayout;
     @SuppressLint("SetTextI18n")
@@ -55,8 +54,6 @@ public class HomePage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
         setContentView(R.layout.new_homepage);
-        progressBar = findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.VISIBLE);
         //TextView hometext = findViewById(R.id.TextView01);
         SharedPreferences sh = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
         String username = sh.getString("username", "");
@@ -68,9 +65,8 @@ public class HomePage extends AppCompatActivity {
 
 
         ImageView profileQR = findViewById(R.id.qr_code_scan_profile);
-        String url ="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=";
-        Picasso.get().load(url + username ).into(profileQR);
-        progressBar.setVisibility(View.GONE);
+        String url ="https://quickchart.io/qr?text=" + username;
+        Picasso.get().load(url).into(profileQR);
         profileQR.setOnClickListener(v -> {
             ProfileQRCodeFragment dialog = new ProfileQRCodeFragment();
             dialog.show(getSupportFragmentManager(), "Profile QR Code");
