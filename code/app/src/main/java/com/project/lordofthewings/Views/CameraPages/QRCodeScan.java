@@ -175,13 +175,20 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
                         // Handle unsuccessful uploads
+                        Intent intent = new Intent(QRCodeScan.this, HomePage.class);
+                        progressBar.setVisibility(ProgressBar.GONE);
+                        startActivity(intent);
+                        finish();
                     }
                 }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
                         // ...
-
+                        Intent intent = new Intent(QRCodeScan.this, HomePage.class);
+                        progressBar.setVisibility(ProgressBar.GONE);
+                        startActivity(intent);
+                        finish();
                     }
                 });
             }else{
@@ -189,18 +196,23 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
                     @Override
                     public void onSuccess(Void aVoid) {
                         // File deleted successfully
+                        Intent intent = new Intent(QRCodeScan.this, HomePage.class);
+                        progressBar.setVisibility(ProgressBar.GONE);
+                        startActivity(intent);
+                        finish();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
                         // Uh-oh, an error occurred!
+                        Intent intent = new Intent(QRCodeScan.this, HomePage.class);
+                        progressBar.setVisibility(ProgressBar.GONE);
+                        startActivity(intent);
+                        finish();
                     }
                 });
             }
-            Intent intent = new Intent(QRCodeScan.this, HomePage.class);
-            progressBar.setVisibility(ProgressBar.GONE);
-            startActivity(intent);
-            finish();
+
         });
 
         remove_location.setOnClickListener(c -> {
