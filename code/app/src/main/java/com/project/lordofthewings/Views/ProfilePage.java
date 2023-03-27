@@ -48,14 +48,16 @@ public class ProfilePage extends AppCompatActivity {
     ListView qrCodeList;
     private ArrayAdapter<QRCode> qrCodeAdapter;
     ArrayList<String> qrCodes_test;
+    String savedUsername;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_page);
         SharedPreferences sh = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
-        String savedUsername = sh.getString("username", "");
+        savedUsername = sh.getString("username", "");
         username = getIntent().getStringExtra("username");
+
 
         ImageButton backButton = findViewById(R.id.backIcon);
         backButton.setOnClickListener(v -> {
@@ -74,9 +76,13 @@ public class ProfilePage extends AppCompatActivity {
         if (savedUsername.equals(username)) {
             ImageButton editButton = findViewById(R.id.editIcon);
             editButton.setVisibility(ImageButton.VISIBLE);
+            LinearLayout linearLayout = findViewById(R.id.linearLayout2);
+            linearLayout.setVisibility(View.VISIBLE);
         }else{
             ImageButton editButton = findViewById(R.id.editIcon);
             editButton.setVisibility(ImageButton.INVISIBLE);
+            LinearLayout linearLayout = findViewById(R.id.linearLayout2);
+            linearLayout.setVisibility(View.GONE);
             qrCodeList = findViewById(R.id.qr_codes_list_profile);
             TextView myProfile = findViewById(R.id.myProfileTextView);
             myProfile.setText("Profile");
@@ -108,6 +114,9 @@ public class ProfilePage extends AppCompatActivity {
         LinearLayout linearLayout = findViewById(R.id.linearLayout2);
         linearLayout.setVisibility(View.GONE);
 
+        if (!savedUsername.equals(username)) {
+            linearLayout.setVisibility(View.GONE);
+        }
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference docRef = db.collection("Users").document(username);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -124,7 +133,11 @@ public class ProfilePage extends AppCompatActivity {
                         ArrayList<Map<String, Object>> qrcodes = (ArrayList<Map<String, Object>>)document.get("QRCodes");
                         Log.d("TEST:", String.valueOf(qrcodes.size()));
                         if (qrcodes.size() != 0) {
-                            linearLayout.setVisibility(View.VISIBLE);
+                            if (!savedUsername.equals(username)) {
+                                linearLayout.setVisibility(View.GONE);
+                            } else {
+                                linearLayout.setVisibility(View.VISIBLE);
+                            }
                             CollectionReference collectionReference = db.collection("QRCodes");
                             collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
