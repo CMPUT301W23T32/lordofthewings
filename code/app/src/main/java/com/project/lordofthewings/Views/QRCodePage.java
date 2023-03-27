@@ -111,7 +111,6 @@ public class QRCodePage extends AppCompatActivity implements AuthorNamesCallback
 
         if (qrCodeimageRef != null) {
             qrCodeimageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-
                 Picasso.get().load(uri).into(qrCodeLocationImage);
             }).addOnFailureListener(exception -> {
                 // Handle any errors
