@@ -3,6 +3,7 @@ package com.project.lordofthewings.Views;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -26,6 +27,7 @@ import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -52,6 +54,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -307,6 +310,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+        qrListView.setOnItemClickListener((parent, view, position, id) -> {
+            QRCode qrCode = (QRCode) (mapArrayAdapter.getItem(position)).keySet().toArray()[0];
+            Intent intent = new Intent(MapsActivity.this, QRCodePage.class);
+            intent.putExtra("hash", qrCode.getHash());
+            startActivity(intent);
+        });
+
+        mMap.setOnMarkerClickListener((marker) -> {
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 15));
+            marker.showInfoWindow();
+            return true;
+        });
+
+
     }
 
     @Override
@@ -471,7 +488,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 mMap.addMarker(new MarkerOptions()
                                         .position(qrCode.getLocation())
                                         .title(qrCode.getQRName())
-                                        .snippet(String.valueOf(qrCode.getQRScore()))
+                                        .snippet(String.valueOf(qrCode.getQRScore()) + " points")
                                         .icon(BitmapDescriptorFactory.fromBitmap(iconBitmap)));
                             }
                         }
