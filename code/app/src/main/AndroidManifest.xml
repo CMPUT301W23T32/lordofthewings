@@ -91,5 +91,9 @@
             android:label="ProfilePage"
             android:exported="true"
             />
+        <activity android:name=".Views.QRCodePage"
+            android:label="QRCodePage"
+            android:exported="true"
+            />
     </application>
 </manifest>

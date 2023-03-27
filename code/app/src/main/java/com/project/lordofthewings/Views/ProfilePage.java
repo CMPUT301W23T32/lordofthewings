@@ -78,6 +78,8 @@ public class ProfilePage extends AppCompatActivity {
             editButton.setVisibility(ImageButton.VISIBLE);
             LinearLayout linearLayout = findViewById(R.id.linearLayout2);
             linearLayout.setVisibility(View.VISIBLE);
+            qrCodeList = findViewById(R.id.qr_codes_list_profile);
+            qrCodeList.setVisibility(ListView.INVISIBLE);
         }else{
             ImageButton editButton = findViewById(R.id.editIcon);
             editButton.setVisibility(ImageButton.INVISIBLE);
@@ -98,6 +100,14 @@ public class ProfilePage extends AppCompatActivity {
         editButton.setOnClickListener(v -> {
             new EditProfileFragment().show(getSupportFragmentManager(), "Edit Profile");
             fetchDataAndRefreshUI();
+        });
+
+        qrCodeList.setOnItemClickListener((parent, view, position, id) -> {
+            Log.e("Reaching","check");
+            QRCode qrCode = qrCodeAdapter.getItem(position);
+            Intent intent = new Intent(ProfilePage.this, QRCodePage.class);
+            intent.putExtra("hash", qrCode.getHash());
+            startActivity(intent);
         });
 
     }

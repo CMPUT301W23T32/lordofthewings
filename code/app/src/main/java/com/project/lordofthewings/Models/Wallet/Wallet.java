@@ -40,10 +40,12 @@ public class Wallet {
 
     private Player user;
 
+    FirebaseFirestore db;
 
-    FirebaseController fbController = new FirebaseController();
-    FirebaseFirestore db = fbController.getDb();
 
+    public String getUsername() {
+        return username;
+    }
 
     /**
      * Constructor for the Wallet class
@@ -51,12 +53,12 @@ public class Wallet {
      * @param qrCodes the list of QR codes that the user has collected
      * @param score the score of the user
      */
-    public Wallet(String user, ArrayList<QRCode> qrCodes, int score){
+    public Wallet(String user, ArrayList<QRCode> qrCodes, int score, FirebaseFirestore db){
+        this.db = db;
         this.username = user;
         this.qrCodes = qrCodes;
         this.score = score;
         this.qrCodesCount = qrCodes.size();
-
     }
 
     /**
@@ -65,15 +67,14 @@ public class Wallet {
      * @param lat the latitude of the location where the QR code was scanned
      * @param lon the longitude of the location where the QR code was scanned
      */
-    public void addQRCode(QRCode qr, String lat, String lon){
+    public void addQRCode(QRCode qr, String lat, String lon, String comment){
         this.qrCodesCount +=1;
         this.score += qr.getQRScore();
         qrCodes.add(qr);
         Map<String, Object> newData = new HashMap<>();
         newData.put("QRCodes", qrCodes);
         newData.put("Score", score);
-        db.collection("Users").document(username)
-                .update(newData);
+        db.collection("Users").document(username).update(newData);
 
         DocumentReference docRef = db.collection("QRCodes").document(qr.getHash());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -91,6 +92,14 @@ public class Wallet {
                             GeoPoint geoPoint = new GeoPoint(latInt, lonInt);
                             task.getResult().getReference().update("Location", geoPoint);
                         }
+                        if (!comment.equals("")){
+                            ArrayList<Map<String, String>> comments;
+                            comments = (ArrayList<Map<String, String>>) document.get("Comments");
+                            Map<String, String> newComment = new HashMap<>();
+                            newComment.put(username, comment);
+                            comments.add(newComment);
+                            task.getResult().getReference().update("Comments", comments);
+                        }
                         task.getResult().getReference().update("Authors", authors);
                     } else {
                         Log.d(TAG, "No such document");
@@ -99,12 +108,18 @@ public class Wallet {
                         Map<String, Object> data = new HashMap<>();
                         data.put("QRCode", qr);
                         data.put("Authors", authors);
+                        if (!comment.equals("")){
+                            Map<String, String> newComment = new HashMap<>();
+                            newComment.put(username, comment);
+                            comments.add(newComment);
+                        }
                         data.put("Comments", comments);
                         if (lat != null && lon != null) {
                             float latInt = (float) (Float.parseFloat(lat));
                             float lonInt = (float) (Float.parseFloat(lon));
                             GeoPoint geoPoint = new GeoPoint(latInt, lonInt);
                             data.put("Location", geoPoint);
+
                         } else{
                             data.put("Location", null);
                         }

@@ -82,11 +82,27 @@ public class WalletPage extends AppCompatActivity {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.orders, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         order_selector.setAdapter(adapter);
+
+
+        qrCodeList.setOnItemClickListener((parent, view, position, id) -> {
+            Log.e("Reaching","check");
+            QRCode qrCode = qrCodeAdapter.getItem(position);
+            Intent intent = new Intent(WalletPage.this, QRCodePage.class);
+            intent.putExtra("hash", qrCode.getHash());
+            startActivity(intent);
+        });
     }
     @Override
     protected void onResume() {
         super.onResume();
         fetchDataAndRefreshUIdefault();
+        qrCodeList.setOnItemClickListener((parent, view, position, id) -> {
+            Log.e("Reaching","check2");
+            QRCode qrCode = qrCodeAdapter.getItem(position);
+            Intent intent = new Intent(WalletPage.this, QRCodePage.class);
+            intent.putExtra("hash", qrCode.getHash());
+            startActivity(intent);
+        });
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
