@@ -395,14 +395,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         Task<Location> locationTask = fusedLocationProviderClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, null);
         locationTask.addOnSuccessListener(curlocation -> {
-            cardUpdate(curlocation, "Me");
+            cardUpdate(curlocation, "me");
         });
     }
 
     private void cardUpdate(Location location, String place){
 
 
-        if (!place.equals("Me")){
+        if (!place.equals("me")){
             listback.setVisibility(View.VISIBLE);
         }
         qrListTitle.setText("QRCodes near "+place);
