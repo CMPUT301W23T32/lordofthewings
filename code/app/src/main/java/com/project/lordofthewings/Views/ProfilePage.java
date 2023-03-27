@@ -4,9 +4,11 @@ import static android.content.ContentValues.TAG;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -17,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -97,84 +100,16 @@ public class ProfilePage extends AppCompatActivity {
         TextView score = findViewById(R.id.score_text);
         TextView rank = findViewById(R.id.rank_text);
         TextView ranking = findViewById(R.id.qr_ranking);
+        TextView rarity = findViewById(R.id.rarity);
         TextView qr_naming = findViewById(R.id.qr_name_text);
         TextView qrcode_count = findViewById(R.id.qrcodes_text);
         ImageView qrImage = findViewById(R.id.qr_image);
         final Integer[] rank_value = {0};
+        LinearLayout linearLayout = findViewById(R.id.linearLayout2);
+        linearLayout.setVisibility(View.GONE);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference docRef = db.collection("Users").document(username);
-
-        CollectionReference collectionReference = db.collection("QRCodes");
-        collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    qrCodes_test = new ArrayList<>(task.getResult().size());
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        qrCodes_test.add(document.getId());
-                    }
-                    if (qrCodes_test != null) {
-                        ArrayList<String> qrcodes_test_2 = new ArrayList<>();
-                        Integer count = qrCodes_test.size();
-                        for (int i = 0; i < count; i++) {
-                            Integer key = 0;
-                            for (int j = 1; j < qrCodes_test.size(); j++) {
-                                if (new QRCode(qrCodes_test.get(key), 0).getQRScore() < new QRCode(qrCodes_test.get(j), 0).getQRScore())
-                                    key = j;
-                            }
-                            qrcodes_test_2.add(qrCodes_test.get(key));
-                            qrCodes_test.remove(qrCodes_test.get(key));
-                        }
-                        for (int i = 0; i < count; i++) {
-                            qrCodes_test.add(qrcodes_test_2.get(i));
-                        }
-                    }
-                    Log.d("DATA: ", qrCodes_test.get(1));
-                    docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                DocumentSnapshot document = task.getResult();
-                                if (document.exists()) {
-                                    Log.e("data", document.get("QRCodes").toString());
-                                    ArrayList<Map<String, Object>> qrCodes = (ArrayList<Map<String, Object>>) document.get("QRCodes");
-                                    ArrayList<Map<String, Object>> qrCodes2 = new ArrayList<>();
-                                    if (qrCodes != null) {
-                                        Integer count = qrCodes.size();
-                                        for (int i = 0; i < count; i++) {
-                                            Integer key = 0;
-                                            for (int j = 1; j < qrCodes.size(); j++) {
-                                                if (new QRCode(qrCodes.get(key).get("hash").toString(), 0).getQRScore() < new QRCode(qrCodes.get(j).get("hash").toString(), 0).getQRScore())
-                                                    key = j;
-                                            }
-                                            qrCodes2.add(qrCodes.get(key));
-                                            qrCodes.remove(qrCodes.get(key));
-                                        }
-                                        for (int i = 0; i < count; i++) {
-                                            qrCodes.add(qrCodes2.get(i));
-                                        }
-                                        rank_value[0] = (Integer) (qrCodes_test.indexOf(qrCodes.get(0).get("hash"))) + 1;
-                                        Picasso.get().load(url2+qrCodes.get(0).get("hash").toString()).into(qrImage);
-                                        QRCode qrCode = new QRCode(qrCodes.get(0).get("hash").toString(), 0);
-                                        qr_naming.setText(qrCode.getQRName());
-                                        Log.d("TEST", rank_value[0].toString());
-                                        ranking.setText(rank_value[0].toString());
-                                    }
-                                } else {
-                                    Log.d("No Doc", "No such document");
-                                }
-                            } else {
-                                Log.d("Err", "get failed with ", task.getException());
-                            }
-                        }
-                    });
-                } else {
-                    Log.d("error","Error getting documents: ");
-                }
-            }
-        });
-
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -187,6 +122,94 @@ public class ProfilePage extends AppCompatActivity {
                         score.setText(scoreString);
                         rank.setText("N/A");
                         ArrayList<Map<String, Object>> qrcodes = (ArrayList<Map<String, Object>>)document.get("QRCodes");
+                        Log.d("TEST:", String.valueOf(qrcodes.size()));
+                        if (qrcodes.size() != 0) {
+                            linearLayout.setVisibility(View.VISIBLE);
+                            CollectionReference collectionReference = db.collection("QRCodes");
+                            collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        qrCodes_test = new ArrayList<>(task.getResult().size());
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            qrCodes_test.add(document.getId());
+                                        }
+                                        if (qrCodes_test != null) {
+                                            ArrayList<String> qrcodes_test_2 = new ArrayList<>();
+                                            Integer count = qrCodes_test.size();
+                                            for (int i = 0; i < count; i++) {
+                                                Integer key = 0;
+                                                for (int j = 1; j < qrCodes_test.size(); j++) {
+                                                    if (new QRCode(qrCodes_test.get(key), 0).getQRScore() < new QRCode(qrCodes_test.get(j), 0).getQRScore())
+                                                        key = j;
+                                                }
+                                                qrcodes_test_2.add(qrCodes_test.get(key));
+                                                qrCodes_test.remove(qrCodes_test.get(key));
+                                            }
+                                            for (int i = 0; i < count; i++) {
+                                                qrCodes_test.add(qrcodes_test_2.get(i));
+                                            }
+                                        }
+                                        Log.d("DATA: ", qrCodes_test.get(1));
+                                        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                if (task.isSuccessful()) {
+                                                    DocumentSnapshot document = task.getResult();
+                                                    if (document.exists()) {
+                                                        Log.e("data", document.get("QRCodes").toString());
+                                                        ArrayList<Map<String, Object>> qrCodes = (ArrayList<Map<String, Object>>) document.get("QRCodes");
+                                                        ArrayList<Map<String, Object>> qrCodes2 = new ArrayList<>();
+                                                        if (qrCodes != null) {
+                                                            Integer count = qrCodes.size();
+                                                            for (int i = 0; i < count; i++) {
+                                                                Integer key = 0;
+                                                                for (int j = 1; j < qrCodes.size(); j++) {
+                                                                    if (new QRCode(qrCodes.get(key).get("hash").toString(), 0).getQRScore() < new QRCode(qrCodes.get(j).get("hash").toString(), 0).getQRScore())
+                                                                        key = j;
+                                                                }
+                                                                qrCodes2.add(qrCodes.get(key));
+                                                                qrCodes.remove(qrCodes.get(key));
+                                                            }
+                                                            for (int i = 0; i < count; i++) {
+                                                                qrCodes.add(qrCodes2.get(i));
+                                                            }
+                                                            rank_value[0] = (Integer) (qrCodes_test.indexOf(qrCodes.get(0).get("hash"))) + 1;
+                                                            Picasso.get().load(url2+qrCodes.get(0).get("hash").toString()).into(qrImage);
+                                                            QRCode qrCode = new QRCode(qrCodes.get(0).get("hash").toString(), 0);
+                                                            qr_naming.setText(qrCode.getQRName());
+                                                            Log.d("TEST", rank_value[0].toString());
+                                                            ranking.setText(rank_value[0].toString());
+                                                            Integer value = (rank_value[0] / qrCodes_test.size()) * 100;
+                                                            if (value >= 0 && value <= 10) {
+                                                                rarity.setText("Very Rare");
+                                                                rarity.setTextColor(Color.RED);
+                                                            }
+                                                            if (value > 10 && value <= 30) {
+                                                                rarity.setText("Rare");
+                                                                rarity.setTextColor(Color.YELLOW);
+                                                            }
+                                                            if (value > 30 && value <= 100) {
+                                                                rarity.setText("Common");
+                                                                rarity.setTextColor(Color.GRAY);
+                                                            }
+                                                        }
+                                                    } else {
+                                                        Log.d("No Doc", "No such document");
+                                                    }
+                                                } else {
+                                                    Log.d("Err", "get failed with ", task.getException());
+                                                }
+                                            }
+                                        });
+                                    } else {
+                                        Log.d("error","Error getting documents: ");
+                                    }
+                                }
+                            });
+                        } else {
+                            linearLayout.setVisibility(View.GONE);
+                        }
                         int count = 0;
                         if (qrcodes != null) {
                             count = qrcodes.size();

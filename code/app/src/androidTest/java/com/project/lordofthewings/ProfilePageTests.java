@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -182,6 +183,18 @@ public class ProfilePageTests {
                                         }
                                         rank_value[0] = (Integer) (qrCodes_test.indexOf(qrCodes.get(0).get("hash"))) + 1;
                                         assertEquals(String.valueOf(rank_value[0]), ((TextView) solo.getView(R.id.qr_ranking)).getText());
+                                        Integer value = (rank_value[0] / qrCodes_test.size()) * 100;
+                                        if (value >= 0 && value <= 10) {
+                                            assertEquals("Very Rare", ((TextView) solo.getView(R.id.rarity)).getText());
+
+                                        }
+                                        if (value > 10 && value <= 30) {
+                                            assertEquals("Rare", ((TextView) solo.getView(R.id.rarity)).getText());
+
+                                        }
+                                        if (value > 30 && value <= 100) {
+                                            assertEquals("Common", ((TextView) solo.getView(R.id.rarity)).getText());
+                                        }
                                     }
                                 } else {
                                     Log.d("No Doc", "No such document");

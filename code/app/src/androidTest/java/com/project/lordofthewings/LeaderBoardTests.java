@@ -8,6 +8,8 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
 import com.project.lordofthewings.Views.HomePage;
+import com.project.lordofthewings.Views.LeaderBoardPage;
+import com.project.lordofthewings.Views.ProfilePage;
 import com.project.lordofthewings.Views.StartUpPages.SignUpPage;
 import com.robotium.solo.Solo;
 
@@ -35,10 +37,10 @@ public class LeaderBoardTests {
         SharedPreferences.Editor editor = sh.edit();
         editor.putString("username", "bobtest");
         editor.apply();
-        Intent homeIntent = new Intent(solo.getCurrentActivity(), HomePage.class);
-        solo.getCurrentActivity().startActivity(homeIntent);
-        solo.waitForActivity("HomePage");
-        solo.assertCurrentActivity("HomePage", HomePage.class);
+        Intent LeaderBoardPageIntent = new Intent(solo.getCurrentActivity(), LeaderBoardPage.class);
+        solo.getCurrentActivity().startActivity(LeaderBoardPageIntent);
+        solo.waitForActivity("Leaderboard");
+        solo.assertCurrentActivity("Leaderboard", LeaderBoardPage.class);
     }
 
     /**
@@ -51,7 +53,19 @@ public class LeaderBoardTests {
         Activity activity = rule.getActivity();
     }
 
+    @Test
+    public void checkIfReturnsHome() {
+        solo.clickOnView(solo.getView(R.id.backIcon2));
+        solo.waitForActivity("HomePage");
+        solo.assertCurrentActivity("HomePage", HomePage.class);
+    }
 
+    @Test
+    public void checkIfGoesToUserProfile() {
+        solo.clickInList(0);
+        solo.waitForActivity("ProfilePage");
+        solo.assertCurrentActivity("ProfilePage", ProfilePage.class);
+    }
 
     @After
     public void tearDown() throws Exception{

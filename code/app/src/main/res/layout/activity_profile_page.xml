@@ -191,6 +191,19 @@
                 android:layout_height="wrap_content"
                 android:text="0" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="Rarity: " />
+
+            <TextView
+                android:id="@+id/rarity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textColor="@android:color/holo_red_dark" />
+
         </LinearLayout>
     </LinearLayout>
     <ListView
