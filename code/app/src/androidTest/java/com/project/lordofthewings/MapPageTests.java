@@ -3,6 +3,8 @@ package com.project.lordofthewings;
 import static android.content.ContentValues.TAG;
 import static android.view.KeyEvent.KEYCODE_ENTER;
 
+
+
 import android.app.Activity;
 
 import androidx.annotation.NonNull;
@@ -12,6 +14,8 @@ import androidx.test.rule.ActivityTestRule;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.EditText;
@@ -121,6 +125,20 @@ public class MapPageTests {
 
 
     }
+
+    @Test
+    public void dragUpWorks(){
+        solo.sleep(4000);
+        int heightOfDevice = Resources.getSystem().getDisplayMetrics().heightPixels;
+        solo.drag(0, 0, heightOfDevice , heightOfDevice -= 10000, 10);
+
+        solo.sleep(70000);
+
+
+
+    }
+
+
 
     /**
      * Close activity after each test, deletes the test user from firestore after each test
