@@ -63,7 +63,7 @@ public class HomePage extends AppCompatActivity {
         ImageButton leaderBoard = findViewById(R.id.leaderboardButton);
 
         ImageView profileQR = findViewById(R.id.qr_code_scan_profile);
-        String url ="https://quickchart.io/qr?text=" + "https://lordofthewingswebsite-qzl3vgtry-mansooranis.vercel.app/"+username;
+        String url ="https://quickchart.io/qr?text=" + "https://lordofthewingswebsite-ivx491f2i-mansooranis.vercel.app/"+username;
         Picasso.get().load(url).into(profileQR);
         profileQR.setOnClickListener(v -> {
             ProfileQRCodeFragment dialog = new ProfileQRCodeFragment();
@@ -144,7 +144,7 @@ public class HomePage extends AppCompatActivity {
             } else {
                 Log.d("MainActivity", "Scanned");
                 String qr_code = result.getContents();
-                if (qr_code.contains("https://lordofthewingswebsite-qzl3vgtry-mansooranis.vercel.app/")){;
+                if (qr_code.contains("https://lordofthewingswebsite-ivx491f2i-mansooranis.vercel.app/")){;
                     Log.e("qr_code", qr_code.substring(63));
                     qr_code = qr_code.substring(63);
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
