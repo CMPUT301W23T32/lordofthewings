@@ -10,6 +10,7 @@ import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,7 +63,7 @@ public class QRCodePage extends AppCompatActivity implements AuthorNamesCallback
 
     List<String> authors = new ArrayList<>();
     List<String> QRComments = new ArrayList<>();
-
+    ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,12 +78,14 @@ public class QRCodePage extends AppCompatActivity implements AuthorNamesCallback
 
             finish();
         });
+        progressBar = findViewById(R.id.progressBar);
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         ImageView qrCodeLocationImage = findViewById(R.id.qrCodeLocationImage);
         TextView noLocationInfoTextView = findViewById(R.id.noLocationInfoTextView);
         LinearLayout location_info_tab_layout = findViewById(R.id.location_info_tab_layout);
         hash = getIntent().getStringExtra("hash");
         RelativeLayout qrcodeInfoTabLayout = findViewById(R.id.qrcode_info_tab_layout);
+        progressBar.setVisibility(View.VISIBLE);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -112,9 +115,11 @@ public class QRCodePage extends AppCompatActivity implements AuthorNamesCallback
         if (qrCodeimageRef != null) {
             qrCodeimageRef.getDownloadUrl().addOnSuccessListener(uri -> {
                 Picasso.get().load(uri).into(qrCodeLocationImage);
+                progressBar.setVisibility(View.GONE);
             }).addOnFailureListener(exception -> {
                 // Handle any errors
                 noLocationInfoTextView.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
             });
         }
          deleteButton = findViewById(R.id.deleteIcon);
