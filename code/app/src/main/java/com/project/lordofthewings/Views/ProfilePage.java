@@ -49,7 +49,7 @@ public class ProfilePage extends AppCompatActivity {
 
         ImageButton backButton = findViewById(R.id.backIcon);
         backButton.setOnClickListener(v -> {
-            Intent intent = new Intent(ProfilePage.this, HomePage.class);
+            Intent intent = new Intent(ProfilePage.this, LeaderBoardPage.class);
             startActivity(intent);
             finish();
         });
