@@ -163,7 +163,7 @@ public class QRLocation {
         return locatedQrswithbm;
     }
 
-    public ArrayList<QRCode> sortLocatedQRArray(Location fromLocation){
+    public ArrayList<HashMap<QRCode, Float>> sortLocatedQRArray(Location fromLocation){
         HashMap<QRCode, Float> sortedQrsMap = new HashMap();
 
         for (QRCode code: this.locatedQrs){
@@ -183,9 +183,11 @@ public class QRLocation {
         });
 
         // put data from sorted list to arraylist
-        ArrayList<QRCode> sortedQrs = new ArrayList<>();
+        ArrayList<HashMap<QRCode, Float>> sortedQrs = new ArrayList<>();
         for (Map.Entry<QRCode, Float> code : list) {
-            sortedQrs.add(code.getKey());
+            HashMap<QRCode, Float> qr = new HashMap<>();
+            qr.put(code.getKey(), code.getValue());
+            sortedQrs.add(qr);
         }
 
         return sortedQrs;
