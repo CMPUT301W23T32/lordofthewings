@@ -120,6 +120,42 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.187" />
 
+        <LinearLayout
+            android:layout_width="385dp"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.857"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.1">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/defaultChip"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:checked="true"
+                android:text="default" />
+            <com.google.android.material.chip.Chip
+                android:id="@+id/ascendingChip"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:checked="false"
+                android:text="low - high" />
+            <com.google.android.material.chip.Chip
+                android:id="@+id/descendingChip"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:text="high - low" />
+        </LinearLayout>
+
         <Spinner
             android:id="@+id/sorting_spinner"
             android:layout_width="385dp"
@@ -129,6 +165,7 @@
             app:layout_constraintHorizontal_bias="0.99"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            android:visibility="gone"
             app:layout_constraintVertical_bias="0.898" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

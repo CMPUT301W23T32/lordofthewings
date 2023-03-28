@@ -47,7 +47,6 @@ import java.util.Map;
 public class HomePage extends AppCompatActivity {
     TextView usernametext;
     String username;
-    ProgressBar progressBar;
     private AnimationDrawable animationDrawable;
     private RelativeLayout relativeLayout;
     @SuppressLint("SetTextI18n")
@@ -55,8 +54,6 @@ public class HomePage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
         setContentView(R.layout.new_homepage);
-        progressBar = findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.VISIBLE);
         //TextView hometext = findViewById(R.id.TextView01);
         SharedPreferences sh = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
         String username = sh.getString("username", "");
@@ -65,12 +62,9 @@ public class HomePage extends AppCompatActivity {
         ImageButton profileButton = findViewById(R.id.profileButton);
         ImageButton leaderBoard = findViewById(R.id.leaderboardButton);
 
-
-
         ImageView profileQR = findViewById(R.id.qr_code_scan_profile);
-        String url ="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=";
-        Picasso.get().load(url + username ).into(profileQR);
-        progressBar.setVisibility(View.GONE);
+        String url ="https://quickchart.io/qr?text=" + "https://lordofthewingswebsite-ivx491f2i-mansooranis.vercel.app/"+username;
+        Picasso.get().load(url).into(profileQR);
         profileQR.setOnClickListener(v -> {
             ProfileQRCodeFragment dialog = new ProfileQRCodeFragment();
             dialog.show(getSupportFragmentManager(), "Profile QR Code");
@@ -150,40 +144,44 @@ public class HomePage extends AppCompatActivity {
             } else {
                 Log.d("MainActivity", "Scanned");
                 String qr_code = result.getContents();
-
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
-                try{
-                    DocumentReference docRef = db.collection("Users").document(qr_code);
-                    docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                DocumentSnapshot document = task.getResult();
-                                if (document.exists()) {
-                                    Intent intent = new Intent(HomePage.this, ProfilePage.class);
-                                    intent.putExtra("username", qr_code);
-                                    finish();
-                                    startActivity(intent);
+                if (qr_code.contains("https://lordofthewingswebsite-ivx491f2i-mansooranis.vercel.app/")){;
+                    Log.e("qr_code", qr_code.substring(63));
+                    qr_code = qr_code.substring(63);
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    try{
+                        DocumentReference docRef = db.collection("Users").document(qr_code);
+                        String finalQr_code = qr_code;
+                        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot document = task.getResult();
+                                    if (document.exists()) {
+                                        Intent intent = new Intent(HomePage.this, ProfilePage.class);
+                                        intent.putExtra("username", finalQr_code);
+                                        finish();
+                                        startActivity(intent);
+                                    } else {
+                                        Log.d("MainActivity", "No such document");
+                                    }
                                 } else {
-                                    Log.d("MainActivity", "No such document");
+                                    Log.d( "get failed with ", String.valueOf(task.getException()));
                                 }
-                            } else {
-                                Log.d( "get failed with ", String.valueOf(task.getException()));
                             }
-                        }
-                    });
-                }catch(Exception e){
-                    Log.e("error is", String.valueOf(e));
+                        });
+                    }catch(Exception e){
+                        Log.e("error is", String.valueOf(e));
+                        Intent intent = new Intent(HomePage.this, QRCodeScan.class);
+                        intent.putExtra("qr_code", qr_code);
+                        finish();
+                        startActivity(intent);
+                    }
+                }else{
                     Intent intent = new Intent(HomePage.this, QRCodeScan.class);
                     intent.putExtra("qr_code", qr_code);
                     finish();
                     startActivity(intent);
                 }
-                Intent intent = new Intent(HomePage.this, QRCodeScan.class);
-                intent.putExtra("qr_code", qr_code);
-                finish();
-                startActivity(intent);
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);

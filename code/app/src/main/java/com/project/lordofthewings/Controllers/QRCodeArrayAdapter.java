@@ -62,60 +62,6 @@ public class QRCodeArrayAdapter extends ArrayAdapter<QRCode> {
         TextView qrCodeName = view.findViewById(R.id.qrcode_name);
         TextView qrCodePoints = view.findViewById(R.id.qrcode_points);
         ImageView qrCodeImage = view.findViewById(R.id.qrcode_image);
-
-
-        ImageButton qrCodeDelete = view.findViewById(R.id.qrDeleteButton);
-
-        qrCodeDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                QRCode qrCode = getItem(position);
-                String hash = qrCode.getHash();
-                DocumentReference userRef = db.collection("Users").document(username);
-                final Integer[] Score = new Integer[1];
-                userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
-                                ArrayList<QRCode> qrCodes = (ArrayList<QRCode>) document.get("QRCodes");
-                                if (qrCodes != null) {
-                                    for (int i = 0; i < qrCodes.size(); i++) {
-                                        Map<String, Object> qrObject = (Map<String, Object>) qrCodes.get(i);
-                                        QRCode qrCode = new QRCode(qrObject.get("hash").toString(), 1);
-                                        if (qrCode.getHash().equals(hash)) {
-                                            qrCodes.remove(i);
-                                            Score[0] = qrCode.getQRScore();
-                                            break;
-                                        }
-                                    }
-                                    userRef.update("Score", FieldValue.increment(-Score[0]));
-                                    userRef.update("QRCodes", qrCodes).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            remove(qrCode);
-                                            notifyDataSetChanged();
-                                            Toast.makeText(getContext(), "QRCode deleted successfully!", Toast.LENGTH_SHORT).show();
-                                            if (getContext() instanceof WalletPage) {
-                                                Log.d("breakpoint", "breakpoint");
-                                                ((WalletPage)getContext()).fetchDataAndRefreshUIdefault();
-                                            }
-                                        }
-                                    }).addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Toast.makeText(getContext(), "Error deleting QRCode: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                                }
-                            }
-                        }
-                    }
-                });
-            }
-        });
-
         qrCodeName.setText(qrCode.getQRName());
         qrCodePoints.setText(qrCode.getQRScore() + " Points");
         Picasso.get().load(url + qrCode.getHash()).into(qrCodeImage);
