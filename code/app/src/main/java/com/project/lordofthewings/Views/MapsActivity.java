@@ -499,4 +499,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
     }
+
+    public ArrayAdapter<HashMap<QRCode, Float>> getList() {
+        return this.mapArrayAdapter;
+
+
+    }
+
 }
