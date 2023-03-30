@@ -5,10 +5,19 @@ import static org.junit.Assert.assertEquals;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
+import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.project.lordofthewings.Views.HomePage;
 import com.project.lordofthewings.Views.LeaderBoardPage;
 import com.project.lordofthewings.Views.ProfilePage;
@@ -20,8 +29,12 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 public class LeaderBoardTests {
     private Solo solo;
+    ArrayList<Map<String, Object>> users_array;
 
     @Rule
     public ActivityTestRule<SignUpPage> rule =

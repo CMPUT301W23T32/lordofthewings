@@ -40,6 +40,7 @@ import java.util.Map;
 
 public class ProfilePageTests {
     ArrayList<String> qrCodes_test;
+    ArrayList<Map<String, Object>> users_array;
     private Solo solo;
 
     @Rule
@@ -131,6 +132,77 @@ public class ProfilePageTests {
 
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        CollectionReference collectionReference_users = db.collection("Users");
+        collectionReference_users.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    users_array = new ArrayList<>(task.getResult().size());
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        users_array.add(document.getData());
+                    }
+                    ArrayList<String> users_usernames = new ArrayList<>();
+
+                    if (users_array != null) {
+                        ArrayList<Map<String, Object>> users_array_2 = new ArrayList<>();
+                        Integer count_users = users_array.size();
+                        for (int i = 0; i < count_users; i++) {
+                            Integer key = 0;
+                            for (int j = 1; j < users_array.size(); j++) {
+                                if ((int) (long) users_array.get(key).get("Score") < (int) (long) users_array.get(j).get("Score"))
+                                    key = j;
+                            }
+                            users_array_2.add(users_array.get(key));
+                            users_array.remove(users_array.get(key));
+                        }
+                        for (int i = 0; i < count_users; i++) {
+                            users_array.add(users_array_2.get(i));
+                            users_usernames.add((String) users_array_2.get(i).get("username"));
+                        }
+
+                    } else {
+                        Log.d("Error", "No data present");
+                    }
+                    double position = ((users_usernames.indexOf("bobtest") + 1) / (double) users_array.size()) * 100;
+                    if (position >= 0 && position <= 10) {
+                        assertEquals("Top 10%", ((TextView) solo.getView(R.id.rank_text)).getText());
+                    }
+                    if (position > 10 && position <= 20) {
+                        assertEquals("Top 20%", ((TextView) solo.getView(R.id.rank_text)).getText());
+                    }
+                    if (position > 20 && position <= 30) {
+                        assertEquals("Top 30%", ((TextView) solo.getView(R.id.rank_text)).getText());
+                    }
+                    if (position > 30 && position <= 40) {
+                        assertEquals("Top 40%", ((TextView) solo.getView(R.id.rank_text)).getText());
+                    }
+                    if (position > 40 && position <= 50) {
+                        assertEquals("Top 50%", ((TextView) solo.getView(R.id.rank_text)).getText());
+                    }
+                    if (position > 50 && position <= 60) {
+                        assertEquals("Top 60%", ((TextView) solo.getView(R.id.rank_text)).getText());
+                    }
+                    if (position > 60 && position <= 70) {
+                        assertEquals("Top 70%", ((TextView) solo.getView(R.id.rank_text)).getText());
+                    }
+                    if (position > 70 && position <= 80) {
+                        assertEquals("Top 80%", ((TextView) solo.getView(R.id.rank_text)).getText());
+                    }
+                    if (position > 80 && position <= 90) {
+                        assertEquals("Top 90%", ((TextView) solo.getView(R.id.rank_text)).getText());
+                    }
+                    if (position > 90 && position <= 100) {
+                        assertEquals("Top 100%", ((TextView) solo.getView(R.id.rank_text)).getText());
+                    }
+                    System.out.println(position);
+
+                } else {
+                    Log.d("Error: ", "Couldn't get users");
+                }
+            }
+        });
+
         DocumentReference docRef = db.collection("Users").document("bobtest");
         CollectionReference collectionReference = db.collection("QRCodes");
         collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -183,7 +255,7 @@ public class ProfilePageTests {
                                         }
                                         rank_value[0] = (Integer) (qrCodes_test.indexOf(qrCodes.get(0).get("hash"))) + 1;
                                         assertEquals(String.valueOf(rank_value[0]), ((TextView) solo.getView(R.id.qr_ranking)).getText());
-                                        Integer value = (rank_value[0] / qrCodes_test.size()) * 100;
+                                        double value = (rank_value[0] / (double) qrCodes_test.size()) * 100;
                                         if (value >= 0 && value <= 10) {
                                             assertEquals("Very Rare", ((TextView) solo.getView(R.id.rarity)).getText());
 
