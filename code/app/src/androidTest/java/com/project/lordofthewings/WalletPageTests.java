@@ -77,7 +77,8 @@ public class WalletPageTests {
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
         SharedPreferences sh = rule.getActivity().getSharedPreferences("sharedPrefs", 0);
         SharedPreferences.Editor editor = sh.edit();
-        editor.putString("username", "ntt");
+        editor.putString("username", "bobtest");
+        editor.apply();
         Intent walletIntent = new Intent(solo.getCurrentActivity(), WalletPage.class);
         solo.getCurrentActivity().startActivity(walletIntent);
         solo.waitForActivity("WalletPage");
@@ -114,7 +115,7 @@ public class WalletPageTests {
     public void checkNumberOfQRListView() {
         ListView listView = (ListView) solo.getView(R.id.qrCodeListView);
         solo.sleep(5000);
-        assertEquals(2, listView.getCount());
+        assertEquals(6, listView.getCount());
     }
 
     /**
@@ -124,7 +125,7 @@ public class WalletPageTests {
     public void checkNumberOfQRTextView() {
         TextView textView = (TextView) solo.getView(R.id.qrcodeCount);
         solo.sleep(5000);
-        assertEquals("2", textView.getText());
+        assertEquals("6", textView.getText());
     }
 
     /**
@@ -133,21 +134,61 @@ public class WalletPageTests {
     @Test
     public void checkScanANewQr() {
         solo.clickOnView(solo.getView(R.id.scanButton));
-        solo.waitForActivity("CameraPage");
-        solo.assertCurrentActivity("CameraPage", CaptureActivity.class);
+        solo.waitForActivity("CaptureActivity");
+        solo.assertCurrentActivity("CaptureActivity", CaptureActivity.class);
+    }
+
+    @Test
+    public void checkQrTotalScore() {
+        TextView textView = (TextView) solo.getView(R.id.points);
+        solo.sleep(5000);
+        assertEquals("326 Points", textView.getText());
     }
 
     /**
      * Checks if returns back to wallet trying to go back from Capture Activity
      */
     @Test
-    public void checkifReturnWallet() {
+    public void checkIfReturnWallet() {
         solo.clickOnView(solo.getView(R.id.scanButton));
-        solo.waitForActivity("CameraPage");
-        solo.assertCurrentActivity("CameraPage", CaptureActivity.class);
+        solo.waitForActivity("CaptureActivity");
+        solo.assertCurrentActivity("CaptureActivity", CaptureActivity.class);
         solo.goBack();
         solo.waitForActivity("WalletPage");
         solo.assertCurrentActivity("WalletPage", WalletPage.class);
+    }
+
+    @Test
+    public void checkIfAscendingWorks() {
+        solo.pressSpinnerItem(0, 1);
+        solo.sleep(10000);
+        ListView listView = (ListView) solo.getView(R.id.qrCodeListView);
+        QRCode qrCode_top = (QRCode) listView.getAdapter().getItem(0);
+        QRCode qrCode_end = (QRCode) listView.getAdapter().getItem(5);
+        assertEquals("CrimKronVoltNyxNebuZax", qrCode_top.getQRName());
+        assertEquals("LuminOnyxLuminCrimVoltLumin", qrCode_end.getQRName());
+    }
+
+    @Test
+    public void checkIfDescendingWorks() {
+        solo.pressSpinnerItem(0, 2);
+        solo.sleep(10000);
+        ListView listView = (ListView) solo.getView(R.id.qrCodeListView);
+        QRCode qrCode_top = (QRCode) listView.getAdapter().getItem(0);
+        QRCode qrCode_end = (QRCode) listView.getAdapter().getItem(5);
+        assertEquals("LuminOnyxLuminCrimVoltLumin", qrCode_top.getQRName());
+        assertEquals("CrimKronVoltNyxNebuZax", qrCode_end.getQRName());
+    }
+
+    @Test
+    public void checkIfDefaultWorks() {
+        solo.pressSpinnerItem(0, 0);
+        solo.sleep(10000);
+        ListView listView = (ListView) solo.getView(R.id.qrCodeListView);
+        QRCode qrCode_top = (QRCode) listView.getAdapter().getItem(0);
+        QRCode qrCode_end = (QRCode) listView.getAdapter().getItem(5);
+        assertEquals("KinetCrimKronHexVexZax", qrCode_top.getQRName());
+        assertEquals("LuminOnyxLuminCrimVoltLumin", qrCode_end.getQRName());
     }
 
     /**
