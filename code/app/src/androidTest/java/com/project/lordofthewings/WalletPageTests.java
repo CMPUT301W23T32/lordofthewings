@@ -25,9 +25,12 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.codec.digest.DigestUtils;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.journeyapps.barcodescanner.CameraPreview;
 import com.journeyapps.barcodescanner.CaptureActivity;
 import com.project.lordofthewings.Controllers.FirebaseController;
@@ -62,6 +65,7 @@ import java.util.Map;
 @RunWith(AndroidJUnit4.class)
 public class WalletPageTests {
     private Solo solo;
+    ArrayList<Map<String, Object>> users_array;
 
     @Rule
     public ActivityTestRule<SignUpPage> rule =
@@ -138,11 +142,52 @@ public class WalletPageTests {
         solo.assertCurrentActivity("CaptureActivity", CaptureActivity.class);
     }
 
+    /**
+     * Checks if the total points matches the displayed total points
+     */
     @Test
     public void checkQrTotalScore() {
         TextView textView = (TextView) solo.getView(R.id.points);
         solo.sleep(5000);
-        assertEquals("326 Points", textView.getText());
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        CollectionReference collectionReference_users = db.collection("Users");
+        collectionReference_users.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    users_array = new ArrayList<>(task.getResult().size());
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        users_array.add(document.getData());
+                    }
+                    ArrayList<String> users_usernames = new ArrayList<>();
+
+                    if (users_array != null) {
+                        ArrayList<Map<String, Object>> users_array_2 = new ArrayList<>();
+                        Integer count_users = users_array.size();
+                        for (int i = 0; i < count_users; i++) {
+                            Integer key = 0;
+                            for (int j = 1; j < users_array.size(); j++) {
+                                if ((int) (long) users_array.get(key).get("Score") < (int) (long) users_array.get(j).get("Score"))
+                                    key = j;
+                            }
+                            users_array_2.add(users_array.get(key));
+                            users_array.remove(users_array.get(key));
+                        }
+                        for (int i = 0; i < count_users; i++) {
+                            users_array.add(users_array_2.get(i));
+                            users_usernames.add((String) users_array_2.get(i).get("username"));
+                        }
+
+                    } else {
+                        Log.d("Error", "No data present");
+                    }
+                    assertEquals(users_array.get(users_usernames.indexOf("bobtest")).get("Score") + " Points", textView.getText());
+                } else {
+                    Log.d("Error: ", "Couldn't get users");
+                }
+            }
+        });
     }
 
     /**
@@ -158,9 +203,12 @@ public class WalletPageTests {
         solo.assertCurrentActivity("WalletPage", WalletPage.class);
     }
 
+    /**
+     * Checks if the ascending order button works
+     */
     @Test
     public void checkIfAscendingWorks() {
-        solo.pressSpinnerItem(0, 1);
+        solo.clickOnView(solo.getView(R.id.ascendingChip));
         solo.sleep(10000);
         ListView listView = (ListView) solo.getView(R.id.qrCodeListView);
         QRCode qrCode_top = (QRCode) listView.getAdapter().getItem(0);
@@ -169,9 +217,12 @@ public class WalletPageTests {
         assertEquals("LuminOnyxLuminCrimVoltLumin", qrCode_end.getQRName());
     }
 
+    /**
+     * Checks if the descending order button works
+     */
     @Test
     public void checkIfDescendingWorks() {
-        solo.pressSpinnerItem(0, 2);
+        solo.clickOnView(solo.getView(R.id.descendingChip));
         solo.sleep(10000);
         ListView listView = (ListView) solo.getView(R.id.qrCodeListView);
         QRCode qrCode_top = (QRCode) listView.getAdapter().getItem(0);
@@ -180,9 +231,12 @@ public class WalletPageTests {
         assertEquals("CrimKronVoltNyxNebuZax", qrCode_end.getQRName());
     }
 
+    /**
+     * Checks if the default order button works
+     */
     @Test
     public void checkIfDefaultWorks() {
-        solo.pressSpinnerItem(0, 0);
+        solo.clickOnView(solo.getView(R.id.defaultChip));
         solo.sleep(10000);
         ListView listView = (ListView) solo.getView(R.id.qrCodeListView);
         QRCode qrCode_top = (QRCode) listView.getAdapter().getItem(0);

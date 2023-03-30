@@ -68,7 +68,9 @@ public class HomePageTests {
         Activity activity = rule.getActivity();
     }
 
-
+    /**
+     * Checks if goes to wallet page on clicking the wallet button
+     */
     @Test
     public void checkWalletButton() {
         solo.clickOnView(solo.getView(R.id.walletButton));
@@ -76,6 +78,9 @@ public class HomePageTests {
         solo.assertCurrentActivity("WalletPage", WalletPage.class);
     }
 
+    /**
+     * Checks if goes to map page on clicking map button
+     */
     @Test
     public void checkMapButton() {
         solo.clickOnView(solo.getView(R.id.mapButton));
@@ -83,6 +88,9 @@ public class HomePageTests {
         solo.assertCurrentActivity("MapsActivity", MapsActivity.class);
     }
 
+    /**
+     * Checks if goes to profile page on clicking profile button
+     */
     @Test
     public void checkProfileButton() {
         solo.clickOnView(solo.getView(R.id.profileButton));
@@ -90,6 +98,9 @@ public class HomePageTests {
         solo.assertCurrentActivity("UserProfilePage", ProfilePage.class);
     }
 
+    /**
+     * Checks if goes to leaderboard page on clicking leaderboard button
+     */
     @Test
     public void checkLeaderBoardButton() {
         solo.clickOnView(solo.getView(R.id.leaderboardButton));
@@ -97,6 +108,9 @@ public class HomePageTests {
         solo.assertCurrentActivity("LeaderBoardPage", LeaderBoardPage.class);
     }
 
+    /**
+     * Checks if switches to scanner on clicking scanner button
+     */
     @Test
     public void checkScanButton() {
         solo.clickOnView(solo.getView(R.id.scanButton));
@@ -104,6 +118,9 @@ public class HomePageTests {
         solo.assertCurrentActivity("CaptureActivity", CaptureActivity.class);
     }
 
+    /**
+     * Checks if the username displayed is the right username
+     */
     @Test
     public void checkUsername(){
         solo.searchText("bobtest");

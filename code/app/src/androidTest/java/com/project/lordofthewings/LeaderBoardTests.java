@@ -68,6 +68,9 @@ public class LeaderBoardTests {
         Activity activity = rule.getActivity();
     }
 
+    /**
+     * Checks if returns back to homepage
+     */
     @Test
     public void checkIfReturnsHome() {
         solo.clickOnView(solo.getView(R.id.backIcon2));
@@ -75,6 +78,9 @@ public class LeaderBoardTests {
         solo.assertCurrentActivity("HomePage", HomePage.class);
     }
 
+    /**
+     * Check is goes to repected users profile on clicking on listview item
+     */
     @Test
     public void checkIfGoesToUserProfile() {
         solo.clickInList(0);
@@ -82,6 +88,9 @@ public class LeaderBoardTests {
         solo.assertCurrentActivity("ProfilePage", ProfilePage.class);
     }
 
+    /**
+     * Checks if search bar works as intended
+     */
     @Test
     public void checkIfSearchBarWorks() {
         solo.clickOnView(solo.getView(R.id.search_leaderboard));
@@ -89,6 +98,9 @@ public class LeaderBoardTests {
         solo.searchText("bobtest");
     }
 
+    /**
+     * Checks if the item that appeared on search is clickable or not
+     */
     @Test
     public void checkIfClickableOnSearch() {
         solo.clickOnView(solo.getView(R.id.search_leaderboard));

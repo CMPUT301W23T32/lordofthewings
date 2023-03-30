@@ -75,6 +75,9 @@ public class ProfilePageTests {
         Activity activity = rule.getActivity();
     }
 
+    /**
+     * Checks if returns to home successfully
+     */
     @Test
     public void checkIfHomeReturns() {
         solo.clickOnView(solo.getView(R.id.profileButton));
@@ -85,6 +88,9 @@ public class ProfilePageTests {
         solo.assertCurrentActivity("HomePage", HomePage.class);
     }
 
+    /**
+     * Checks if the edit button works as intended
+     */
     @Test
     public void checkEditButton() {
         solo.clickOnView(solo.getView(R.id.profileButton));
@@ -108,6 +114,9 @@ public class ProfilePageTests {
         solo.clickOnButton(1);
     }
 
+    /**
+     * Check if the cancel button works on the edit fragment
+     */
     @Test
     public void checkEditCancel() {
         solo.clickOnView(solo.getView(R.id.profileButton));
@@ -119,6 +128,10 @@ public class ProfilePageTests {
         solo.assertCurrentActivity("UserProfilePage", ProfilePage.class);
     }
 
+    /**
+     * Checks if all the data present on profile page for
+     * user bobtest is valid or not
+     */
     @Test
     public void checkProfileData() {
         final Integer[] rank_value = {0};
