@@ -48,6 +48,7 @@ public class ProfilePage extends AppCompatActivity {
     ListView qrCodeList;
     private ArrayAdapter<QRCode> qrCodeAdapter;
     ArrayList<String> qrCodes_test;
+    ArrayList<Map<String, Object>> users_array;
     String savedUsername;
 
     @Override
@@ -127,7 +128,79 @@ public class ProfilePage extends AppCompatActivity {
         if (!savedUsername.equals(username)) {
             linearLayout.setVisibility(View.GONE);
         }
+
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        CollectionReference collectionReference_users = db.collection("Users");
+        collectionReference_users.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    users_array = new ArrayList<>(task.getResult().size());
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        users_array.add(document.getData());
+                    }
+                    ArrayList<String> users_usernames = new ArrayList<>();
+
+                    if (users_array != null) {
+                        ArrayList<Map<String, Object>> users_array_2 = new ArrayList<>();
+                        Integer count_users = users_array.size();
+                        for (int i = 0; i < count_users; i++) {
+                            Integer key = 0;
+                            for (int j = 1; j < users_array.size(); j++) {
+                                if ((int) (long) users_array.get(key).get("Score") < (int) (long) users_array.get(j).get("Score"))
+                                    key = j;
+                            }
+                            users_array_2.add(users_array.get(key));
+                            users_array.remove(users_array.get(key));
+                        }
+                        for (int i = 0; i < count_users; i++) {
+                            users_array.add(users_array_2.get(i));
+                            users_usernames.add((String) users_array_2.get(i).get("username"));
+                        }
+
+                    } else {
+                        Log.d("Error", "No data present");
+                    }
+                    double position = ((users_usernames.indexOf(username) + 1) / (double) users_array.size()) * 100;
+                    if (position >= 0 && position <= 10) {
+                        rank.setText("Top 10%");
+                    }
+                    if (position > 10 && position <= 20) {
+                        rank.setText("Top 20%");
+                    }
+                    if (position > 20 && position <= 30) {
+                        rank.setText("Top 30%");
+                    }
+                    if (position > 30 && position <= 40) {
+                        rank.setText("Top 40%");
+                    }
+                    if (position > 40 && position <= 50) {
+                        rank.setText("Top 50%");
+                    }
+                    if (position > 50 && position <= 60) {
+                        rank.setText("Top 60%");
+                    }
+                    if (position > 60 && position <= 70) {
+                        rank.setText("Top 70%");
+                    }
+                    if (position > 70 && position <= 80) {
+                        rank.setText("Top 80%");
+                    }
+                    if (position > 80 && position <= 90) {
+                        rank.setText("Top 90%");
+                    }
+                    if (position > 90 && position <= 100) {
+                        rank.setText("Top 100%");
+                    }
+                    System.out.println(position);
+
+                } else {
+                    Log.d("Error: ", "Couldn't get users");
+                }
+            }
+        });
+
         DocumentReference docRef = db.collection("Users").document(username);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -203,14 +276,14 @@ public class ProfilePage extends AppCompatActivity {
                                                             qr_naming.setText(qrCode.getQRName());
                                                             Log.d("TEST", rank_value[0].toString());
                                                             ranking.setText(rank_value[0].toString());
-                                                            Integer value = (rank_value[0] / qrCodes_test.size()) * 100;
+                                                            double value = (rank_value[0] / (double) qrCodes_test.size()) * 100;
                                                             if (value >= 0 && value <= 10) {
                                                                 rarity.setText("Very Rare");
                                                                 rarity.setTextColor(Color.RED);
                                                             }
                                                             if (value > 10 && value <= 30) {
                                                                 rarity.setText("Rare");
-                                                                rarity.setTextColor(Color.YELLOW);
+                                                                rarity.setTextColor(Color.GREEN);
                                                             }
                                                             if (value > 30 && value <= 100) {
                                                                 rarity.setText("Common");
