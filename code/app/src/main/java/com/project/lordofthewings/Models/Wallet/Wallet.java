@@ -105,6 +105,7 @@ public class Wallet {
                     } else {
                         Log.d(TAG, "No such document");
                         ArrayList<String> authors = new ArrayList<>();
+                        authors.add(username);
                         ArrayList<Map<String, String>> comments = new ArrayList<>();
                         Map<String, Object> data = new HashMap<>();
                         data.put("QRCode", qr);
