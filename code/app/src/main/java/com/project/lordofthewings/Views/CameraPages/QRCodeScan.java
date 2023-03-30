@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -38,11 +39,16 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.project.lordofthewings.Models.QRLocation.QRLocation;
 import com.project.lordofthewings.Models.QRcode.QRCode;
 import com.project.lordofthewings.Models.Wallet.Wallet;
@@ -51,6 +57,7 @@ import com.project.lordofthewings.R;
 import com.project.lordofthewings.Views.HomePage;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -158,6 +165,8 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
                                 Toast.makeText(getApplicationContext(), "QR ALREADY ADDED", Toast.LENGTH_SHORT).show();
                                 finish();
                             }
+                            
+
                         } else {
                             Log.d(TAG, "No such document");
                         }
@@ -166,6 +175,59 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
                     }
                 }
             });
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            StorageReference storageRef = storage.getReference();
+            StorageReference qrCodeimageRef = storageRef.child("images/qrcodes/"+qr.getHash()+".png");
+            if (imageView.getDrawable() != null){
+                imageView.setDrawingCacheEnabled(true);
+                imageView.buildDrawingCache();
+                Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                byte[] data = baos.toByteArray();
+                UploadTask uploadTask = qrCodeimageRef.putBytes(data);
+                uploadTask.addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle unsuccessful uploads
+                        Intent intent = new Intent(QRCodeScan.this, HomePage.class);
+                        progressBar.setVisibility(ProgressBar.GONE);
+                        startActivity(intent);
+                        finish();
+                    }
+                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                        // ...
+                        Intent intent = new Intent(QRCodeScan.this, HomePage.class);
+                        progressBar.setVisibility(ProgressBar.GONE);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+            }else{
+                qrCodeimageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        // File deleted successfully
+                        Intent intent = new Intent(QRCodeScan.this, HomePage.class);
+                        progressBar.setVisibility(ProgressBar.GONE);
+                        startActivity(intent);
+                        finish();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Uh-oh, an error occurred!
+                        Intent intent = new Intent(QRCodeScan.this, HomePage.class);
+                        progressBar.setVisibility(ProgressBar.GONE);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+            }
+
         });
         remove_location.setOnClickListener(c -> {
             location_text.setText("Location Not Added");

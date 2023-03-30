@@ -15,30 +15,42 @@
     <RelativeLayout
         android:id="@+id/topLayout"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
         android:layout_alignParentTop="true"
         android:background="@drawable/maptextbg">
 
         <ImageButton
             android:id="@+id/back_button_map"
-            android:layout_width="wrap_content"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="16dp"
-            android:background="@android:color/transparent"
-            android:src="@drawable/back_arrow" />
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/rounded_md"
+            android:src="@drawable/back_icon" />
 
         <TextView
             android:id="@+id/central_title_map"
+            style="@style/TextAppearance.AppCompat.Body2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="QRMAP"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/back_button_map"
+            android:paddingLeft="5dp"
             android:textColor="@color/orange_700"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:text="QRMap"
+            android:textSize="22sp" />
 
     </RelativeLayout>
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:id="@+id/progress_bar_map"
+        android:layout_below="@id/topLayout"
+        />
 
     <RelativeLayout
         android:id="@+id/search_bar"
@@ -80,30 +92,125 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <FrameLayout
             android:id="@+id/pulloutList"
             android:layout_width="match_parent"
             android:layout_height="400dp"
-            android:layout_alignParentBottom="true"
             android:background="@drawable/pulloutlistbg"
-            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-            android:elevation="50dp">
-            <ImageView
-                android:layout_width="70dp"
-                android:layout_height="7dp"
-                android:src="@drawable/pullout_list_bar"
-                android:layout_marginTop="7dp"
-                android:layout_gravity="center|top">
-            </ImageView>
-            <ListView
+            android:elevation="50dp"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="380dp"
-                android:id="@+id/qrListForMap"
-                >
-            </ListView>
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="70dp"
+                    android:layout_height="7dp"
+                    android:src="@drawable/pullout_list_bar"
+                    android:layout_marginTop="7dp"
+                    android:layout_gravity="center|top">
+                </ImageView>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10sp"
+                    android:orientation="horizontal"
+                    android:weightSum="2"
+                    >
+
+                    <TextView
+                        android:id="@+id/qrListTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="18sp"
+                        android:paddingLeft="16dp"
+                        android:layout_gravity="left|top"
+                        android:layout_weight="1"
+                        android:textStyle="bold"
+                        android:textColor="@color/orange_500"
+                        />
+
+                    <ImageButton
+                        android:id="@+id/map_list_back_button"
+                        android:layout_width="5dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/back_icon"
+                        android:padding="8dp"
+                        android:visibility="gone"
+                        android:background="@drawable/rounded_md"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="16sp"
+                        />
+                </LinearLayout>
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chip_group"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_margin="10sp"
+                    android:layout_marginBottom="0dp"
+                    android:visibility="gone"
+                    app:singleSelection="true"
+                    app:selectionRequired="true"
+                    >
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_1"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="20 km"/>
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_2"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="40 km"/>
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_3"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="60 km"/>
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_4"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="100 km"/>
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_5"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="all"/>
+
+            </com.google.android.material.chip.ChipGroup>
+                <ListView
+                    android:id="@+id/qrListForMap"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20sp"
+                    android:divider="@drawable/emptysmalldivider"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/noQrCodeFound"
+                    android:gravity="center"
+                    android:text="No QR Code Found"
+                    android:textSize="18sp"
+                    android:visibility="gone"/>
+                </LinearLayout>
 
         </FrameLayout>
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 
 
 </RelativeLayout>

@@ -96,7 +96,7 @@ public class LeaderBoardPage extends AppCompatActivity {
         });
         leaderboardList.setOnItemClickListener((parent, view, position, id) -> {
             Intent intent = new Intent(LeaderBoardPage.this, ProfilePage.class);
-            intent.putExtra("username", stringLeaderboard.get(position));
+            intent.putExtra("username", learderboardAdapter.getItem(position).toString());
             startActivity(intent);
             });
 
