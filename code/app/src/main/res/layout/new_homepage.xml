@@ -3,81 +3,161 @@
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/homepage"
+
     android:layout_height="match_parent">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="200sp"
-        android:id="@+id/header"
-        android:background="@drawable/homepage_header">
+        android:layout_height="wrap_content"
+        android:id="@+id/icons_header">
+        <ImageButton
+            android:layout_width="30dp"
+            android:id="@+id/profileButton"
+            android:layout_height="30dp"
+            android:src="@drawable/user_icon"
+            android:background="@drawable/user_icon"
+            android:layout_margin="20dp"
+            />
 
-            <ImageButton
-                android:layout_width="30dp"
-                android:id="@+id/profileButton"
-                android:layout_height="30dp"
-                android:src="@drawable/user_icon"
-                android:background="@drawable/user_icon"
-                android:layout_margin="10dp"
-                android:padding="20dp"/>
-
-        <LinearLayout
+        <TextView
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="bottom"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Home Page"
+            android:textColor="@color/orange_700"
+            android:textSize="30sp"
+            android:fontFamily="@font/open_sans"
+            android:visibility="gone"
+            android:textStyle="bold" />
+        <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/settingsButton"
+            android:background="@drawable/settings_icon"
+            android:layout_margin="20dp"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/settings_icon" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="180sp"
+                android:layout_marginRight="20sp"
+                android:layout_marginLeft="20sp"
+                android:id="@+id/header"
+                android:elevation="10dp"
+                android:layout_below="@+id/icons_header"
+                android:background="@drawable/homepage_header">
+                <ImageView
+                    android:layout_width="100sp"
+                    android:layout_height="100sp"
+                    android:id="@+id/qr_code_scan_profile"
+                    android:background="@drawable/rounded_md"
+                    android:clipToOutline="true"
+                    android:layout_marginLeft="30sp"
+                    android:layout_centerInParent="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_gravity="center"
+                    />
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_margin="40sp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/rounded_md"
+                    android:orientation="vertical"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:fontFamily="@font/open_sans"
+                        android:layout_marginRight="20dp"
+                        android:text="Welcome!"
+                        android:textStyle="bold" />
 
-                    android:orientation="horizontal">
-                    <ImageView
-                        android:layout_width="100sp"
-                        android:layout_height="100sp"
-                        android:id="@+id/qr_code_scan_profile"
-                        android:background="@drawable/rounded_md"
-                        android:clipToOutline="true"
-                        android:layout_gravity="center"
-                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginRight="20dp"
+                        android:text="Username"
+                        android:fontFamily="@font/open_sans"
+                        android:textSize="40sp"
+                        android:id="@+id/usernameTextView"
+                        android:textStyle="bold" />
                 </LinearLayout>
+            </RelativeLayout>
+        <!--    <RelativeLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="200sp"-->
+<!--        android:id="@+id/header"-->
+<!--        android:background="@drawable/homepage_header">-->
 
-        </LinearLayout>
+<!--            <ImageButton-->
+<!--                android:layout_width="30dp"-->
+<!--                android:id="@+id/profileButton"-->
+<!--                android:layout_height="30dp"-->
+<!--                android:src="@drawable/user_icon"-->
+<!--                android:background="@drawable/user_icon"-->
+<!--                android:layout_margin="10dp"-->
+<!--                android:padding="20dp"/>-->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+<!--        <LinearLayout-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:gravity="bottom"-->
+<!--            android:orientation="vertical">-->
+<!--                <LinearLayout-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_margin="40sp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:background="@drawable/rounded_md"-->
 
-            <ImageButton
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:id="@+id/settingsButton"
-                android:background="@drawable/settings_icon"
-                android:layout_gravity="end"
-                android:layout_margin="10dp"
-                android:src="@drawable/settings_icon" />
+<!--                    android:orientation="horizontal">-->
+<!--                    <ImageView-->
+<!--                        android:layout_width="100sp"-->
+<!--                        android:layout_height="100sp"-->
+<!--                        android:id="@+id/qr_code_scan_profile"-->
+<!--                        android:background="@drawable/rounded_md"-->
+<!--                        android:clipToOutline="true"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        />-->
+<!--                </LinearLayout>-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="20dp"
-                android:text="Welcome!"
-                android:textStyle="bold" />
+<!--        </LinearLayout>-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginRight="20dp"
-                android:text="Username"
-                android:textSize="40sp"
-                android:id="@+id/usernameTextView"
-                android:textStyle="bold" />
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:orientation="vertical">-->
 
-        </LinearLayout>
-    </RelativeLayout>
+<!--            <ImageButton-->
+<!--                android:layout_width="30dp"-->
+<!--                android:layout_height="30dp"-->
+<!--                android:id="@+id/settingsButton"-->
+<!--                android:background="@drawable/settings_icon"-->
+<!--                android:layout_gravity="end"-->
+<!--                android:layout_margin="10dp"-->
+<!--                android:src="@drawable/settings_icon" />-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="end"-->
+<!--                android:layout_marginTop="20dp"-->
+<!--                android:layout_marginRight="20dp"-->
+<!--                android:text="Welcome!"-->
+<!--                android:textStyle="bold" />-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="end"-->
+<!--                android:layout_marginRight="20dp"-->
+<!--                android:text="Username"-->
+<!--                android:textSize="40sp"-->
+<!--                android:id="@+id/usernameTextView"-->
+<!--                android:textStyle="bold" />-->
+
+<!--        </LinearLayout>-->
+<!--    </RelativeLayout>-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -89,11 +169,6 @@
         android:layout_marginEnd="40sp"
         android:gravity="center"
         android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-        </LinearLayout>
         <LinearLayout
             android:layout_width="250sp"
             android:layout_height="150sp"
@@ -115,6 +190,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="Scan QR Code"
+                android:fontFamily="@font/open_sans"
                 android:textSize="20sp"
                 android:textStyle="bold"/>
         </LinearLayout>
