@@ -79,10 +79,6 @@ public class WalletPage extends AppCompatActivity {
             integrator.initiateScan();
         });
 
-        order_selector = findViewById(R.id.sorting_spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.orders, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        order_selector.setAdapter(adapter);
 
 
         qrCodeList.setOnItemClickListener((parent, view, position, id) -> {
@@ -139,12 +135,18 @@ public class WalletPage extends AppCompatActivity {
         usernametext = findViewById(R.id.usernameTextView);
         points = findViewById(R.id.points);
         qrCodeCount = findViewById(R.id.qrcodeCount);
+        Chip defaultChip = findViewById(R.id.defaultChip);
+        Chip ascendingChip = findViewById(R.id.ascendingChip);
+        Chip descendingChip = findViewById(R.id.descendingChip);
+
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference docRef = db.collection("Users").document(username);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                order_selector.setSelection(0);
+                defaultChip.setChecked(true);
+                ascendingChip.setChecked(false);
+                descendingChip.setChecked(false);
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
@@ -173,9 +175,6 @@ public class WalletPage extends AppCompatActivity {
                 } else {
                     Log.d("Err", "get failed with ", task.getException());
                 }
-                Chip defaultChip = findViewById(R.id.defaultChip);
-                Chip ascendingChip = findViewById(R.id.ascendingChip);
-                Chip descendingChip = findViewById(R.id.descendingChip);
 
                 defaultChip.setOnClickListener(new View.OnClickListener() {
                     @Override
