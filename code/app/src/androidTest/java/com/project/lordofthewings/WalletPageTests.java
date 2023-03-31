@@ -83,6 +83,7 @@ public class WalletPageTests {
         solo.waitForActivity("WalletPage");
         solo.assertCurrentActivity("WalletPage", WalletPage.class);
 
+
     }
 
     /**
