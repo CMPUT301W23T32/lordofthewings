@@ -19,10 +19,13 @@ jobs:
           cache: "gradle"
         name: Setup Java JDK 11
       - name: Give gradlew Execute Permission
+        working-directory: ./code
         run: chmod +x gradlew
       - name: Build App (fixes some dependency errors with Javadoc)
+        working-directory: ./code
         run: ./gradlew build --parallel -x test
       - name: Create Javadoc
+        working-directory: ./code
         run: ./gradlew generateReleaseJavadoc
       - name: Deploy to Github Pages
         uses: JamesIves/github-pages-deploy-action@v4
