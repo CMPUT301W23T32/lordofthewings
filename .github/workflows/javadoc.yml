@@ -1,0 +1,33 @@
+name: Deploy Javadoc
+
+on:
+  push:
+    branches:
+      - develop
+      - main
+
+jobs:
+  publish_javadoc:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        name: Checkout Repository
+      - uses: actions/setup-java@v3
+        with:
+          distribution: "temurin"
+          java-version: "11"
+          cache: "gradle"
+        name: Setup Java JDK 11
+      - name: Give gradlew Execute Permission
+        working-directory: ./code
+        run: chmod +x gradlew
+      - name: Build App (fixes some dependency errors with Javadoc)
+        working-directory: ./code
+        run: ./gradlew build --parallel -x test
+      - name: Create Javadoc
+        working-directory: ./code
+        run: ./gradlew generateReleaseJavadoc
+      - name: Deploy to Github Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: doc/javadocs/
