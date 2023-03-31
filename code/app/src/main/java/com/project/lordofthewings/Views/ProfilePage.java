@@ -55,9 +55,9 @@ public class ProfilePage extends AppCompatActivity {
     ArrayList<Map<String, Object>> users_array;
     String savedUsername;
     ProgressBar progressBar;
-    LinearLayout profileLayout;
+    LinearLayout profileLayout, linearLayout2;
     TextView userRank;
-
+    String hash;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,18 +69,24 @@ public class ProfilePage extends AppCompatActivity {
         profileLayout = findViewById(R.id.profileLayout);
         progressBar.setVisibility(View.VISIBLE);
         userRank = findViewById(R.id.rank_text);
+        linearLayout2 = findViewById(R.id.linearLayout2);
         ImageButton backButton = findViewById(R.id.backIcon);
         backButton.setOnClickListener(v -> {
             Intent intent = new Intent(ProfilePage.this, HomePage.class);
             startActivity(intent);
             finish();
+
         });
 
 //        ImageButton editButton = findViewById(R.id.editIcon);
 //        editButton.setOnClickListener(v -> {
 //
 //        });
-
+        linearLayout2.setOnClickListener(v -> {
+            Intent intent = new Intent(ProfilePage.this, QRCodePage.class);
+            intent.putExtra("hash", hash);
+            startActivity(intent);
+        });
         this.fetchDataAndRefreshUI();
         if (savedUsername.equals(username)) {
             ImageButton editButton = findViewById(R.id.editIcon);
@@ -280,6 +286,7 @@ public class ProfilePage extends AppCompatActivity {
                                                             }
                                                             rank_value[0] = (Integer) (qrCodes_test.indexOf(qrCodes.get(0).get("hash"))) + 1;
                                                             Picasso.get().load(url2+qrCodes.get(0).get("hash").toString()).into(qrImage);
+                                                            hash = qrCodes.get(0).get("hash").toString();
                                                             QRCode qrCode = new QRCode(qrCodes.get(0).get("hash").toString(), 0);
                                                             qr_naming.setText(qrCode.getQRName());
                                                             Log.d("TEST", rank_value[0].toString());
