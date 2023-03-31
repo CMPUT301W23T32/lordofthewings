@@ -40,6 +40,8 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -93,6 +95,8 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
     String qr_code;
     Wallet wallet;
     ProgressBar progressBar;
+    ProgressBar locationLoader;
+    ImageView locationLoaded;
     QRCode qr;
     protected LocationManager locationManager;
     protected LocationListener locationListener;
@@ -103,6 +107,7 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
     String provider;
     protected String latitude, longitude;
     protected boolean gps_enabled, network_enabled;
+
     @Override
     protected void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
@@ -123,6 +128,9 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
         cancel_button = findViewById(R.id.cancel_button);
 
         location_switch = findViewById(R.id.add_location_switch);
+        locationLoader = findViewById(R.id.location_loader);
+        locationLoaded = findViewById(R.id.location_loaded);
+
 
         EditText comment = findViewById(R.id.comment);
         // using the QRCode Class
@@ -245,9 +253,13 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked){
-                    mFusedLocationClient = LocationServices.getFusedLocationProviderClient(QRCodeScan.this);
+                    locationLoader.setVisibility(View.VISIBLE);
+                    save_button.setAllowClickWhenDisabled(false);
                     getLastLocation(QRCodeScan.this);
                 }else{
+                    locationLoader.setVisibility(View.INVISIBLE);
+                    locationLoaded.setVisibility(View.GONE);
+                    save_button.setAllowClickWhenDisabled(true);
                     location_text.setText("Location Not Added");
                     latitude = "";
                     longitude = "";
@@ -306,26 +318,27 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
     }
     @SuppressLint("MissingPermission")
     private void getLastLocation(walletCallback callback) {
+
         // check if permissions are given
         if (checkPermissions()) {
             // check if location is enabled
             if (isLocationEnabled()) {
-                // getting last
-                // location from
-                // FusedLocationClient
-                // object
-                mFusedLocationClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Location> task) {
-                        Location location = task.getResult();
-                        if (location == null) {
-                            requestNewLocationData();
-                        } else {
-                            latitude = String.valueOf(location.getLatitude());
-                            longitude = String.valueOf(location.getLongitude());
-                        }
-                        callback.onCallback();
-                    }
+                mFusedLocationClient = LocationServices.getFusedLocationProviderClient(QRCodeScan.this);
+                if (ActivityCompat.checkSelfPermission(QRCodeScan.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(QRCodeScan.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return;
+                }
+                Task<Location> locationTask = mFusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, null);
+                locationTask.addOnSuccessListener(location -> {
+                    latitude = String.valueOf(location.getLatitude());
+                    longitude = String.valueOf(location.getLongitude());
+                    callback.onCallback();
                 });
             } else {
                 Toast.makeText(this, "Please turn on" + " your location...", Toast.LENGTH_LONG).show();
@@ -338,28 +351,28 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
             requestPermissions();
         }
     }
-    @SuppressLint("MissingPermission")
-    private void requestNewLocationData() {
-        // Initializing LocationRequest
-        // object with appropriate methods
-        LocationRequest mLocationRequest = new LocationRequest();
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        mLocationRequest.setInterval(5);
-        mLocationRequest.setFastestInterval(0);
-        mLocationRequest.setNumUpdates(1);
-        // setting LocationRequest
-        // on FusedLocationClient
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
-    }
-    private LocationCallback mLocationCallback = new LocationCallback() {
-        @Override
-        public void onLocationResult(LocationResult locationResult) {
-            Location mLastLocation = locationResult.getLastLocation();
-            latitude = String.valueOf(mLastLocation.getLatitude());
-            longitude = String.valueOf(mLastLocation.getLongitude());
-        }
-    };
+//    @SuppressLint("MissingPermission")
+//    private void requestNewLocationData() {
+//        // Initializing LocationRequest
+//        // object with appropriate methods
+//        LocationRequest mLocationRequest = new LocationRequest();
+//        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+//        mLocationRequest.setInterval(5);
+//        mLocationRequest.setFastestInterval(0);
+//        mLocationRequest.setNumUpdates(1);
+//        // setting LocationRequest
+//        // on FusedLocationClient
+//        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+//        mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
+//    }
+//    private LocationCallback mLocationCallback = new LocationCallback() {
+//        @Override
+//        public void onLocationResult(LocationResult locationResult) {
+//            Location mLastLocation = locationResult.getLastLocation();
+//            latitude = String.valueOf(mLastLocation.getLatitude());
+//            longitude = String.valueOf(mLastLocation.getLongitude());
+//        }
+//    };
     /**
      * Method to check if location is enabled or not
      * @return
@@ -391,5 +404,8 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
     public void onCallback() {
         location_text.setText("Location Added: " + latitude + ", " + longitude);
         location_text.setVisibility(TextView.VISIBLE);
+        locationLoader.setVisibility(View.GONE);
+        locationLoaded.setVisibility(View.VISIBLE);
+        save_button.setAllowClickWhenDisabled(true);
     }
 }
