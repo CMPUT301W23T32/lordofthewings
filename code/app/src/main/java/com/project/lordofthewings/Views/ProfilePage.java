@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,11 +23,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.project.lordofthewings.Controllers.QRCodeArrayAdapter;
@@ -38,6 +41,7 @@ import com.squareup.picasso.Picasso;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class ProfilePage extends AppCompatActivity {
@@ -50,6 +54,9 @@ public class ProfilePage extends AppCompatActivity {
     ArrayList<String> qrCodes_test;
     ArrayList<Map<String, Object>> users_array;
     String savedUsername;
+    ProgressBar progressBar;
+    LinearLayout profileLayout;
+    TextView userRank;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +65,10 @@ public class ProfilePage extends AppCompatActivity {
         SharedPreferences sh = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
         savedUsername = sh.getString("username", "");
         username = getIntent().getStringExtra("username");
-
-
+        progressBar = findViewById(R.id.progressBar);
+        profileLayout = findViewById(R.id.profileLayout);
+        progressBar.setVisibility(View.VISIBLE);
+        userRank = findViewById(R.id.rank_text);
         ImageButton backButton = findViewById(R.id.backIcon);
         backButton.setOnClickListener(v -> {
             Intent intent = new Intent(ProfilePage.this, HomePage.class);
@@ -71,7 +80,6 @@ public class ProfilePage extends AppCompatActivity {
 //        editButton.setOnClickListener(v -> {
 //
 //        });
-
 
         this.fetchDataAndRefreshUI();
         if (savedUsername.equals(username)) {
@@ -246,14 +254,14 @@ public class ProfilePage extends AppCompatActivity {
                                                 qrCodes_test.add(qrcodes_test_2.get(i));
                                             }
                                         }
-                                        Log.d("DATA: ", qrCodes_test.get(1));
+                                        //Log.d("DATA: ", qrCodes_test.get(1));
                                         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                             @Override
                                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                                 if (task.isSuccessful()) {
                                                     DocumentSnapshot document = task.getResult();
                                                     if (document.exists()) {
-                                                        Log.e("data", document.get("QRCodes").toString());
+                                                        //Log.e("data", document.get("QRCodes").toString());
                                                         ArrayList<Map<String, Object>> qrCodes = (ArrayList<Map<String, Object>>) document.get("QRCodes");
                                                         ArrayList<Map<String, Object>> qrCodes2 = new ArrayList<>();
                                                         if (qrCodes != null) {
@@ -283,7 +291,7 @@ public class ProfilePage extends AppCompatActivity {
                                                             }
                                                             if (value > 10 && value <= 30) {
                                                                 rarity.setText("Rare");
-                                                                rarity.setTextColor(Color.GREEN);
+                                                                rarity.setTextColor(Color.BLUE);
                                                             }
                                                             if (value > 30 && value <= 100) {
                                                                 rarity.setText("Common");
@@ -313,6 +321,8 @@ public class ProfilePage extends AppCompatActivity {
                         }else{
                             qrcode_count.setText(Integer.toString(count));
                         }
+                        progressBar.setVisibility(View.GONE);
+                        profileLayout.setVisibility(View.VISIBLE);
                     } else {
                         Log.d(TAG, "No such document");
                     }
@@ -337,7 +347,7 @@ public class ProfilePage extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         ArrayList<Map<String, Object>> qrCodes = (ArrayList<Map<String, Object>>) document.get("QRCodes");
-                        Log.e("qrcode", String.valueOf(qrCodes.size()));
+                        //Log.e("qrcode", String.valueOf(qrCodes.size()));
                         if (qrCodes != null) {
                             qrCodeAdapter.clear();
                             for (Map<String, Object> qrCode : qrCodes) {
