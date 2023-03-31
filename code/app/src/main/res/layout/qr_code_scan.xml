@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="14dp"
-        android:text="Add New QRCode"
+        android:text="QRCode Found!"
         android:textColor="@color/black"
         android:textSize="27dp"
         android:textStyle="bold" />
@@ -52,7 +52,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:paddingTop="0dp"
+            android:paddingTop="10dp"
             android:text="No Name Scanned"
             android:textSize="20dp"
             android:textStyle="bold" />
@@ -107,52 +107,52 @@
             android:visibility="gone" />
 
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content">
+
             <com.google.android.material.progressindicator.CircularProgressIndicator
                 android:id="@+id/location_loader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                app:indicatorSize="24dp"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="18dp"
+                android:layout_toStartOf="@id/add_location_switch"
                 android:indeterminate="true"
-                android:visibility="invisible"/>
+                android:visibility="invisible" />
+
             <ImageView
+                android:id="@+id/location_loaded"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="18dp"
+                android:layout_toStartOf="@id/add_location_switch"
                 android:src="@drawable/location_loaded"
-                android:id="@+id/location_loaded"
-                android:visibility="gone">
-
-            </ImageView>
+                android:visibility="gone" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
-                android:layout_width="match_parent"
                 android:id="@+id/add_location_switch"
-                android:layout_height="wrap_content"
-                android:checked="false"
-                android:textStyle="bold"
                 style="@style/Widget.App.Switch"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="1dp"
-                android:layout_marginRight="15dp"
+                android:layout_width="300dp"
+                android:layout_height="35dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="12dp"
+                android:checked="false"
+                android:text="Add Location of QRCode"
                 android:textSize="20sp"
-                android:text="Add Location of QRCode"/>
-        </LinearLayout>
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/location_added"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="Location added!"
-            android:textSize="20dp"
-            android:visibility="gone" />
+        </RelativeLayout>
+
+
 
 
 
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="15dp"

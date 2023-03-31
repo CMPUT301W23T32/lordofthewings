@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.location.LocationListener;
@@ -83,15 +84,14 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
     ImageView imageView;
     Button add_photo;
     Button remove_photo;
-    Button save_location;
-    Button remove_location;
+
 
     SwitchMaterial location_switch;
 
 
     Button save_button;
     Button cancel_button;
-    TextView location_text;
+
     String qr_code;
     Wallet wallet;
     ProgressBar progressBar;
@@ -118,13 +118,11 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
         code.setText(qr_code);
         add_photo = findViewById(R.id.add_image_button);
         imageView = findViewById(R.id.location_image);
-        location_text = findViewById(R.id.location_added);
+
         remove_photo = findViewById(R.id.remove_image_button);
-        location_text.setText("Location Not Added");
-        location_text.setVisibility(TextView.VISIBLE);
         save_button = findViewById(R.id.save_button);
         progressBar = findViewById(R.id.progressBar);
-        Button cancel_button = findViewById(R.id.cancel_button);
+//        cancel_button = findViewById(R.id.cancel_button);
         cancel_button = findViewById(R.id.cancel_button);
 
         location_switch = findViewById(R.id.add_location_switch);
@@ -254,13 +252,20 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked){
                     locationLoader.setVisibility(View.VISIBLE);
-                    save_button.setAllowClickWhenDisabled(false);
+                    //we disable the button here
+                    save_button.setClickable(false);
+//                    save_button.setEnabled(false);
+                    save_button.setBackgroundColor(Color.parseColor("#DCDCDC"));
+                    //save_button.setAllowClickWhenDisabled(false);
                     getLastLocation(QRCodeScan.this);
                 }else{
                     locationLoader.setVisibility(View.INVISIBLE);
                     locationLoaded.setVisibility(View.GONE);
-                    save_button.setAllowClickWhenDisabled(true);
-                    location_text.setText("Location Not Added");
+                    //we enable the button here
+                    save_button.setClickable(true);
+                    save_button.setBackgroundColor(Color.parseColor("#FFFFFF"));
+//                    save_button.setEnabled(true);
+                    //save_button.setAllowClickWhenDisabled(true);
                     latitude = "";
                     longitude = "";
                 }
@@ -402,10 +407,13 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
     }
     @Override
     public void onCallback() {
-        location_text.setText("Location Added: " + latitude + ", " + longitude);
-        location_text.setVisibility(TextView.VISIBLE);
+
         locationLoader.setVisibility(View.GONE);
         locationLoaded.setVisibility(View.VISIBLE);
-        save_button.setAllowClickWhenDisabled(true);
+        //we enable the button here
+        save_button.setClickable(true);
+        save_button.setBackgroundColor(Color.parseColor("#FFFFFF"));
+//        save_button.setEnabled(true);
+        //save_button.setAllowClickWhenDisabled(true);
     }
 }
