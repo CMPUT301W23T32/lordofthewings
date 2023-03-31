@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <TextView
@@ -38,7 +39,10 @@
             android:id="@+id/qr_code_visual_representation"
             android:layout_width="200dp"
             android:layout_height="200dp"
-            android:layout_gravity="center"
+            android:background="@drawable/rounded_md"
+            android:scaleType="centerCrop"
+            android:clipToOutline="true"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="3dp"
             android:gravity="center" />
@@ -111,6 +115,19 @@
             android:layout_marginRight="15dp"
             android:text="Add location of this QR code" />
 
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:textStyle="bold"
+            style="@style/Widget.App.Switch"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginRight="15dp"
+            android:textSize="20sp"
+            android:text="Add Location of QRCode"/>
+
         <TextView
             android:id="@+id/location_added"
             android:layout_width="match_parent"
@@ -131,13 +148,28 @@
 
             />
 
-        <EditText
-            android:id="@+id/comment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="300dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_gravity="center_horizontal"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
-            android:hint="Add a Comment?" />
+            app:counterEnabled="true"
+            app:counterMaxLength="30"
+
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:maxLines="1"
+                android:maxLength="30"
+                android:textSize="20sp"
+                android:hint="Add Comment"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
