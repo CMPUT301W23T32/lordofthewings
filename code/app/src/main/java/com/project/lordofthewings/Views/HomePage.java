@@ -120,10 +120,7 @@ public class HomePage extends AppCompatActivity {
                             finish();
                             return true;
                         }
-                        else if (menuItemId == R.id.settingsMenuItem) {
-                            //placeholder stuff in case we ever add a settings option
-                            return true;
-                        }
+
                         else{
                             return false;
                         }
