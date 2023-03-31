@@ -78,13 +78,16 @@
                 android:layout_gravity="center" >
                 <requestFocus/></ProgressBar>
         </FrameLayout>
+
         <Button
             android:id="@+id/add_image_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
-            android:text="Add an image where you found this code" />
+            android:fontFamily="sans-serif-medium"
+            android:text="Add an image where you found this code"
+            android:textSize="12sp" />
         <ImageView
             android:id="@+id/location_image"
             android:layout_width="100dp"
@@ -109,7 +112,8 @@
             android:layout_marginLeft="15dp"
             android:layout_marginTop="1dp"
             android:layout_marginRight="15dp"
-            android:text="Add location of this QR code" />
+            android:text="Add location of this QR code"
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/location_added"

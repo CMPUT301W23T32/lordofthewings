@@ -31,14 +31,15 @@
                     android:background="@drawable/rounded_md"
 
                     android:orientation="horizontal">
+
                     <ImageView
+                        android:id="@+id/qr_code_scan_profile"
                         android:layout_width="100sp"
                         android:layout_height="100sp"
-                        android:id="@+id/qr_code_scan_profile"
-                        android:background="@drawable/rounded_md"
-                        android:clipToOutline="true"
                         android:layout_gravity="center"
-                        />
+                        android:adjustViewBounds="true"
+                        android:background="@drawable/rounded_md"
+                        android:clipToOutline="true" />
                 </LinearLayout>
 
         </LinearLayout>
@@ -49,32 +50,35 @@
             android:orientation="vertical">
 
             <ImageButton
+                android:id="@+id/settingsButton"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:id="@+id/settingsButton"
-                android:background="@drawable/settings_icon"
                 android:layout_gravity="end"
                 android:layout_margin="10dp"
+                android:background="@drawable/settings_icon"
                 android:src="@drawable/settings_icon" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="20dp"
-                android:text="Welcome!"
+                android:text="Welcome"
+                android:textSize="35sp"
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/usernameTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
+                android:layout_marginTop="5dp"
                 android:layout_marginRight="20dp"
+                android:fontFamily="@font/open_sans_light"
                 android:text="Username"
-                android:textSize="40sp"
-                android:id="@+id/usernameTextView"
-                android:textStyle="bold" />
+                android:textSize="24sp"
+                android:textStyle="normal" />
 
         </LinearLayout>
     </RelativeLayout>

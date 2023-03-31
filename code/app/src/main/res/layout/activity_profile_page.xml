@@ -57,22 +57,21 @@
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="300dp"
-        android:layout_height="wrap_content"
+        android:layout_height="309dp"
         android:layout_gravity="center"
+        android:layout_marginTop="30sp"
         android:background="@drawable/profile_rounded"
         android:elevation="10dp"
         android:gravity="center"
         android:orientation="vertical"
-        android:padding="10dp"
-        android:layout_marginTop="40sp"
-        >
+        android:padding="10dp">
 
         <ImageView
             android:id="@+id/profileImage"
-            android:layout_width="100sp"
-            android:layout_height="100sp"
+            android:layout_width="130sp"
+            android:layout_height="130sp"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="0dp"
             android:background="@drawable/profile_pic"
             android:clipToOutline="true" />
 
@@ -80,60 +79,127 @@
             android:id="@+id/full_name_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="7dp"
+            android:layout_marginTop="12dp"
+            android:height="40dp"
             android:text="Full Name"
-            android:textSize="20dp" />
+            android:textSize="35dp" />
 
         <TextView
             android:id="@+id/username_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="username" />
+            android:layout_marginTop="3dp"
+            android:text="username"
+            android:textSize="18sp"
+            android:textStyle="italic" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="5dp">
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="0dp"
+            android:gravity="center">
 
-            <TextView
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/linearLayout5"
+                android:layout_width="65dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/linearLayout6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Score: " />
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="38dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/linearLayout5"
+                app:layout_constraintTop_toTopOf="@+id/linearLayout5"
+                app:layout_constraintVertical_bias="1.0">
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:fontFamily="@font/open_sans_light"
+                android:text="Score"
+                android:textSize="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/score_text" />
 
             <TextView
                 android:id="@+id/score_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0" />
+                android:layout_marginStart="33dp"
+                android:text="0"
+                android:textSize="25sp"
+                app:layout_constraintBottom_toTopOf="@+id/textView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text="Rank: " />
-
-            <TextView
-                android:id="@+id/rank_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text="QRCodes: " />
+                android:id="@+id/textView2"
+                android:layout_width="93dp"
+                android:layout_height="28dp"
+                android:fontFamily="@font/open_sans_light"
+                android:text="QRCodes: "
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
             <TextView
                 android:id="@+id/qrcodes_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0" />
-        </LinearLayout>
+                android:layout_marginEnd="44dp"
+                android:text="0"
+                android:textSize="25sp"
+                app:layout_constraintBottom_toTopOf="@+id/textView2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="28dp"
+                android:fontFamily="@font/open_sans_light"
+                android:text="Rank"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/textView2"
+                app:layout_constraintHorizontal_bias="0.626"
+                app:layout_constraintStart_toEndOf="@+id/textView" />
+
+            <TextView
+                android:id="@+id/rank_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:text="0"
+                android:textSize="25sp"
+                app:layout_constraintBottom_toTopOf="@+id/textView3"
+                app:layout_constraintEnd_toStartOf="@+id/qrcodes_text"
+                app:layout_constraintStart_toEndOf="@+id/score_text"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
+
     <ListView
         android:id="@+id/qr_codes_list_profile"
         android:layout_width="match_parent"

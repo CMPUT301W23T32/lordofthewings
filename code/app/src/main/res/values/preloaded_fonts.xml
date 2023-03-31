@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="preloaded_fonts" translatable="false">
+        <item>@font/aleo_light</item>
+        <item>@font/alfa_slab_one</item>
+        <item>@font/open_sans</item>
+        <item>@font/open_sans_light</item>
+        <item>@font/roboto</item>
+        <item>@font/rosario</item>
+        <item>@font/ubuntu</item>
+    </array>
+</resources>

@@ -17,22 +17,23 @@
             android:id="@+id/backIcon"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
-            android:src="@drawable/back_icon"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="8dp"
-            android:background="@drawable/rounded_md"/>
+            android:background="@drawable/rounded_md"
+            android:src="@drawable/back_icon" />
 
         <TextView
             android:id="@+id/usernameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/backIcon"
             android:layout_centerVertical="true"
-            android:textSize="22sp"
+            android:layout_toEndOf="@id/backIcon"
+            android:fontFamily="sans-serif-medium"
+            android:text="QRWallet"
             android:textColor="@color/orange_700"
-            android:textStyle="bold"
-            android:text="QRWallet" />
+            android:textSize="22sp"
+            android:textStyle="bold" />
 
     </RelativeLayout>
 
@@ -56,9 +57,10 @@
             android:id="@+id/pointsTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:layout_marginBottom="7dp"
             android:text="Score:"
-            android:textSize="22sp"
+            android:textSize="15sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/qrcodeCountTextView"
             app:layout_constraintEnd_toEndOf="parent"
@@ -72,9 +74,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="9dp"
-            android:layout_marginLeft="9dp"
             android:text="0 points"
-            android:textSize="19sp"
+            android:textSize="15sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/pointsTextView"
             app:layout_constraintStart_toEndOf="@+id/pointsTextView" />
 
@@ -83,8 +84,9 @@
             android:id="@+id/qrcodeCountTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="-15dp"
             android:text="QRCodes:"
-            android:textSize="20sp"
+            android:textSize="15sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -96,8 +98,9 @@
             android:id="@+id/qrcodeCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="-15dp"
             android:text="0"
-            android:textSize="19sp"
+            android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.013"
@@ -109,10 +112,13 @@
             android:id="@+id/scanButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
             android:background="@drawable/rounded_md"
-            android:text="Scan New QR code"
+            android:fontFamily="@font/open_sans"
+            android:text="Scan New"
             android:textColor="@color/white"
-            android:textSize="10sp"
+            android:textSize="13sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
@@ -123,6 +129,7 @@
         <LinearLayout
             android:layout_width="385dp"
             android:layout_height="48dp"
+            android:layout_marginLeft="100dp"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -136,9 +143,11 @@
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
                 android:layout_marginRight="15dp"
                 android:checked="true"
                 android:text="default" />
+
             <com.google.android.material.chip.Chip
                 android:id="@+id/ascendingChip"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
@@ -146,14 +155,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="15dp"
                 android:checked="false"
-                android:text="low - high" />
+                android:text="low > high" />
+
             <com.google.android.material.chip.Chip
                 android:id="@+id/descendingChip"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="false"
-                android:text="high - low" />
+                android:text="high > low" />
         </LinearLayout>
 
         <Spinner

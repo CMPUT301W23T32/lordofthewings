@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,7 @@ public class PlayerArrayAdapter extends ArrayAdapter<String> {
             parent){
         View view;
         String url = "https://api.dicebear.com/5.x/pixel-art/png?seed=";
+
         if (convertView == null) {
             view = LayoutInflater.from(getContext()).inflate(R.layout.usercontent,
                     parent, false);
@@ -50,6 +52,7 @@ public class PlayerArrayAdapter extends ArrayAdapter<String> {
         TextView username = view.findViewById(R.id.username_leaderboard);
         username.setText(getItem(position));
         TextView rank = view.findViewById(R.id.position_leaderboard);
+
         String rankString = sh.getString(getItem(position),"0");
         //checkrank(rankString, view);
         rank.setText("#"+rankString);

@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -107,6 +108,15 @@ public class LeaderBoardPage extends AppCompatActivity {
         learderboardAdapter = new PlayerArrayAdapter(this);
         leaderboardList = findViewById(R.id.list_leaderboard);
         leaderboardList.setAdapter(learderboardAdapter);
+
+//        View item1 = leaderboardList.getChildAt(0);
+//        View item2 = leaderboardList.getChildAt(1);
+//        View item3 = leaderboardList.getChildAt(2);
+//
+//        item1.setBackgroundColor(Color.RED);
+//        item2.setBackgroundColor(Color.BLUE);
+//        item3.setBackgroundColor(Color.GREEN);
+
         db.collection("Users")
                 .orderBy("Score", Query.Direction.DESCENDING)
                 .get()
@@ -133,5 +143,6 @@ public class LeaderBoardPage extends AppCompatActivity {
                         Log.d(TAG, "Error getting documents: ", e);
                     }
                 });
+
     }
 }
