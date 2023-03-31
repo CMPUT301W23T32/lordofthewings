@@ -21,9 +21,11 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +44,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -80,6 +83,10 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
     Button remove_photo;
     Button save_location;
     Button remove_location;
+
+    SwitchMaterial location_switch;
+
+
     Button save_button;
     Button cancel_button;
     TextView location_text;
@@ -108,13 +115,14 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
         imageView = findViewById(R.id.location_image);
         location_text = findViewById(R.id.location_added);
         remove_photo = findViewById(R.id.remove_image_button);
-        remove_location = findViewById(R.id.remove_location_button);
         location_text.setText("Location Not Added");
         location_text.setVisibility(TextView.VISIBLE);
         save_button = findViewById(R.id.save_button);
         progressBar = findViewById(R.id.progressBar);
         Button cancel_button = findViewById(R.id.cancel_button);
         cancel_button = findViewById(R.id.cancel_button);
+
+        location_switch = findViewById(R.id.add_location_switch);
 
         EditText comment = findViewById(R.id.comment);
         // using the QRCode Class
@@ -229,13 +237,26 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
             }
 
         });
-        remove_location.setOnClickListener(c -> {
-            location_text.setText("Location Not Added");
-            latitude = "";
-            longitude = "";
-            remove_location.setVisibility(Button.GONE);
-            save_location.setVisibility(Button.VISIBLE);
+
+
+
+
+        location_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    mFusedLocationClient = LocationServices.getFusedLocationProviderClient(QRCodeScan.this);
+                    getLastLocation(QRCodeScan.this);
+                }else{
+                    location_text.setText("Location Not Added");
+                    latitude = "";
+                    longitude = "";
+                }
+            }
         });
+
+
+
         add_photo.setOnClickListener(c -> {
             Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
             startActivityForResult(cameraIntent, CAMERA_REQUEST);
@@ -245,22 +266,22 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
             add_photo.setVisibility(Button.VISIBLE);
             remove_photo.setVisibility(Button.GONE);
         });
-        save_location = findViewById(R.id.add_location_button);
-        save_location.setOnClickListener(c -> {
-            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-            getLastLocation(this);
-//            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-//            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//                requestPermissions();
-//            }
-//            if (!checkPermissions()){
-//                return;
-//            }
-//            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-//            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-//            latitude = String.valueOf(location.getLatitude());
-//            longitude = String.valueOf(location.getLongitude());
-        });
+//        save_location = findViewById(R.id.add_location_button);
+//        save_location.setOnClickListener(c -> {
+//            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+//            getLastLocation(this);
+////            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+////            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+////                requestPermissions();
+////            }
+////            if (!checkPermissions()){
+////                return;
+////            }
+////            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+////            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+////            latitude = String.valueOf(location.getLatitude());
+////            longitude = String.valueOf(location.getLongitude());
+//        });
     }
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -370,7 +391,5 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
     public void onCallback() {
         location_text.setText("Location Added: " + latitude + ", " + longitude);
         location_text.setVisibility(TextView.VISIBLE);
-        save_location.setVisibility(Button.GONE);
-        remove_location.setVisibility(Button.VISIBLE);
     }
 }

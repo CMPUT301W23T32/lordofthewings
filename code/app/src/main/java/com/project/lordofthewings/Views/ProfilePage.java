@@ -212,7 +212,6 @@ public class ProfilePage extends AppCompatActivity {
                         int userScore = document.getLong("Score").intValue();
                         String scoreString = Integer.toString(userScore);
                         score.setText(scoreString);
-                        rank.setText("N/A");
                         ArrayList<Map<String, Object>> qrcodes = (ArrayList<Map<String, Object>>)document.get("QRCodes");
                         Log.d("TEST:", String.valueOf(qrcodes.size()));
                         if (qrcodes.size() != 0) {

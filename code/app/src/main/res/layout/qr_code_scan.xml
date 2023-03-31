@@ -106,20 +106,13 @@
             android:text="Remove Image"
             android:visibility="gone" />
 
-        <Button
-            android:id="@+id/add_location_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginRight="15dp"
-            android:text="Add location of this QR code" />
 
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:layout_width="match_parent"
+            android:id="@+id/add_location_switch"
             android:layout_height="wrap_content"
-            android:checked="true"
+            android:checked="false"
             android:textStyle="bold"
             style="@style/Widget.App.Switch"
             android:layout_marginLeft="15dp"
@@ -137,16 +130,6 @@
             android:textSize="20dp"
             android:visibility="gone" />
 
-        <Button
-            android:id="@+id/remove_location_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:text="Remove Location"
-            android:visibility="gone"
-
-            />
 
 
         <com.google.android.material.textfield.TextInputLayout
