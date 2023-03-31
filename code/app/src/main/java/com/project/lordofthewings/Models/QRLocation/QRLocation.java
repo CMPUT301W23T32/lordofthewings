@@ -47,16 +47,37 @@ public class QRLocation {
     ArrayList<QRCode> qrCodes;
     QRCodeCallback callback;
     FirebaseController fbController = new FirebaseController();
-    FirebaseFirestore db = fbController.getDb();
+    FirebaseFirestore db;
     ArrayList<QRCode> locatedQrs;
 
     MapsActivity activity;
+
+    public QRLocation(FirebaseFirestore db, MapsActivity activity){
+        Log.d("manan", "1");
+        this.qrCodes = new ArrayList<>();
+        this.db = db;
+        this.activity = activity;
+        // get QRCodes from Firebase
+        db.collection("QRCodes").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                List<DocumentSnapshot> snapshotList = queryDocumentSnapshots.getDocuments();
+                for (DocumentSnapshot snapshot : snapshotList) {
+                    LatLng pos = snapshot.get("Location") == null ? null : new LatLng(snapshot.getGeoPoint("Location").getLatitude(), snapshot.getGeoPoint("Location").getLongitude());
+                    Map<String, Object> qrObject = (Map<String, Object>) snapshot.get("QRCode");
+                    QRCode qrCode = new QRCode(qrObject.get("hash").toString(), pos);
+                    qrCodes.add(qrCode);
+                }
+            }
+        });
+    }
 
     public QRLocation(QRCodeCallback callback, MapsActivity activity){
         Log.d("manan", "2");
         this.qrCodes = new ArrayList<>();
         this.callback = callback;
         this.activity = activity;
+        this.db = fbController.getDb();
         // get QRCodes from Firebase
             db.collection("QRCodes").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                 @Override
