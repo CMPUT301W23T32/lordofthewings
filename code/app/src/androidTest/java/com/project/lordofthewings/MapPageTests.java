@@ -112,6 +112,7 @@ public class MapPageTests {
         solo.clickOnView(solo.getView(R.id.search_text));
         solo.enterText((EditText) solo.getView(R.id.search_text), "University of Alberta");
         solo.pressSoftKeyboardSearchButton();
+        solo.sleep(4000);
         solo.waitForText("University of Alberta", 1, 2000);
         solo.clickOnImage(0);
         solo.sleep(4000);
@@ -134,8 +135,9 @@ public class MapPageTests {
         solo.sleep(4000);
         int heightOfDevice = Resources.getSystem().getDisplayMetrics().heightPixels;
         solo.drag(0, 0, heightOfDevice , heightOfDevice -= 1000000, 10);
+        solo.sleep(4000);
         solo.clickOnText("all");
-        solo.sleep(7000);
+        solo.sleep(3000);
         // Get MapsActivity to access its variables and methods.
         MapsActivity activity = (MapsActivity) solo.getCurrentActivity();
         ArrayAdapter<HashMap<QRCode, Float>> list = activity.getList(); // Get the listview
@@ -153,12 +155,13 @@ public class MapPageTests {
         solo.sleep(4000);
         int heightOfDevice = Resources.getSystem().getDisplayMetrics().heightPixels;
         solo.drag(0, 0, heightOfDevice , heightOfDevice -= 1000000, 10);
+        solo.sleep(5000);
         solo.clickOnText("all");
-        solo.sleep(7000);
+        solo.sleep(5000);
         // Get MapsActivity to access its variables and methods.
         MapsActivity activity = (MapsActivity) solo.getCurrentActivity();
         ArrayAdapter<HashMap<QRCode, Float>> list = activity.getList(); // Get the listview
-        if (list.getCount()>0) {
+        if (list.getCount()>0 && list != null) {
             QRCode qrCode = (QRCode) (list.getItem(0)).keySet().toArray()[0];
             String name = qrCode.getQRName();
             int score = qrCode.getQRScore();
