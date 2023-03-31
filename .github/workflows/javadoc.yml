@@ -6,6 +6,11 @@ on:
   pull_request:
     branches: [develop]
 
+permissions:
+  contents: write
+  deployments: write
+  actions: write
+
 jobs:
   publish_javadoc:
     runs-on: ubuntu-latest
