@@ -102,8 +102,8 @@ public class MapPageTests {
         solo.waitForActivity("MapsActivity");
         solo.assertCurrentActivity("MapsActivity", MapsActivity.class);
         solo.clickOnView(solo.getView(R.id.back_button_map));
-        solo.waitForActivity("SignUpPage");
-        solo.assertCurrentActivity("SignUpPage", SignUpPage.class);
+        solo.waitForActivity("HomePage");
+        solo.assertCurrentActivity("HomePage", HomePage.class);
     }
 
     @Test
