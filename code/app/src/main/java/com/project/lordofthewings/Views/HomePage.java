@@ -12,6 +12,8 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -45,26 +47,52 @@ import java.util.Map;
  */
 
 public class HomePage extends AppCompatActivity {
-    TextView usernametext;
-    String username;
-    private AnimationDrawable animationDrawable;
-    private RelativeLayout relativeLayout;
+    private TextView usernametext;
+    private String username;
+    private RelativeLayout header;
+    private LinearLayout scan_qr_code, nav_bar;
+    private ImageButton profileButton, leaderBoard, mapButton, wallet_page, settingsButton;
+    private ImageView profileQR;
+    private Animation fade_in, fade_out;
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
         setContentView(R.layout.new_homepage);
-        //TextView hometext = findViewById(R.id.TextView01);
+
+        // getting the username from shared preferences
         SharedPreferences sh = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
         String username = sh.getString("username", "");
+        this.username = username;
+
+        // mapping variables from layout
+        fade_in = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+        header = findViewById(R.id.header);
+        scan_qr_code = findViewById(R.id.scanButton);
+        nav_bar = findViewById(R.id.navbar);
         usernametext = findViewById(R.id.usernameTextView);
         usernametext.setText(username);
-        ImageButton profileButton = findViewById(R.id.profileButton);
-        ImageButton leaderBoard = findViewById(R.id.leaderboardButton);
+        profileButton = findViewById(R.id.profileButton);
+        leaderBoard = findViewById(R.id.leaderboardButton);
+        profileQR = findViewById(R.id.qr_code_scan_profile);
+        mapButton= findViewById(R.id.mapButton);
+        wallet_page = findViewById(R.id.walletButton);
+        settingsButton = findViewById(R.id.settingsButton);
 
-        ImageView profileQR = findViewById(R.id.qr_code_scan_profile);
-        String url ="https://quickchart.io/qr?text=" + "https://lordofthewingswebsite-ivx491f2i-mansooranis.vercel.app/"+username;
+        // Handler for delaying intents
+        Handler handler = new Handler();
+
+        // setting entry animations
+        scan_qr_code.startAnimation(fade_in);
+        header.startAnimation(fade_in);
+        nav_bar.startAnimation(fade_in);
+
+        // Loading the profile QRCode
+        String url ="https://quickchart.io/qr?text=" + "https://lordofthewingswebsite.vercel.app/"+username;
         Picasso.get().load(url).into(profileQR);
+
+        // setting on click listeners for buttons
+
         profileQR.setOnClickListener(v -> {
             ProfileQRCodeFragment dialog = new ProfileQRCodeFragment();
             dialog.show(getSupportFragmentManager(), "Profile QR Code");
@@ -73,26 +101,31 @@ public class HomePage extends AppCompatActivity {
         profileButton.setOnClickListener(v -> {
             Intent intent = new Intent(HomePage.this, ProfilePage.class);
             intent.putExtra("username", username);
+            runExitAnimation();
+            // delay the intent so the animation can finish
             startActivity(intent);
+            
         });
 
         leaderBoard.setOnClickListener(v -> {
             Intent intent = new Intent(HomePage.this, LeaderBoardPage.class);
+            runExitAnimation();
+            // delay the intent so the animation can finish
             startActivity(intent);
         });
 
-        ImageButton mapButton= findViewById(R.id.mapButton);
         mapButton.setOnClickListener(v -> {
             Intent intent = new Intent(HomePage.this, MapsActivity.class);
-            startActivity(intent);});
-
-        this.username = username;
-        ImageButton wallet_page = findViewById(R.id.walletButton);
-        wallet_page.setOnClickListener(c -> {
-            Intent intent = new Intent(HomePage.this, WalletPage.class);
+            runExitAnimation();
             startActivity(intent);
         });
-        LinearLayout scan_qr_code = findViewById(R.id.scanButton);
+
+        wallet_page.setOnClickListener(c -> {
+            Intent intent = new Intent(HomePage.this, WalletPage.class);
+            runExitAnimation();
+            startActivity(intent);
+        });
+
         scan_qr_code.setOnClickListener(c -> {
             IntentIntegrator integrator = new IntentIntegrator(this);
             integrator.setPrompt("Scan a QR Code");
@@ -101,7 +134,6 @@ public class HomePage extends AppCompatActivity {
 
         });
 
-        ImageButton settingsButton = findViewById(R.id.settingsButton);
         settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -144,7 +176,7 @@ public class HomePage extends AppCompatActivity {
             } else {
                 Log.d("MainActivity", "Scanned");
                 String qr_code = result.getContents();
-                if (qr_code.contains("https://lordofthewingswebsite-ivx491f2i-mansooranis.vercel.app/")){;
+                if (qr_code.contains("https://lordofthewingswebsite.vercel.app/")){;
                     Log.e("qr_code", qr_code.substring(63));
                     qr_code = qr_code.substring(63);
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -197,5 +229,13 @@ public class HomePage extends AppCompatActivity {
         editor.clear();
         editor.apply();
     }
-
+    private void runExitAnimation(){
+        fade_out = AnimationUtils.loadAnimation(this, R.anim.fade_out);
+        header = findViewById(R.id.header);
+        header.startAnimation(fade_out);
+        scan_qr_code = findViewById(R.id.scanButton);
+        scan_qr_code.startAnimation(fade_out);
+        nav_bar = findViewById(R.id.navbar);
+        nav_bar.startAnimation(fade_out);
+    }
 }

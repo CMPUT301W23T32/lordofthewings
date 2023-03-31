@@ -8,9 +8,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,7 +42,7 @@ import java.util.Map;
  * throughout the app.
  */
 public class QRCodeArrayAdapter extends ArrayAdapter<QRCode> {
-
+    View view;
     public QRCodeArrayAdapter(@NonNull Context context) {
         super(context, 0);
     }
@@ -47,18 +50,22 @@ public class QRCodeArrayAdapter extends ArrayAdapter<QRCode> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup
             parent) {
-        View view;
+
         if (convertView == null) {
             view = LayoutInflater.from(getContext()).inflate(R.layout.qrcodecontent,
                     parent, false);
         } else {
             view = convertView;
         }
+        Animation fade_in = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
+        Animation fade_out = AnimationUtils.loadAnimation(getContext(), R.anim.fade_out);
         SharedPreferences sh = getContext().getSharedPreferences("sharedPrefs", MODE_PRIVATE);
         String username = sh.getString("username", "");
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         QRCode qrCode = (QRCode)getItem(position);
         String url = "https://api.dicebear.com/5.x/bottts-neutral/png?seed=";
+        LinearLayout qrcode_content_layout = view.findViewById(R.id.qrcode_content_layout);
+        qrcode_content_layout.startAnimation(fade_in);
         TextView qrCodeName = view.findViewById(R.id.qrcode_name);
         TextView qrCodePoints = view.findViewById(R.id.qrcode_points);
         ImageView qrCodeImage = view.findViewById(R.id.qrcode_image);
