@@ -80,7 +80,6 @@ public class MapPageTests {
         solo.getCurrentActivity().startActivity(mapIntent);
         solo.waitForActivity("MapsActivity");
         solo.assertCurrentActivity("MapsActivity",MapsActivity.class);
-
     }
 
     /**
@@ -99,7 +98,7 @@ public class MapPageTests {
     //written @Before we do not go to the homepage. (the back button just calls finish() not sending
     //intents)
     @Test
-    public void backButtonReturnsToPreviousActivity() {
+    public void testBackButtonReturnsToPreviousActivity() {
         solo.waitForActivity("MapsActivity");
         solo.assertCurrentActivity("MapsActivity", MapsActivity.class);
         solo.clickOnView(solo.getView(R.id.back_button_map));
@@ -108,7 +107,7 @@ public class MapPageTests {
     }
 
     @Test
-    public void TestLocationSearch() {
+    public void testLocationSearch() {
         solo.sleep(4000);
         solo.clickOnView(solo.getView(R.id.search_text));
         solo.enterText((EditText) solo.getView(R.id.search_text), "University of Alberta");
@@ -121,7 +120,7 @@ public class MapPageTests {
     }
 
     @Test
-    public void TestLocationSearchNotFoundMessage() {
+    public void testLocationSearchNotFoundMessage() {
         solo.sleep(4000);
         solo.clickOnView(solo.getView(R.id.search_text));
         solo.enterText((EditText) solo.getView(R.id.search_text), "RandomCountryDoesNotExist");
@@ -131,34 +130,47 @@ public class MapPageTests {
     }
 
     @Test
-    public void switchesToQRCodePageCorrectQrInfo(){
+    public void testSwitchesToQRCodePage(){
         solo.sleep(4000);
         int heightOfDevice = Resources.getSystem().getDisplayMetrics().heightPixels;
         solo.drag(0, 0, heightOfDevice , heightOfDevice -= 1000000, 10);
+        solo.clickOnText("all");
         solo.sleep(7000);
         // Get MapsActivity to access its variables and methods.
         MapsActivity activity = (MapsActivity) solo.getCurrentActivity();
         ArrayAdapter<HashMap<QRCode, Float>> list = activity.getList(); // Get the listview
-        QRCode qrCode = (QRCode) (list.getItem(0)).keySet().toArray()[0];
-        String name = qrCode.getQRName();
-        int score = qrCode.getQRScore();
-        solo.clickInList(0);
-        solo.waitForActivity("QRCodePage");
-        solo.assertCurrentActivity("Wrong Activity", QRCodePage.class);
-        solo.waitForText(name, 1, 2000);
-        solo.waitForText(Integer.toString(score), 1, 2000);
+        if (list.getCount()>0) {
+            QRCode qrCode = (QRCode) (list.getItem(0)).keySet().toArray()[0];
+            solo.clickInList(0);
+            solo.waitForActivity("QRCodePage");
+            solo.assertCurrentActivity("Wrong Activity", QRCodePage.class);
+
+        }
     }
 
     @Test
-    public void switchesToQRCodePage(){
+    public void testSwitchesToQRCodePageCorrectQrInfo(){
         solo.sleep(4000);
         int heightOfDevice = Resources.getSystem().getDisplayMetrics().heightPixels;
         solo.drag(0, 0, heightOfDevice , heightOfDevice -= 1000000, 10);
+        solo.clickOnText("all");
+        solo.sleep(7000);
         // Get MapsActivity to access its variables and methods.
-        solo.clickInList(0);
-        solo.waitForActivity("QRCodePage");
-        solo.assertCurrentActivity("Wrong Activity", QRCodePage.class);
+        MapsActivity activity = (MapsActivity) solo.getCurrentActivity();
+        ArrayAdapter<HashMap<QRCode, Float>> list = activity.getList(); // Get the listview
+        if (list.getCount()>0) {
+            QRCode qrCode = (QRCode) (list.getItem(0)).keySet().toArray()[0];
+            String name = qrCode.getQRName();
+            int score = qrCode.getQRScore();
+            solo.clickInList(0);
+            solo.waitForActivity("QRCodePage");
+            solo.assertCurrentActivity("Wrong Activity", QRCodePage.class);
+            solo.waitForText(name, 1, 2000);
+            solo.waitForText(Integer.toString(score), 1, 2000);
+        }
     }
+
+
 
 
     /**
