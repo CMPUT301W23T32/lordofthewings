@@ -27,10 +27,13 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.android.material.chip.Chip;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.project.lordofthewings.Controllers.QRCodeArrayAdapter;
@@ -55,6 +58,10 @@ public class WalletPage extends AppCompatActivity {
     private TextView usernametext;
     private Animation fade_in, fade_out;
     private ConstraintLayout linearLayout2;
+
+    Spinner order_selector;
+    String username;
+    ArrayList<String> qrCodes_test;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -142,11 +149,18 @@ public class WalletPage extends AppCompatActivity {
         usernametext = findViewById(R.id.usernameTextView);
         points = findViewById(R.id.points);
         qrCodeCount = findViewById(R.id.qrcodeCount);
+        Chip defaultChip = findViewById(R.id.defaultChip);
+        Chip ascendingChip = findViewById(R.id.ascendingChip);
+        Chip descendingChip = findViewById(R.id.descendingChip);
+
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference docRef = db.collection("Users").document(username);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                defaultChip.setChecked(true);
+                ascendingChip.setChecked(false);
+                descendingChip.setChecked(false);
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
@@ -175,9 +189,6 @@ public class WalletPage extends AppCompatActivity {
                 } else {
                     Log.d("Err", "get failed with ", task.getException());
                 }
-                Chip defaultChip = findViewById(R.id.defaultChip);
-                Chip ascendingChip = findViewById(R.id.ascendingChip);
-                Chip descendingChip = findViewById(R.id.descendingChip);
 
                 defaultChip.setOnClickListener(new View.OnClickListener() {
                     @Override

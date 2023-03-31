@@ -1,37 +1,24 @@
 package com.project.lordofthewings;
 
-import static android.content.ContentValues.TAG;
-
 import android.app.Activity;
 
-import androidx.annotation.NonNull;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
-import android.widget.EditText;
-import android.widget.ListView;
+import android.widget.ImageView;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.journeyapps.barcodescanner.CaptureActivity;
-import com.project.lordofthewings.Controllers.FirebaseController;
-import com.project.lordofthewings.Views.CameraPages.QRCodeScan;
 import com.project.lordofthewings.Views.HomePage;
 import com.project.lordofthewings.Views.LeaderBoardPage;
-import com.project.lordofthewings.Views.MainActivity;
 import com.project.lordofthewings.Views.MapsActivity;
 import com.project.lordofthewings.Views.ProfilePage;
 import com.project.lordofthewings.Views.StartUpPages.SignUpPage;
-import com.project.lordofthewings.Views.StartUpPages.StartUpPage;
 import com.project.lordofthewings.Views.WalletPage;
 import com.robotium.solo.Solo;
 
-import org.jetbrains.annotations.TestOnly;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -63,7 +50,8 @@ public class HomePageTests {
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
         SharedPreferences sh = rule.getActivity().getSharedPreferences("sharedPrefs", 0);
         SharedPreferences.Editor editor = sh.edit();
-        editor.putString("username", "ntt");
+        editor.putString("username", "bobtest");
+        editor.apply();
         Intent homeIntent = new Intent(solo.getCurrentActivity(), HomePage.class);
         solo.getCurrentActivity().startActivity(homeIntent);
         solo.waitForActivity("HomePage");
@@ -80,7 +68,9 @@ public class HomePageTests {
         Activity activity = rule.getActivity();
     }
 
-
+    /**
+     * Checks if goes to wallet page on clicking the wallet button
+     */
     @Test
     public void checkWalletButton() {
         solo.clickOnView(solo.getView(R.id.walletButton));
@@ -88,6 +78,9 @@ public class HomePageTests {
         solo.assertCurrentActivity("WalletPage", WalletPage.class);
     }
 
+    /**
+     * Checks if goes to map page on clicking map button
+     */
     @Test
     public void checkMapButton() {
         solo.clickOnView(solo.getView(R.id.mapButton));
@@ -95,6 +88,9 @@ public class HomePageTests {
         solo.assertCurrentActivity("MapsActivity", MapsActivity.class);
     }
 
+    /**
+     * Checks if goes to profile page on clicking profile button
+     */
     @Test
     public void checkProfileButton() {
         solo.clickOnView(solo.getView(R.id.profileButton));
@@ -102,6 +98,9 @@ public class HomePageTests {
         solo.assertCurrentActivity("UserProfilePage", ProfilePage.class);
     }
 
+    /**
+     * Checks if goes to leaderboard page on clicking leaderboard button
+     */
     @Test
     public void checkLeaderBoardButton() {
         solo.clickOnView(solo.getView(R.id.leaderboardButton));
@@ -109,9 +108,22 @@ public class HomePageTests {
         solo.assertCurrentActivity("LeaderBoardPage", LeaderBoardPage.class);
     }
 
+    /**
+     * Checks if switches to scanner on clicking scanner button
+     */
+    @Test
+    public void checkScanButton() {
+        solo.clickOnView(solo.getView(R.id.scanButton));
+        solo.waitForActivity("CaptureActivity");
+        solo.assertCurrentActivity("CaptureActivity", CaptureActivity.class);
+    }
+
+    /**
+     * Checks if the username displayed is the right username
+     */
     @Test
     public void checkUsername(){
-        solo.searchText("lal");
+        solo.searchText("bobtest");
     }
 
     /**
