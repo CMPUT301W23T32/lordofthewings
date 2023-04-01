@@ -176,7 +176,7 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
                                 finish();
                             }
                             if (present == 1){
-                                Toast.makeText(getApplicationContext(), "QR ALREADY ADDED", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "QRCode already added!", Toast.LENGTH_SHORT).show();
                                 finish();
                             }
                             
@@ -302,12 +302,14 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
     }
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CAMERA_REQUEST) {
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            imageView.setImageBitmap(photo);
-            imageView.setVisibility(ImageView.VISIBLE);
-            add_photo.setVisibility(Button.GONE);
-            remove_photo.setVisibility(Button.VISIBLE);
+        if (resultCode != RESULT_CANCELED) {
+            if (requestCode == CAMERA_REQUEST) {
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
+                imageView.setImageBitmap(photo);
+                imageView.setVisibility(ImageView.VISIBLE);
+                add_photo.setVisibility(Button.GONE);
+                remove_photo.setVisibility(Button.VISIBLE);
+            }
         }
     }
     /**
