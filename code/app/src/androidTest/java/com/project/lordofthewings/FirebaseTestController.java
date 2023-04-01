@@ -44,6 +44,7 @@ public class FirebaseTestController {
         db = FirebaseFirestore.getInstance();
         db.collection("Users").document(username).delete().addOnSuccessListener(aVoid -> {
             Log.d("Success","Test user deleted");
+            TestUsers.remove(username);
         }).addOnFailureListener(e -> {
             Log.d("Error","Test user not deleted");
             Log.d("Error",e.toString());
@@ -111,7 +112,7 @@ public class FirebaseTestController {
         db.collection("QRCodes").document(hash).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-                testQrs.remove(qr.getHash());
+                testQrs.remove(hash);
             }
         });
 
