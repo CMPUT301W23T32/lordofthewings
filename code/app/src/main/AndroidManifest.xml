@@ -59,9 +59,9 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".Views.StartUpPages.StartUpPage"
+            android:name=".Views.StartUpPages.NewStartUpPage"
             android:exported="true"
-            android:label="StartUpPage">
+            android:label="NewStartUpPage">
         </activity>
         <activity
             android:name=".Views.WalletPage"
