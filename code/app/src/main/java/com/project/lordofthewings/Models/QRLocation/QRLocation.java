@@ -46,12 +46,19 @@ import java.util.Map;
 public class QRLocation {
     ArrayList<QRCode> qrCodes;
     QRCodeCallback callback;
-    FirebaseController fbController = new FirebaseController();
+
     FirebaseFirestore db;
     ArrayList<QRCode> locatedQrs;
 
     MapsActivity activity;
 
+    public void setArray(ArrayList<QRCode> qrCodes){
+        this.qrCodes = qrCodes;
+    }
+
+    public ArrayList<QRCode> getArray(){
+        return this.qrCodes;
+    }
     public QRLocation(FirebaseFirestore db, MapsActivity activity){
         Log.d("manan", "1");
         this.qrCodes = new ArrayList<>();
@@ -77,6 +84,7 @@ public class QRLocation {
         this.qrCodes = new ArrayList<>();
         this.callback = callback;
         this.activity = activity;
+        FirebaseController fbController = new FirebaseController();
         this.db = fbController.getDb();
         // get QRCodes from Firebase
             db.collection("QRCodes").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
