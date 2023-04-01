@@ -55,6 +55,11 @@ public class QRLocationUnitTest {
         String lat = "0";
         String lon = "0";
 
+        Map<String, Object> data = new HashMap<>();
+        data.put("QRCode", qr);
+        data.put("Authors", authors);
+        data.put("Comments", comments);
+
         float latInt = (float) (Float.parseFloat(lat));
         float lonInt = (float) (Float.parseFloat(lon));
         if (lat != null && lon != null) {
@@ -65,11 +70,6 @@ public class QRLocationUnitTest {
             data.put("Location", null);
         }
 
-        Map<String, Object> data = new HashMap<>();
-        data.put("QRCode", qr);
-        data.put("Authors", authors);
-        data.put("Comments", comments);
-
         db.collection("QRCodes").document(qr.getHash())
                 .set(data);
 
@@ -79,7 +79,7 @@ public class QRLocationUnitTest {
         Mockito.when(db.collection("QRCodes")).thenReturn(collectionReference);
         Mockito.when(collectionReference.get()).thenReturn(taskMock);
         Mockito.when(querySnapshot.getDocuments()).thenReturn(testData);
-        Moc
+
 
     }
 
