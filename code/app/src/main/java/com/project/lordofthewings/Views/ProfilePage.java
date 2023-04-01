@@ -126,6 +126,15 @@ public class ProfilePage extends AppCompatActivity {
         });
 
     }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        fetchDataAndRefreshUI();
+    }
+
+
     public void fetchDataAndRefreshUI(){
         TextView name = findViewById(R.id.full_name_text);
         TextView score = findViewById(R.id.score_text);
