@@ -33,10 +33,6 @@ public class EditProfileFragment extends DialogFragment {
 
     FirebaseController fbcontroller = new FirebaseController();
     FirebaseFirestore db = fbcontroller.getDb();
-    String firstName1;
-    String lastName1;
-    String email1;
-
 
     public EditProfileFragment(){
         // Required empty public constructor
@@ -55,9 +51,6 @@ public class EditProfileFragment extends DialogFragment {
         DocumentReference docRef = db.collection("Users").document(username);
         docRef.get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
-//                firstName1 = documentSnapshot.getString("firstName");
-//                lastName1 = documentSnapshot.getString("lastName");
-//                email1 = documentSnapshot.getString("email");
                 firstName.setText(documentSnapshot.getString("firstName"));
                 lastName.setText(documentSnapshot.getString("lastName"));
                 email.setText(documentSnapshot.getString("email"));
@@ -67,12 +60,6 @@ public class EditProfileFragment extends DialogFragment {
                 Log.d("TAG", "No such document");
             }
         }).addOnFailureListener(e -> Log.d("TAG", "get failed with ", e));
-
-//        firstName.setText(firstName1);
-//        lastName.setText(lastName1);
-//        email.setText(email1);
-
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         return new MaterialAlertDialogBuilder(requireActivity(),R.style.MaterialAlertDialog_rounded)
                 .setView(view)
