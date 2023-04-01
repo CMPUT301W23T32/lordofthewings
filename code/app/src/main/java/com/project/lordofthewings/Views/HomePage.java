@@ -1,6 +1,7 @@
 package com.project.lordofthewings.Views;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -30,6 +31,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -143,13 +145,33 @@ public class HomePage extends AppCompatActivity {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         int menuItemId = menuItem.getItemId();
+
                         if (menuItemId == R.id.logoutMenuItem) {
-                            clearSharedPreferences();
-                            Intent intent = new Intent(HomePage.this, MainActivity.class);
-                            //destroying all activities before this so it doesn't keep login vals
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
-                            finish();
+
+//                            clearSharedPreferences();
+//                            Intent intent = new Intent(HomePage.this, MainActivity.class);
+//                            //destroying all activities before this so it doesn't keep login vals
+//                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                            startActivity(intent);
+//                            finish();
+                            MaterialAlertDialogBuilder verifyDelete = new MaterialAlertDialogBuilder(HomePage.this, R.style.MaterialAlertDialog_rounded)
+                                    .setTitle("Log out")
+                                    .setMessage("Would you like to log out?")
+                                    .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
+                                    .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            // deleteQRCode(hash,db);
+                                            clearSharedPreferences();
+                                            Intent intent = new Intent(HomePage.this, MainActivity.class);
+                                            //destroying all activities before this so it doesn't keep login vals
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                    });
+                            verifyDelete.create();
+                            verifyDelete.show();
                             return true;
                         }
                         else{
