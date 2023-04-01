@@ -72,7 +72,6 @@ public class FirebaseTestController {
                 testQrs.add(addQr.getHash());
             }
         });
-
     }
 
 
@@ -106,6 +105,22 @@ public class FirebaseTestController {
     }
 
 
+    public void deleteQRCode2(String hash){
+
+
+        db.collection("QRCodes").document(hash).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                testQrs.remove(qr.getHash());
+            }
+        });
+
+    }
+
+
+
+
+
 
     public void initializeTest(){
         //can control dummy data here if you want
@@ -119,6 +134,10 @@ public class FirebaseTestController {
     public void finishTest(){
         for(String username: TestUsers){
             deleteTestUser(username);
+        }
+
+        for(String hash: testQrs){
+            deleteQRCode2(hash);
         }
     }
 
