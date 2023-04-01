@@ -137,7 +137,7 @@ public class HomePageTests {
     public void checkProfileQrClick(){
         solo.clickOnView(solo.getView(R.id.qr_code_scan_profile));
         solo.sleep(1000);
-        boolean findProfileQR= solo.waitForFragmentByTag("Profile QR Code");
+        boolean findProfileQR= solo.waitForText("Share your Profile");
         assertTrue("can't find log profile Qr", findProfileQR);
 
     }
@@ -146,7 +146,9 @@ public class HomePageTests {
     public void checkLogOut(){
         solo.clickOnView(solo.getView(R.id.settingsButton));
         solo.sleep(1000);
-        solo.clickOnView(solo.getView(R.id.logoutMenuItem));
+        solo.clickOnText("Logout");
+        solo.sleep(1000);
+        solo.clickOnText("Confirm");
         solo.waitForActivity("SignUpPage");
         solo.assertCurrentActivity("SignUpPage", SignUpPage.class);
     }
