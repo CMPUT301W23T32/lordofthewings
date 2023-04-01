@@ -116,10 +116,10 @@ public class LeaderBoardPage extends AppCompatActivity {
                         List<DocumentSnapshot> leaderboard = queryDocumentSnapshots.getDocuments();
                         SharedPreferences sharedPreferences = getSharedPreferences("leaderboard", MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
-                        for (DocumentSnapshot l : leaderboard) {
-                            editor.putString(l.getId(), String.valueOf(leaderboard.indexOf(l)+1));
+                        for (int i = 0; i < leaderboard.size(); i++) {
+                            editor.putString(leaderboard.get(i).getId(), String.valueOf((i + 1)));
                             editor.apply();
-                            stringLeaderboard.add(l.getId());
+                            stringLeaderboard.add(leaderboard.get(i).getId());
                         }
                         learderboardAdapter.addAll(stringLeaderboard);
                         learderboardAdapter.notifyDataSetChanged();
