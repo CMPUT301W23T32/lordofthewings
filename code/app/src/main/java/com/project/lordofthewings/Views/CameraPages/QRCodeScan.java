@@ -264,12 +264,14 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
     }
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CAMERA_REQUEST) {
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            imageView.setImageBitmap(photo);
-            imageView.setVisibility(ImageView.VISIBLE);
-            add_photo.setVisibility(Button.GONE);
-            remove_photo.setVisibility(Button.VISIBLE);
+        if (resultCode != RESULT_CANCELED) {
+            if (requestCode == CAMERA_REQUEST) {
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
+                imageView.setImageBitmap(photo);
+                imageView.setVisibility(ImageView.VISIBLE);
+                add_photo.setVisibility(Button.GONE);
+                remove_photo.setVisibility(Button.VISIBLE);
+            }
         }
     }
     /**
