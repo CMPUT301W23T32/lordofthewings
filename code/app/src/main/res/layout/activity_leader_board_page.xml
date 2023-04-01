@@ -1,40 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
 
+    <!-- Separator line -->
     <RelativeLayout
         android:id="@+id/topLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp">
+
         <ImageButton
             android:id="@+id/backIcon2"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
-            android:src="@drawable/back_icon"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="8dp"
-            android:background="@drawable/rounded_md"/>
+            android:background="@drawable/rounded_md"
+            android:src="@drawable/back_icon" />
 
         <TextView
             android:id="@+id/leaderboardactivity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/backIcon2"
             android:layout_centerVertical="true"
-            android:textSize="22sp"
+            android:layout_toEndOf="@id/backIcon2"
+            android:fontFamily="sans-serif-medium"
+            android:text="QRLeaderboard"
             android:textColor="@color/orange_700"
-            android:textStyle="bold"
-            android:text="QRLeaderboard" />
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
     </RelativeLayout>
 
-    <!-- Separator line -->
     <View
         android:id="@+id/separatorView"
         android:layout_width="match_parent"
@@ -43,11 +46,9 @@
         android:background="#9B9B9B" />
 
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".Views.LeaderBoardPage">
 
@@ -107,9 +108,11 @@
                 android:id="@+id/position_leaderboard_main"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="52dp"
+                android:layout_marginRight="18dp"
+                android:fontFamily="serif"
                 android:text="#1"
-                android:textSize="20dp"
+                android:textSize="16sp"
+                android:textStyle="italic"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -121,6 +124,7 @@
         android:layout_below="@+id/leaderboard_list_item_main"
         android:layout_centerInParent="true"
         android:layout_height="wrap_content">
+
         <ListView
             android:id="@+id/list_leaderboard"
             android:layout_width="match_parent"
@@ -130,8 +134,8 @@
             android:layout_marginEnd="7dp"
             android:layout_marginBottom="7dp"
             android:choiceMode="singleChoice"
-            android:divider="@drawable/empty_tall_divider"
-            />
+            android:divider="@drawable/empty_tall_divider" />
+
         <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
