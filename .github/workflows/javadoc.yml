@@ -6,12 +6,22 @@ on:
   pull_request:
     branches: [develop]
 
+permissions:
+  contents: write
+  deployments: write
+  actions: write
+
 jobs:
   publish_javadoc:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
         name: Checkout Repository
+      - name: Create local.properties
+        working-directory: ./code
+        env:
+          MAPS_API_KEY: ${{secrets.MAPS_API_KEY}}
+        run: echo "MAPS_API_KEY='$MAPS_API_KEY'" >> local.properties
       - uses: actions/setup-java@v3
         with:
           distribution: "temurin"
