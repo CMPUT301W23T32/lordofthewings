@@ -125,7 +125,21 @@ public class HomePageTests {
     public void checkUsername(){
         solo.searchText("bobtest");
     }
+    @Test
+    public void checkSettingButton(){
+        solo.clickOnView(solo.getView(R.id.settingsButton));
+        boolean findLogOut = solo.waitForView(R.id.logoutMenuItem);
+        assertTrue("can't find log out", findLogOut);
 
+    }
+
+    @Test
+    public void checkProfileQrClick(){
+        solo.clickOnView(solo.getView(R.id.qr_code_scan_profile));
+        boolean findProfileQR= solo.waitForFragmentByTag("Profile QR Code");
+        assertTrue("can't find log profile Qr", findProfileQR);
+
+    }
     /**
      * Close activity after each test, deletes the test user from firestore after each test
      * @throws Exception
