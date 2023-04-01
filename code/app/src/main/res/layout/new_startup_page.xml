@@ -12,9 +12,9 @@
 
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="187dp"
-        android:layout_height="203dp"
-        android:layout_marginTop="500dp"
+        android:layout_width="295dp"
+        android:layout_height="290dp"
+        android:layout_marginTop="200dp"
         android:src="@mipmap/ic_launcher_round"
         app:layout_constraintBottom_toTopOf="@+id/start_button"
         app:layout_constraintEnd_toEndOf="parent"
@@ -26,19 +26,21 @@
 
     <Button
         android:id="@+id/start_button"
-        android:layout_width="170dp"
-        android:layout_height="50dp"
+        android:layout_width="360dp"
+        android:layout_height="70dp"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="140dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="140dp"
-        android:layout_marginBottom="491dp"
+        android:layout_marginBottom="400dp"
         android:fontFamily="monospace"
         android:text="Get Started"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:cornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logo" />
 
