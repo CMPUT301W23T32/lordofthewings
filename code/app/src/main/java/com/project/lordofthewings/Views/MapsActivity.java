@@ -268,10 +268,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                 }
-                else {
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                }
                 return false;
             }
         });
