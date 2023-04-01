@@ -176,7 +176,7 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
                                 finish();
                             }
                             if (present == 1){
-                                Toast.makeText(getApplicationContext(), "QR ALREADY ADDED", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "QRCode already added!", Toast.LENGTH_SHORT).show();
                                 finish();
                             }
                             
