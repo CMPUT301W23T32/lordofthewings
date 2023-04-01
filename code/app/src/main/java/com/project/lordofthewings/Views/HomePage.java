@@ -143,17 +143,13 @@ public class HomePage extends AppCompatActivity {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         int menuItemId = menuItem.getItemId();
-                        if (menuItemId == R.id.logoutMenuItem){
+                        if (menuItemId == R.id.logoutMenuItem) {
                             clearSharedPreferences();
                             Intent intent = new Intent(HomePage.this, MainActivity.class);
                             //destroying all activities before this so it doesn't keep login vals
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);
                             finish();
-                            return true;
-                        }
-                        else if (menuItemId == R.id.settingsMenuItem) {
-                            //placeholder stuff in case we ever add a settings option
                             return true;
                         }
                         else{
