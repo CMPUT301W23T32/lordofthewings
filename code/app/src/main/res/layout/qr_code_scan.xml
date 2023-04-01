@@ -2,13 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="14dp"
-        android:text="Add New QRCode"
+        android:text="QRCode Found!"
         android:textColor="@color/black"
         android:textSize="27dp"
         android:textStyle="bold" />
@@ -38,7 +39,10 @@
             android:id="@+id/qr_code_visual_representation"
             android:layout_width="200dp"
             android:layout_height="200dp"
-            android:layout_gravity="center"
+            android:background="@drawable/rounded_md"
+            android:scaleType="centerCrop"
+            android:clipToOutline="true"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="3dp"
             android:gravity="center" />
@@ -48,7 +52,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:paddingTop="0dp"
+            android:paddingTop="10dp"
             android:text="No Name Scanned"
             android:textSize="20dp"
             android:textStyle="bold" />
@@ -102,42 +106,72 @@
             android:text="Remove Image"
             android:visibility="gone" />
 
-        <Button
-            android:id="@+id/add_location_button"
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/location_loader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:indicatorSize="24dp"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="18dp"
+                android:layout_toStartOf="@id/add_location_switch"
+                android:indeterminate="true"
+                android:visibility="invisible" />
+
+            <ImageView
+                android:id="@+id/location_loaded"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="18dp"
+                android:layout_toStartOf="@id/add_location_switch"
+                android:src="@drawable/location_loaded"
+                android:visibility="gone" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/add_location_switch"
+                style="@style/Widget.App.Switch"
+                android:layout_width="300dp"
+                android:layout_height="35dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="12dp"
+                android:checked="false"
+                android:text="Add Location of QRCode"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+
+
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_gravity="center_horizontal"
             android:layout_marginLeft="15dp"
-            android:layout_marginTop="1dp"
             android:layout_marginRight="15dp"
-            android:text="Add location of this QR code" />
+            app:counterEnabled="true"
+            app:counterMaxLength="30"
 
-        <TextView
-            android:id="@+id/location_added"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="Location added!"
-            android:textSize="20dp"
-            android:visibility="gone" />
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:maxLines="1"
+                android:maxLength="30"
+                android:textSize="20sp"
+                android:hint="Add Comment"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
-            android:id="@+id/remove_location_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:text="Remove Location"
-            android:visibility="gone"
-
-            />
-
-        <EditText
-            android:id="@+id/comment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:hint="Add a Comment?" />
 
         <LinearLayout
             android:layout_width="match_parent"

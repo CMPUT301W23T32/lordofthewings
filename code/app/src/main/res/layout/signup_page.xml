@@ -30,49 +30,107 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/username"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="300dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:background="@drawable/rounded_md"
-            android:hint="Username"
-            android:inputType="text"
-            android:textColorHint="#9B9B9B"
-            android:paddingLeft="10dp" />
-        <EditText
-            android:id="@+id/email"
-            android:layout_width="300dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/rounded_md"
-            android:hint="e-mail"
-            android:inputType="textEmailAddress"
-            android:textColorHint="#9B9B9B"
-            android:paddingLeft="10dp" />
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxCornerRadiusBottomEnd="20dp"
+            app:boxCornerRadiusBottomStart="20dp"
+            app:boxCornerRadiusTopEnd="20dp"
+            app:boxCornerRadiusTopStart="20dp"
+            android:layout_gravity="center_horizontal"
+            app:counterEnabled="true"
+            app:counterMaxLength="10"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:maxLength="10"
+                android:maxLines="1"
+                android:background="@null"
+                android:inputType="text"
+                android:paddingLeft="10dp"
+                android:textColorHint="#9B9B9B"
+                android:textSize="20sp"
+                android:hint="Username"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:id="@+id/firstName"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="300dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/rounded_md"
-            android:hint="First Name"
-            android:textColorHint="#9B9B9B"
-            android:paddingLeft="10dp" />
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_gravity="center_horizontal"
+            app:boxCornerRadiusBottomEnd="20dp"
+            app:boxCornerRadiusBottomStart="20dp"
+            app:boxCornerRadiusTopEnd="20dp"
+            app:boxCornerRadiusTopStart="20dp"
+            app:counterEnabled="true"
+            app:counterMaxLength="20"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/firstName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:maxLength="20"
+                android:maxLines="1"
+                android:background="@null"
+                android:inputType="text"
+                android:paddingLeft="10dp"
+                android:textColorHint="#9B9B9B"
+                android:textSize="20sp"
+                android:hint="First Name"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:id="@+id/lastName"
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="300dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/rounded_md"
-            android:hint="Last Name"
-            android:textColorHint="#9B9B9B"
-            android:paddingLeft="10dp" />
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_gravity="center_horizontal"
+            app:counterEnabled="true"
+            app:boxCornerRadiusBottomEnd="20dp"
+            app:boxCornerRadiusBottomStart="20dp"
+            app:boxCornerRadiusTopEnd="20dp"
+            app:boxCornerRadiusTopStart="20dp"
+            app:counterMaxLength="20"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/lastName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:maxLength="20"
+                android:maxLines="1"
+                android:background="@null"
+                android:inputType="text"
+                android:paddingLeft="10dp"
+                android:textColorHint="#9B9B9B"
+                android:textSize="20sp"
+                android:hint="Last Name"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="300dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_gravity="center_horizontal"
+            app:boxCornerRadiusBottomEnd="20dp"
+            app:boxCornerRadiusBottomStart="20dp"
+            app:boxCornerRadiusTopEnd="20dp"
+            app:boxCornerRadiusTopStart="20dp"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:maxLines="1"
+                android:background="@null"
+                android:inputType="textEmailAddress"
+                android:paddingLeft="10dp"
+                android:textColorHint="#9B9B9B"
+                android:textSize="20sp"
+                android:hint="E-Mail"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <ProgressBar
             android:layout_width="wrap_content"
