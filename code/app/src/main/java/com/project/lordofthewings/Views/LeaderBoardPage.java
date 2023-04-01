@@ -40,7 +40,6 @@ public class LeaderBoardPage extends AppCompatActivity {
     SearchView search_bar;
     ProgressBar progressBar;
     ImageButton back;
-    String username;
     ArrayList<String> stringLeaderboard = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +49,7 @@ public class LeaderBoardPage extends AppCompatActivity {
         progressBar.setVisibility(View.VISIBLE);
         getLeaderboard();
         SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
-        username = sharedPreferences.getString("username", "");
+        String username = sharedPreferences.getString("username", "");
 
         String url = "https://api.dicebear.com/5.x/pixel-art/png?seed=";
         ImageView main_image = findViewById(R.id.profile_pic_leaderboard_main);
@@ -60,7 +59,10 @@ public class LeaderBoardPage extends AppCompatActivity {
         main_username.setText(username);
 
         sharedPreferences = getSharedPreferences("leaderboard", MODE_PRIVATE);
+        String rankString = sharedPreferences.getString(username,"0");
+        TextView main_rank = findViewById(R.id.position_leaderboard_main);
 
+        main_rank.setText("#"+rankString);
 
         back = findViewById(R.id.backIcon2);
         back.setOnClickListener(new View.OnClickListener() {
@@ -96,7 +98,7 @@ public class LeaderBoardPage extends AppCompatActivity {
             Intent intent = new Intent(LeaderBoardPage.this, ProfilePage.class);
             intent.putExtra("username", learderboardAdapter.getItem(position).toString());
             startActivity(intent);
-            });
+        });
 
     }
 
@@ -114,6 +116,11 @@ public class LeaderBoardPage extends AppCompatActivity {
                         List<DocumentSnapshot> leaderboard = queryDocumentSnapshots.getDocuments();
                         SharedPreferences sharedPreferences = getSharedPreferences("leaderboard", MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
+//                        for (DocumentSnapshot l : leaderboard) {
+//                            editor.putString(l.getId(), String.valueOf(leaderboard.indexOf(l)+1));
+//                            editor.apply();
+//                            stringLeaderboard.add(l.getId());
+//                        }
                         for (int i = 0; i < leaderboard.size(); i++) {
                             editor.putString(leaderboard.get(i).getId(), String.valueOf((i + 1)));
                             editor.apply();
@@ -121,10 +128,8 @@ public class LeaderBoardPage extends AppCompatActivity {
                         }
                         learderboardAdapter.addAll(stringLeaderboard);
                         learderboardAdapter.notifyDataSetChanged();
-                        String rankString = sharedPreferences.getString(username,"0");
-                        TextView main_rank = findViewById(R.id.position_leaderboard_main);
-                        main_rank.setText("#"+rankString);
                         progressBar.setVisibility(View.GONE);
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -133,28 +138,5 @@ public class LeaderBoardPage extends AppCompatActivity {
                         Log.d(TAG, "Error getting documents: ", e);
                     }
                 });
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        getLeaderboard();
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        SharedPreferences sharedPreferences = getSharedPreferences("leaderboard", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.clear();
-        editor.apply();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        SharedPreferences sharedPreferences = getSharedPreferences("leaderboard", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.clear();
-        editor.apply();
     }
 }
