@@ -106,11 +106,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ImageButton listback;
     private ProgressBar progressBar;
     private ChipGroup chipGroup;
-    private Chip chip_20;
-    private Chip chip_40;
-    private Chip chip_60;
-    private Chip chip_100;
-    private Chip chip_all;
+    private Chip chip_20, chip_all, chip_100, chip_60, chip_40;
     private TextView noQrCodes;
 
 
@@ -148,6 +144,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         back_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(MapsActivity.this, HomePage.class);
+                startActivity(intent);
                 finish();
             }
         });
@@ -503,4 +501,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
     }
+
+    public ArrayAdapter<HashMap<QRCode, Float>> getList() {
+        return this.mapArrayAdapter;
+
+    }
+
 }

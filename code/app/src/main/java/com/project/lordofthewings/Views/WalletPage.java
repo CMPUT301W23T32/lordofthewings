@@ -6,10 +6,13 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
@@ -20,13 +23,17 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.android.material.chip.Chip;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.project.lordofthewings.Controllers.QRCodeArrayAdapter;
@@ -45,20 +52,33 @@ import java.util.Map;
 public class WalletPage extends AppCompatActivity {
     private ListView qrCodeList;
     private ArrayAdapter<QRCode> qrCodeAdapter;
-    TextView points;
-    ProgressBar progressBar;
-    TextView qrCodeCount;
-    TextView usernametext;
+    private TextView points, qrCodeCount;
+    private ProgressBar progressBar;
+    private ImageButton back;
+    private TextView usernametext;
+    private Animation fade_in, fade_out;
+    private ConstraintLayout linearLayout2;
+
     Spinner order_selector;
     String username;
+    ArrayList<String> qrCodes_test;
 
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
         setContentView(R.layout.walletpage);
-        ImageButton back = findViewById(R.id.backIcon);
+
+        back = findViewById(R.id.backIcon);
         progressBar = findViewById(R.id.progressBar);
+        Button scan_qr_code = findViewById(R.id.scanButton);
+        linearLayout2 = findViewById(R.id.linearLayout2);
+        fade_in = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+        fade_out = AnimationUtils.loadAnimation(this, R.anim.fade_out);
+
+        fetchDataAndRefreshUIdefault();
+        // setting entry animations
+        linearLayout2.setAnimation(fade_in);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,20 +87,13 @@ public class WalletPage extends AppCompatActivity {
                 finish();
             }
         });
-        fetchDataAndRefreshUIdefault();
-        Button scan_qr_code = findViewById(R.id.scanButton);
+
         scan_qr_code.setOnClickListener(c -> {
             IntentIntegrator integrator = new IntentIntegrator(this);
             integrator.setPrompt("Scan a QR Code");
             integrator.setOrientationLocked(false);
             integrator.initiateScan();
         });
-
-        order_selector = findViewById(R.id.sorting_spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.orders, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        order_selector.setAdapter(adapter);
-
 
         qrCodeList.setOnItemClickListener((parent, view, position, id) -> {
             QRCode qrCode = qrCodeAdapter.getItem(position);
@@ -136,11 +149,18 @@ public class WalletPage extends AppCompatActivity {
         usernametext = findViewById(R.id.usernameTextView);
         points = findViewById(R.id.points);
         qrCodeCount = findViewById(R.id.qrcodeCount);
+        Chip defaultChip = findViewById(R.id.defaultChip);
+        Chip ascendingChip = findViewById(R.id.ascendingChip);
+        Chip descendingChip = findViewById(R.id.descendingChip);
+
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference docRef = db.collection("Users").document(username);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                defaultChip.setChecked(true);
+                ascendingChip.setChecked(false);
+                descendingChip.setChecked(false);
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
@@ -169,9 +189,6 @@ public class WalletPage extends AppCompatActivity {
                 } else {
                     Log.d("Err", "get failed with ", task.getException());
                 }
-                Chip defaultChip = findViewById(R.id.defaultChip);
-                Chip ascendingChip = findViewById(R.id.ascendingChip);
-                Chip descendingChip = findViewById(R.id.descendingChip);
 
                 defaultChip.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -304,5 +321,8 @@ public class WalletPage extends AppCompatActivity {
                 });
             }
         });
+    }
+    private void runExitAnimation(){
+
     }
 }

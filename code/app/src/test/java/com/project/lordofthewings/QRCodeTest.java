@@ -66,5 +66,3 @@ public class QRCodeTest {
         assertNotEquals(QR1.getVisualRepr(),QR2.getVisualRepr());
     }
 }
-
-

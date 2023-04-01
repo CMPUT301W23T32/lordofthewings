@@ -1,146 +1,239 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:backgroundTint="#e9ecef">
-
-    <RelativeLayout
-        android:id="@+id/relativeLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="15dp"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageButton
-            android:id="@+id/backIcon"
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/rounded_md"
-            android:src="@drawable/back_icon" />
-
-        <TextView
-            android:id="@+id/myProfileTextView"
-            style="@style/TextAppearance.AppCompat.Body2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toEndOf="@id/backIcon"
-            android:paddingLeft="5dp"
-            android:textColor="@color/orange_700"
-            android:textStyle="bold"
-            android:text="My Profile"
-            android:textSize="22sp" />
-
-        <ImageButton
-            android:id="@+id/editIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="false"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/edit_icon"
-            android:visibility="invisible"/>
-    </RelativeLayout>
-
-    <View
-        android:id="@+id/separatorView"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@id/topLayout"
-        android:background="#9B9B9B" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="@drawable/profile_rounded"
-        android:elevation="10dp"
-        android:gravity="center"
+        android:layout_height="match_parent"
+        android:visibility="invisible"
         android:orientation="vertical"
-        android:padding="10dp"
-        android:layout_marginTop="40sp"
-        >
+        android:id="@+id/profileLayout"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:backgroundTint="#e9ecef">
 
-        <ImageView
-            android:id="@+id/profileImage"
-            android:layout_width="100sp"
-            android:layout_height="100sp"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/profile_pic"
-            android:clipToOutline="true" />
-
-        <TextView
-            android:id="@+id/full_name_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="7dp"
-            android:text="Full Name"
-            android:textSize="20dp" />
-
-        <TextView
-            android:id="@+id/username_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="username" />
-
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="15dp"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:id="@+id/backIcon"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/rounded_md"
+                android:src="@drawable/back_icon" />
+
+            <TextView
+                android:id="@+id/myProfileTextView"
+                style="@style/TextAppearance.AppCompat.Body2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/backIcon"
+                android:paddingLeft="5dp"
+                android:textColor="@color/orange_700"
+                android:textStyle="bold"
+                android:text="My Profile"
+                android:textSize="22sp" />
+
+            <ImageButton
+                android:id="@+id/editIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="false"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/edit_icon"
+                android:visibility="invisible"/>
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/separatorView"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/topLayout"
+            android:background="#9B9B9B" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:background="@drawable/profile_rounded"
+            android:elevation="10dp"
             android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="5dp">
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:layout_marginTop="40sp"
+            >
+
+            <ImageView
+                android:id="@+id/profileImage"
+                android:layout_width="100sp"
+                android:layout_height="100sp"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/profile_pic"
+                android:clipToOutline="true" />
 
             <TextView
+                android:id="@+id/full_name_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Score: " />
+                android:layout_marginTop="7dp"
+                android:text="Full Name"
+                android:textSize="20dp" />
 
             <TextView
-                android:id="@+id/score_text"
+                android:id="@+id/username_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0" />
+                android:text="username" />
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text="Rank: " />
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="5dp">
 
-            <TextView
-                android:id="@+id/rank_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Score: " />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text="QRCodes: " />
+                <TextView
+                    android:id="@+id/score_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0" />
 
-            <TextView
-                android:id="@+id/qrcodes_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Rank: " />
+
+                <TextView
+                    android:id="@+id/rank_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="QRCodes: " />
+
+                <TextView
+                    android:id="@+id/qrcodes_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0" />
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
-    <ListView
-        android:id="@+id/qr_codes_list_profile"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:visibility="gone"
-        android:divider="@drawable/empty_tall_divider"
-        android:layout_margin="20dp"/>
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/profile_rounded"
+            android:elevation="10dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:layout_marginTop="40sp"
+            >
 
-</LinearLayout>
+            <TextView
+                android:layout_width="227dp"
+                android:layout_height="35dp"
+                android:text="Highest QR Ranking"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                />
+
+            <ImageView
+                android:id="@+id/qr_image"
+                android:layout_width="100sp"
+                android:layout_height="100sp"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/rounded_md"
+                android:clipToOutline="true" />
+
+            <TextView
+                android:id="@+id/qr_name_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:layout_gravity="center"
+                android:text="Full Name"
+                android:textSize="15sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Rank: " />
+
+                <TextView
+                    android:id="@+id/qr_ranking"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Rarity: " />
+
+                <TextView
+                    android:id="@+id/rarity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textColor="@android:color/holo_red_dark" />
+
+            </LinearLayout>
+        </LinearLayout>
+        <ListView
+            android:id="@+id/qr_codes_list_profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="gone"
+            android:divider="@drawable/empty_tall_divider"
+            android:layout_margin="20dp"/>
+
+    </LinearLayout>
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="?android:attr/progressBarStyleLarge"
+        android:indeterminate="true"
+        android:id="@+id/progressBar"
+        android:indeterminateTintMode="src_atop"
+        android:visibility="gone"
+        android:indeterminateTint="#FF0000"
+        android:layout_gravity="center" ><requestFocus/>
+    </ProgressBar>
+</FrameLayout>

@@ -41,6 +41,21 @@ android {
     }
 
 }
+android.applicationVariants.all { variant ->
+    task("generate${variant.name.capitalize()}Javadoc", type: Javadoc) {
+        description "Generates Javadoc for $variant.name."
+        source = variant.javaCompile.source
+        destinationDir = new File("${projectDir}/../doc")
+        ext.androidJar = "${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar"
+        doFirst {
+            classpath = files(variant.javaCompile.classpath.files) + files(ext.androidJar)
+        }
+        options.links("http://docs.oracle.com/javase/7/docs/api/")
+        options.links("http://d.android.com/reference/")
+        exclude "**/BuildConfig.java"
+    }
+}
+
 dependencies {
     // https://mvnrepository.com/artifact/commons-codec/commons-codec
     implementation 'commons-codec:commons-codec:1.15'
@@ -57,7 +72,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.2'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.8.0-M1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.2'
-    //androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     //androidTestImplementation "org.mockito:mockito-core:2.25.0"
     testImplementation "androidx.arch.core:core-testing:2.2.0"

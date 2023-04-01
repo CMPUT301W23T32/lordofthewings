@@ -110,18 +110,24 @@ public class QRCodePage extends AppCompatActivity implements AuthorNamesCallback
         });
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
-        StorageReference qrCodeimageRef = storageRef.child("images/qrcodes/"+hash+".png");
-
-        if (qrCodeimageRef != null) {
-            qrCodeimageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                Picasso.get().load(uri).into(qrCodeLocationImage);
-                progressBar.setVisibility(View.GONE);
-            }).addOnFailureListener(exception -> {
-                // Handle any errors
-                noLocationInfoTextView.setVisibility(View.VISIBLE);
-                progressBar.setVisibility(View.GONE);
-            });
+        try{
+            StorageReference qrCodeimageRef = storageRef.child("images/qrcodes/"+hash+".png");
+            if (qrCodeimageRef != null) {
+                qrCodeimageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                    Picasso.get().load(uri).into(qrCodeLocationImage);
+                    progressBar.setVisibility(View.GONE);
+                }).addOnFailureListener(exception -> {
+                    // Handle any errors
+                    noLocationInfoTextView.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.GONE);
+                });
+            }
+        }catch (Exception e){
+            noLocationInfoTextView.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
         }
+
+
          deleteButton = findViewById(R.id.deleteIcon);
          Log.d("Hash", hash);
          starButton = findViewById(R.id.starIcon);

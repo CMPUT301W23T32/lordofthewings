@@ -59,7 +59,6 @@ public class Wallet {
         this.qrCodes = qrCodes;
         this.score = score;
         this.qrCodesCount = qrCodes.size();
-
     }
 
     /**
