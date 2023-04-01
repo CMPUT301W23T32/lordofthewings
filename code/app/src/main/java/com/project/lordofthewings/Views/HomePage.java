@@ -155,7 +155,7 @@ public class HomePage extends AppCompatActivity {
 //                            startActivity(intent);
 //                            finish();
                             MaterialAlertDialogBuilder verifyDelete = new MaterialAlertDialogBuilder(HomePage.this, R.style.MaterialAlertDialog_rounded)
-                                    .setTitle("Log out")
+                                    .setTitle("LogOut")
                                     .setMessage("Would you like to log out?")
                                     .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
                                     .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
