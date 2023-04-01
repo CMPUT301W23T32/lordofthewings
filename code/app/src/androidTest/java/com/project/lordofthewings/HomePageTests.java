@@ -136,9 +136,19 @@ public class HomePageTests {
     @Test
     public void checkProfileQrClick(){
         solo.clickOnView(solo.getView(R.id.qr_code_scan_profile));
+        solo.sleep(1000);
         boolean findProfileQR= solo.waitForFragmentByTag("Profile QR Code");
         assertTrue("can't find log profile Qr", findProfileQR);
 
+    }
+
+    @Test
+    public void checkLogOut(){
+        solo.clickOnView(solo.getView(R.id.settingsButton));
+        solo.sleep(1000);
+        solo.clickOnView(solo.getView(R.id.logoutMenuItem));
+        solo.waitForActivity("SignUpPage");
+        solo.assertCurrentActivity("SignUpPage", SignUpPage.class);
     }
     /**
      * Close activity after each test, deletes the test user from firestore after each test
