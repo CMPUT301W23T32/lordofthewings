@@ -40,6 +40,7 @@ public class LeaderBoardPage extends AppCompatActivity {
     SearchView search_bar;
     ProgressBar progressBar;
     ImageButton back;
+    String username;
     ArrayList<String> stringLeaderboard = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +50,7 @@ public class LeaderBoardPage extends AppCompatActivity {
         progressBar.setVisibility(View.VISIBLE);
         getLeaderboard();
         SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
-        String username = sharedPreferences.getString("username", "");
+        username = sharedPreferences.getString("username", "");
 
         String url = "https://api.dicebear.com/5.x/pixel-art/png?seed=";
         ImageView main_image = findViewById(R.id.profile_pic_leaderboard_main);
@@ -58,11 +59,7 @@ public class LeaderBoardPage extends AppCompatActivity {
         TextView main_username = findViewById(R.id.username_leaderboard_main);
         main_username.setText(username);
 
-        sharedPreferences = getSharedPreferences("leaderboard", MODE_PRIVATE);
-        String rankString = sharedPreferences.getString(username,"0");
-        TextView main_rank = findViewById(R.id.position_leaderboard_main);
 
-        main_rank.setText("#"+rankString);
 
         back = findViewById(R.id.backIcon2);
         back.setOnClickListener(new View.OnClickListener() {
@@ -128,6 +125,11 @@ public class LeaderBoardPage extends AppCompatActivity {
                         }
                         learderboardAdapter.addAll(stringLeaderboard);
                         learderboardAdapter.notifyDataSetChanged();
+                        sharedPreferences = getSharedPreferences("leaderboard", MODE_PRIVATE);
+                        String rankString = sharedPreferences.getString(username,"0");
+                        TextView main_rank = findViewById(R.id.position_leaderboard_main);
+                        main_rank.setText("#"+rankString);
+
                         progressBar.setVisibility(View.GONE);
 
                     }
