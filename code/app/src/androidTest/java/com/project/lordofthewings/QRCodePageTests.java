@@ -106,14 +106,14 @@ public class QRCodePageTests {
     }
 
     /**
-     * Checks if the Location Info tab is clickable or not
+     * Checks if the Location Image tab is clickable or not
      */
     @Test
     public void checkLocationInfoClickable() {
         solo.clickInList(1);
         solo.waitForActivity("QRCodePage");
         solo.assertCurrentActivity("QRCodePage", QRCodePage.class);
-        solo.clickOnText("Location Info");
+        solo.clickOnText("Location Image");
     }
 
     /**
@@ -124,7 +124,7 @@ public class QRCodePageTests {
         solo.clickInList(1);
         solo.waitForActivity("QRCodePage");
         solo.assertCurrentActivity("QRCodePage", QRCodePage.class);
-        solo.clickOnText("Location Info");
+        solo.clickOnText("Location Image");
         solo.sleep(2000);
         solo.clickOnText("QR Code Info");
         solo.sleep(2000);
