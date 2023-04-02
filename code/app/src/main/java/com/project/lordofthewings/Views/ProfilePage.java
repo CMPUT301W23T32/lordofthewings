@@ -72,10 +72,7 @@ public class ProfilePage extends AppCompatActivity {
         linearLayout2 = findViewById(R.id.linearLayout2);
         ImageButton backButton = findViewById(R.id.backIcon);
         backButton.setOnClickListener(v -> {
-            Intent intent = new Intent(ProfilePage.this, HomePage.class);
-            startActivity(intent);
             finish();
-
         });
 
 //        ImageButton editButton = findViewById(R.id.editIcon);
