@@ -165,6 +165,17 @@ public class HomePage extends AppCompatActivity {
             }
     });
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // setting entry animations
+        scan_qr_code.startAnimation(fade_in);
+        header.startAnimation(fade_in);
+        nav_bar.startAnimation(fade_in);
+    }
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
