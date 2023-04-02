@@ -132,7 +132,7 @@
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Location Info"
+            android:text="Location Image"
             android:id="@+id/location_info_tab"
             />
 
@@ -157,7 +157,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="No Location Info"
+                    android:text="No Location Image"
                     android:textSize="18sp"
                     android:id="@+id/noLocationInfoTextView"
                     android:visibility="gone"/>
