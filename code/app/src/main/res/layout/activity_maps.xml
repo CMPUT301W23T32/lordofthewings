@@ -91,12 +91,14 @@
     </RelativeLayout>
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        >
 
         <FrameLayout
             android:id="@+id/pulloutList"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="460dp"
             android:background="@drawable/pulloutlistbg"
             android:elevation="50dp"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">

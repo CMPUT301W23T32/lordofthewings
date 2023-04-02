@@ -195,8 +195,8 @@ public class HomePage extends AppCompatActivity {
                 Log.d("MainActivity", "Scanned");
                 String qr_code = result.getContents();
                 if (qr_code.contains("https://lordofthewingswebsite.vercel.app/")){;
-                    Log.e("qr_code", qr_code.substring(63));
-                    qr_code = qr_code.substring(63);
+                    Log.e("qr_code", qr_code.substring("https://lordofthewingswebsite.vercel.app/".length()));
+                    qr_code = qr_code.substring("https://lordofthewingswebsite.vercel.app/".length());
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
                     try{
                         DocumentReference docRef = db.collection("Users").document(qr_code);

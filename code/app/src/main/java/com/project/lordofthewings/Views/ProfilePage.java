@@ -126,6 +126,15 @@ public class ProfilePage extends AppCompatActivity {
         });
 
     }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        fetchDataAndRefreshUI();
+    }
+
+
     public void fetchDataAndRefreshUI(){
         TextView name = findViewById(R.id.full_name_text);
         TextView score = findViewById(R.id.score_text);
@@ -226,7 +235,6 @@ public class ProfilePage extends AppCompatActivity {
                         int userScore = document.getLong("Score").intValue();
                         String scoreString = Integer.toString(userScore);
                         score.setText(scoreString);
-                        rank.setText("N/A");
                         ArrayList<Map<String, Object>> qrcodes = (ArrayList<Map<String, Object>>)document.get("QRCodes");
                         Log.d("TEST:", String.valueOf(qrcodes.size()));
                         if (qrcodes.size() != 0) {
