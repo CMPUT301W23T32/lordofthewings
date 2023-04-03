@@ -132,11 +132,13 @@ public class HomePageTests {
      */
 
     @Test
-//    public void profileClick(){
-//        solo.clickOnView(solo.getView(R.id.settingsButton));
-//        solo.searchText("");
-//
-//    }
+    public void checkProfileQRClick(){
+        solo.clickOnView(solo.getView(R.id.qr_code_scan_profile));
+        solo.searchText("Share your Profile");
+
+    }
+
+
     @After
     public void tearDown() throws Exception{
         solo.finishOpenedActivities();
