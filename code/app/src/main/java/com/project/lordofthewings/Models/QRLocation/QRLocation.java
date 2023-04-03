@@ -125,7 +125,7 @@ public class QRLocation {
         this.db.terminate();
         return locatedQrs;
     }
-    /*
+    /**
      * Returns a bitmap of the QR code with the given src
      * @param src the src of the QR code
      * @return the bitmap of the QR code
@@ -152,7 +152,6 @@ public class QRLocation {
     }
     /**
      * Returns rounded cornered bitmap of the QR code given a source
-     * @param src the source of the QR code
      * @return Bitmap of the QR code
      */
     private Bitmap getRoundedCornerBitmap(Bitmap bitmap) {

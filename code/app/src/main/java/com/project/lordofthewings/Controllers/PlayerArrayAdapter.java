@@ -31,14 +31,14 @@ import java.util.Set;
  */
 public class PlayerArrayAdapter extends ArrayAdapter<String> {
     LinearLayout listitem;
-    /*
+    /**
         * Constructor for the PlayerArrayAdapter
         * @param context The context of the activity that is using the adapter
      */
     public PlayerArrayAdapter(@NonNull Context context) {
         super(context, 0);
     }
-    /*
+    /**
         * Method that returns the view of the list item
         * @param position The position of the item in the list
         * @param convertView The view of the list item
