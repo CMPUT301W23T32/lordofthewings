@@ -25,7 +25,8 @@ An Android app built for scanning QRCodes and Barcodes to get maximum points and
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Documentation
-<a name ="Documentation" href = "https://github.com/CMPUT301W23T32/lordofthewings/wiki">Check out our Wiki for all our documentation.</a>
+- <a name ="Documentation" href = "https://github.com/CMPUT301W23T32/lordofthewings/wiki">Check out our Wiki for all our documentation.</a>
+- <a href = "https://cmput301w23t32.github.io/lordofthewings/"> Check out our javadocs here </a>
 
 ### Built With
 <img src = "https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white"/> <img src = "https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" />
