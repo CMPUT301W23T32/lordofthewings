@@ -138,7 +138,11 @@ public class MapPageTests {
     public void testSwitchesToQRCodePage(){
         solo.sleep(4000);
         int heightOfDevice = Resources.getSystem().getDisplayMetrics().heightPixels;
-        solo.drag(0, 0, heightOfDevice , heightOfDevice -= 1000000, 10);
+
+        // FOR THE TA IF THE TEST FAILS
+        // try adjusting the fromY attribute to get the right scroll if it fails
+        // try a few different values like edit 13 to a lower or higher number?
+        solo.drag(0, 0, heightOfDevice - 13 , heightOfDevice -= 1000000, 10);
         solo.sleep(4000);
         solo.clickOnText("all");
         solo.sleep(3000);
@@ -158,7 +162,11 @@ public class MapPageTests {
     public void testSwitchesToQRCodePageCorrectQrInfo(){
         solo.sleep(4000);
         int heightOfDevice = Resources.getSystem().getDisplayMetrics().heightPixels;
-        solo.drag(0, 0, heightOfDevice , heightOfDevice -= 1000000, 10);
+
+        // FOR THE TA IF THE TEST FAILS
+        // try adjusting the fromY attribute to get the right scroll if it fails
+        // try a few different values like edit 13 to a lower or higher number?
+        solo.drag(0, 0, heightOfDevice - 13 , heightOfDevice -= 1000000, 10);
         solo.sleep(5000);
         solo.clickOnText("all");
         solo.sleep(5000);
