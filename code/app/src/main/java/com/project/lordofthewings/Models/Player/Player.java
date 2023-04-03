@@ -12,7 +12,6 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.core.FirestoreClient;
 import com.project.lordofthewings.Controllers.FirebaseController;
-import com.project.lordofthewings.Models.Leaderboard.Leaderboard;
 import com.project.lordofthewings.Models.QRcode.QRCode;
 import com.project.lordofthewings.Models.Wallet.Wallet;
 
@@ -43,18 +42,6 @@ public class Player {
     private Wallet QRWallet;
     //private Leaderboard leaderboard;
     FirebaseFirestore db;
-
-//    public Player(String userName){
-//        this.userName = userName;
-//        db.collection("Users").document(userName).get().addOnCompleteListener(task -> {
-//            if (task.isSuccessful()) {
-//                Map<String, Object> data = task.getResult().getData();
-//                assert data != null;
-//                this.email = (String) data.get("email");
-//            }
-//        });
-//    }
-
 
     /**
      * Primary constructor to instantiate a new player during sign up
@@ -107,6 +94,15 @@ public class Player {
             }
         });
     }
+
+    /**
+     * Constructor made to test the player class
+     * @param userName username of the player (already exists)
+     * @param email email of the player
+     * @param firstName first name of the player
+     * @param lastName last name of the player
+     * NOTE: This constructor is only used for testing purposes
+     */
     public Player(String userName, String email, String firstName, String lastName) {
         this.score = 0;
         this.QRList = new ArrayList<QRCode>();
@@ -139,11 +135,9 @@ public class Player {
     public int getScore(){
         return this.score;
     }
-
     public int getNumOfQRCode(){
         return this.QRList.size();
     }
-
     public void setEmail(String email){
         this.email = email;
     }
@@ -173,17 +167,5 @@ public class Player {
     public String getLastName(){
         return this.lastName;
     }
-    /**
-     * return the global rank of the Player
-     * @return : an integer representing the global rank of the player
-     */
-//    public int getGlobalRank(){
-//        Leaderboard leaderboard = new Leaderboard();
-//        this.globalRank = leaderboard.getGlobalRankingOfPlayer(this);
-//
-//        return this.globalRank;
-//    }
-
-
 
 }

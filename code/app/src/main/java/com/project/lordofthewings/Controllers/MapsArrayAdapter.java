@@ -18,11 +18,27 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Class that handles a separate listview for the QRCode on the Map Activity
+ */
 public class MapsArrayAdapter  extends ArrayAdapter<HashMap<QRCode, Float>> {
+
+    /**
+     * Constructor for the MapsArrayAdapter
+     * @param context Context of the application
+     */
     public MapsArrayAdapter(@NonNull Context context) {
         super(context, 0);
     }
 
+
+    /**
+     * Inflates the view for the QRCode on the Map Activity
+     * @param position Position on the ListView
+     * @param convertView View to be inflated
+     * @param parent Parent of the view
+     * @return View of the QRCode Content
+     */
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View view;

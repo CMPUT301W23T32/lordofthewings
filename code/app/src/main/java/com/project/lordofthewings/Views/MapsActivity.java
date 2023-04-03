@@ -85,8 +85,7 @@ import java.util.concurrent.Executors;
 
 /**
  * An activity that implements the map functionality of the app to display the QRCodes.
- * Known Issues: Takes a long time to render the QRCode objects and their visual representation
- * on the map due to all the work being done on the main thread. Will be fixed in the next update.
+ *
  */
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, QRCodeCallback{
@@ -180,6 +179,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    /**
+     * This method is used to enable the user's location
+     */
     private void enableUserLocation() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -194,6 +196,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setMyLocationEnabled(true);
     }
 
+    /**
+     * This method is used to zoom into the user location
+     */
     private void snapToUserLocation() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -212,6 +217,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
+    /**
+     * uses GeoCoder to search for a location
+     */
     private void search() {
         String location_text = search_bar.getText().toString();
         List<Address> addressList = new ArrayList<>();
@@ -243,6 +251,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
+    /**
+     * main function for maps, is the main body of the map which is called after the permission is granted
+     */
     private void mainMap() {
         enableUserLocation();
         snapToUserLocation();
@@ -325,6 +336,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
+    /**
+     * function for when the location permissions are not granted
+     * @param requestCode The request code passed in {@link #requestPermissions(
+     * android.app.Activity, String[], int)}
+     * @param permissions The requested permissions. Never null.
+     * @param grantResults The grant results for the corresponding permissions
+     *     which is either {@link android.content.pm.PackageManager#PERMISSION_GRANTED}
+     *     or {@link android.content.pm.PackageManager#PERMISSION_DENIED}. Never null.
+     *
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         // requests permission
@@ -343,6 +364,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    /**
+     * Loads the overall list (has multiple load options for filtering)
+     */
     @SuppressLint("MissingPermission")
     private void listLoader(){
 
@@ -384,6 +408,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 1, locationListener);
     }
 
+    /**
+     * default card which shows the qr codes near the User's Location
+     */
     private void defaultCard(){
         if (ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -401,6 +428,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
+    /**
+     * updates the card with the qr codes near the provided location
+     * @param location
+     * @param place
+     */
     private void cardUpdate(Location location, String place){
 
 
@@ -438,6 +470,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
+    /**
+     * filters the list view based on selected distance chip
+     * @param filterCode
+     */
     private void listFilter(Integer filterCode){
         noQrCodes.setVisibility(View.GONE);
         qrListView.setVisibility(View.VISIBLE);
@@ -457,6 +493,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
+    /**
+     * callback function for when the QRCodes are fetched from firebase
+     */
     @Override
     public void onQrCodesRecieved() {
 
@@ -502,6 +541,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
+    /**
+     * array Adapter getter method
+     * @return
+     */
     public ArrayAdapter<HashMap<QRCode, Float>> getList() {
         return this.mapArrayAdapter;
 

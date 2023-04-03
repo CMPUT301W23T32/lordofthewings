@@ -47,6 +47,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Class to display all the relevant information of a QRCode Object after scan
+ */
+
 public class QRCodePage extends AppCompatActivity implements AuthorNamesCallback {
     String url = "https://api.dicebear.com/5.x/bottts-neutral/png?seed=";
     String hash;
@@ -197,6 +201,10 @@ public class QRCodePage extends AppCompatActivity implements AuthorNamesCallback
     }
 
 
+    /**
+     * Method to retrieve the author names from the database
+     * @param callback callback to be called when the author names are retrieved
+     */
     public void getAuthorNames(AuthorNamesCallback callback){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         HashMap<String, List<String>> authorNames = new HashMap<>();
@@ -227,6 +235,10 @@ public class QRCodePage extends AppCompatActivity implements AuthorNamesCallback
 
 
 
+    /**
+     * Method to check if the user owns the QRCode
+     * @param callback callback to be called when the check is completed
+     */
     public void checkIfQRCodeIsOwned(AuthorNamesCallback callback){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("QRCodes").document(hash).get().addOnCompleteListener(task -> {
@@ -244,6 +256,12 @@ public class QRCodePage extends AppCompatActivity implements AuthorNamesCallback
 
 
 
+
+    /**
+     * Method to delete the QRCode for that particular user
+     * @param hash hash of the QRCode to be deleted
+     * @param db database reference
+     */
     public void deleteQRCode(String hash, FirebaseFirestore db) {
         QRCode qr = new QRCode(hash, 0);
         DocumentReference userRef = db.collection("Users").document(savedUsername);
@@ -303,6 +321,9 @@ public class QRCodePage extends AppCompatActivity implements AuthorNamesCallback
     }
 
 
+    /**
+     * Callback interface method that displays the QRCode Information after a DB fetch
+     */
     @Override
     public void onAuthorNamesReceived() {
         HashMap<String, List<String>> authorNames = new HashMap<>();
@@ -314,6 +335,9 @@ public class QRCodePage extends AppCompatActivity implements AuthorNamesCallback
         authorList.setAdapter(authorArrayAdapter);
     }
 
+    /**
+     * Callback interface method that executes after verification of QRCode ownership
+     */
     @Override
     public void checkQRCodeOwner() {
         deleteButton.setVisibility(ImageButton.VISIBLE);

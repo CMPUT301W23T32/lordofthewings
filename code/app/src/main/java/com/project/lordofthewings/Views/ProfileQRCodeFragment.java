@@ -18,6 +18,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.project.lordofthewings.R;
 import com.squareup.picasso.Picasso;
 
+/**
+ * A simple fragment to display the QRCode which can take the scanner to a user's profile page
+ */
 public class ProfileQRCodeFragment extends DialogFragment {
     @NonNull
     @Override

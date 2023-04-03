@@ -1,11 +1,5 @@
 package com.project.lordofthewings.Models.QRcode;
 
-
-/**
- * Class to model a QRCode object in the game.
- * Known Issues: Cleaning up some of the constructors and redundant methods
- */
-
 import static java.lang.Math.pow;
 
 import android.location.Location;
@@ -18,6 +12,12 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 import java.util.Collection;
 import java.util.HashMap;
+
+
+/**
+ * Class to model a QRCode object in the game.
+ *
+ */
 
 public class QRCode {
     private final String QRContent;

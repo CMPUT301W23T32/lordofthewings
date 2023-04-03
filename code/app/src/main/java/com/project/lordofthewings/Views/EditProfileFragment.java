@@ -29,6 +29,9 @@ import com.project.lordofthewings.Controllers.FirebaseController;
 import com.project.lordofthewings.Models.Player.Player;
 import com.project.lordofthewings.R;
 
+/**
+ * A simple fragment to edit the primary player details
+ */
 public class EditProfileFragment extends DialogFragment {
 
     FirebaseController fbcontroller = new FirebaseController();

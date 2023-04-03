@@ -78,7 +78,11 @@ public class QRLocation {
             }
         });
     }
-
+    /**
+     * Constructor for QRLocation class
+     * @param callback callback to be called when the QR codes have been retrieved from the database
+     * @param activity activity that the QRLocation object is being created in
+     */
     public QRLocation(QRCodeCallback callback, MapsActivity activity){
         Log.d("manan", "2");
         this.qrCodes = new ArrayList<>();
@@ -121,7 +125,11 @@ public class QRLocation {
         this.db.terminate();
         return locatedQrs;
     }
-
+    /**
+     * Returns a bitmap of the QR code with the given src
+     * @param src the src of the QR code
+     * @return the bitmap of the QR code
+     */
     private static Bitmap getBitmapFromURL(String src) {
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy gfgPolicy =
@@ -142,7 +150,10 @@ public class QRLocation {
             return null;
         }
     }
-
+    /**
+     * Returns rounded cornered bitmap of the QR code given a source
+     * @return Bitmap of the QR code
+     */
     private Bitmap getRoundedCornerBitmap(Bitmap bitmap) {
         Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(output);
@@ -164,6 +175,11 @@ public class QRLocation {
         return output;
     }
 
+    /**
+     * creates an icon for the custom marker from given Bitmap
+     * @param result
+     * @return
+     */
     private Bitmap makeIconFromBitmap(Bitmap result){
         ImageView mImageView = new ImageView(activity.getApplicationContext());
         IconGenerator mIconGenerator = new IconGenerator(activity.getApplicationContext());
@@ -178,7 +194,10 @@ public class QRLocation {
         return iconBitmap;
     }
 
-
+    /**
+     * Hashmap having icon with respective QRCode
+     * @return
+     */
     public HashMap<QRCode, Bitmap> locatedQRArraywithBitmap(){
         HashMap<QRCode, Bitmap> locatedQrswithbm = new HashMap<>();
         for (QRCode code: this.locatedQrs) {
@@ -192,6 +211,11 @@ public class QRLocation {
         return locatedQrswithbm;
     }
 
+    /**
+     * Returns a sorted array of QRCode objects based on distance from the given location
+     * @param fromLocation
+     * @return
+     */
     public ArrayList<HashMap<QRCode, Float>> sortLocatedQRArray(Location fromLocation){
         HashMap<QRCode, Float> sortedQrsMap = new HashMap();
 
