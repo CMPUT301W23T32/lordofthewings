@@ -106,6 +106,14 @@ public class Player {
             }
         });
     }
+    /*
+        * Secondary constructor to instantiate a known player without the database
+        *
+        * @param userName username of the player (already exists)
+        * @param email email of the player
+        * @param firstName first name of the player
+        * @param lastName last name of the player
+     */
     public Player(String userName, String email, String firstName, String lastName) {
         this.score = 0;
         this.QRList = new ArrayList<QRCode>();
@@ -138,11 +146,9 @@ public class Player {
     public int getScore(){
         return this.score;
     }
-
     public int getNumOfQRCode(){
         return this.QRList.size();
     }
-
     public void setEmail(String email){
         this.email = email;
     }

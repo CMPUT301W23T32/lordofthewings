@@ -25,12 +25,26 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
-
+/*
+    * Custom Array Adapter for a list of Player objects to be displayed in a ListView on the Leaderboard page.
+    * Known Bugs: None
+ */
 public class PlayerArrayAdapter extends ArrayAdapter<String> {
     LinearLayout listitem;
+    /*
+        * Constructor for the PlayerArrayAdapter
+        * @param context The context of the activity that is using the adapter
+     */
     public PlayerArrayAdapter(@NonNull Context context) {
         super(context, 0);
     }
+    /*
+        * Method that returns the view of the list item
+        * @param position The position of the item in the list
+        * @param convertView The view of the list item
+        * @param parent The parent view group
+        * @return The view of the list item
+     */
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup
             parent){
@@ -51,25 +65,9 @@ public class PlayerArrayAdapter extends ArrayAdapter<String> {
         username.setText(getItem(position));
         TextView rank = view.findViewById(R.id.position_leaderboard);
         String rankString = sh.getString(getItem(position),"0");
-        //checkrank(rankString, view);
         rank.setText("#"+rankString);
-
 
         return view;
     }
 
-    private void checkrank(String position, View view) {
-        listitem = view.findViewById(R.id.leaderboard_list_item);
-        if (position.equals("1")) {
-            Drawable background = listitem.getBackground();
-            background.setColorFilter(Color.parseColor("#D4AC2B"), PorterDuff.Mode.MULTIPLY );
-            listitem.setBackground(background);
-        } else if (position.equals("2")) {
-            Drawable background = listitem.getBackground();
-            background.setColorFilter(Color.parseColor("#C0C0C0"), PorterDuff.Mode.MULTIPLY );
-        } else if (position.equals("3")) {
-            Drawable background = listitem.getBackground();
-            background.setColorFilter(Color.parseColor("#CD7F32"), PorterDuff.Mode.MULTIPLY );
-        }
-    }
 }

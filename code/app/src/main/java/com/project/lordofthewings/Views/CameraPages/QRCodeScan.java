@@ -74,7 +74,7 @@ import java.util.Map;
 
 /**
  * Class to handle the QRCode Scanning Activity and it's related functions.
- * Known Issues: Linking of the QRCode Image to the QRCode Object is not implemented yet.
+ * Known Bugs: None
  */
 public class QRCodeScan extends AppCompatActivity implements walletCallback {
     private String url = "https://api.dicebear.com/5.x/bottts-neutral/png?seed=";
@@ -84,14 +84,9 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
     ImageView imageView;
     Button add_photo;
     Button remove_photo;
-
-
     SwitchMaterial location_switch;
-
-
     Button save_button;
     Button cancel_button;
-
     String qr_code;
     Wallet wallet;
     ProgressBar progressBar;
