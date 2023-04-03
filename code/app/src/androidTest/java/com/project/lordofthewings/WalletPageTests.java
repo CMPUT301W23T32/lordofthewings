@@ -3,6 +3,7 @@ package com.project.lordofthewings;
 import static android.content.ContentValues.TAG;
 import static android.provider.Settings.System.getString;
 
+import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static com.google.android.material.internal.ContextUtils.getActivity;
 
 import android.app.Activity;
@@ -38,6 +39,7 @@ import com.project.lordofthewings.Models.QRcode.QRCode;
 import com.project.lordofthewings.Views.CameraPages.QRCodeScan;
 import com.project.lordofthewings.Views.HomePage;
 import com.project.lordofthewings.Views.MainActivity;
+import com.project.lordofthewings.Views.QRCodePage;
 import com.project.lordofthewings.Views.StartUpPages.LogInPage;
 import com.project.lordofthewings.Views.StartUpPages.SignUpPage;
 import com.project.lordofthewings.Views.StartUpPages.StartUpPage;
@@ -65,6 +67,8 @@ import java.util.Map;
 @RunWith(AndroidJUnit4.class)
 public class WalletPageTests {
     private Solo solo;
+    SharedPreferences savedUsername = getInstrumentation().getTargetContext().getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE);
+    String username = savedUsername.getString("username", "");
     ArrayList<Map<String, Object>> users_array;
 
     @Rule
@@ -81,7 +85,7 @@ public class WalletPageTests {
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
         SharedPreferences sh = rule.getActivity().getSharedPreferences("sharedPrefs", 0);
         SharedPreferences.Editor editor = sh.edit();
-        editor.putString("username", "bobtest");
+        editor.putString("username", "Sauron");
         editor.apply();
         Intent walletIntent = new Intent(solo.getCurrentActivity(), WalletPage.class);
         solo.getCurrentActivity().startActivity(walletIntent);
@@ -120,7 +124,29 @@ public class WalletPageTests {
     public void checkNumberOfQRListView() {
         ListView listView = (ListView) solo.getView(R.id.qrCodeListView);
         solo.sleep(5000);
-        assertEquals(6, listView.getCount());
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference docRef = db.collection("Users").document("Sauron");
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.e("data", document.get("QRCodes").toString());
+                        ArrayList<Map<String, Object>> qrCodes = (ArrayList<Map<String, Object>>) document.get("QRCodes");
+                        ArrayList<Map<String, Object>> qrCodes2 = new ArrayList<>();
+                        if (qrCodes != null) {
+                            Integer count = qrCodes.size();
+                            assertEquals(String.valueOf(count), String.valueOf(listView.getCount()));
+                        }
+                    } else {
+                        Log.d("No Doc", "No such document");
+                    }
+                } else {
+                    Log.d("Err", "get failed with ", task.getException());
+                }
+            }
+        });
     }
 
     /**
@@ -130,17 +156,80 @@ public class WalletPageTests {
     public void checkNumberOfQRTextView() {
         TextView textView = (TextView) solo.getView(R.id.qrcodeCount);
         solo.sleep(5000);
-        assertEquals("6", textView.getText());
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference docRef = db.collection("Users").document("Sauron");
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.e("data", document.get("QRCodes").toString());
+                        ArrayList<Map<String, Object>> qrCodes = (ArrayList<Map<String, Object>>) document.get("QRCodes");
+                        ArrayList<Map<String, Object>> qrCodes2 = new ArrayList<>();
+                        if (qrCodes != null) {
+                            Integer count = qrCodes.size();
+                            assertEquals(String.valueOf(count), textView.getText());
+                        }
+                    } else {
+                        Log.d("No Doc", "No such document");
+                    }
+                } else {
+                    Log.d("Err", "get failed with ", task.getException());
+                }
+            }
+        });
+
     }
 
     /**
-     * Checks if switches to comeraview on clicking scan a new QR code
+     * Checks if updates wallet with new QRCode
      */
     @Test
     public void checkScanANewQr() {
-        solo.clickOnView(solo.getView(R.id.scanButton));
-        solo.waitForActivity("CaptureActivity");
-        solo.assertCurrentActivity("CaptureActivity", CaptureActivity.class);
+        final Integer[] count = {0};
+        TextView textView = (TextView) solo.getView(R.id.qrcodeCount);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference docRef = db.collection("Users").document("Sauron");
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.e("data", document.get("QRCodes").toString());
+                        ArrayList<Map<String, Object>> qrCodes = (ArrayList<Map<String, Object>>) document.get("QRCodes");
+                        ArrayList<Map<String, Object>> qrCodes2 = new ArrayList<>();
+                        if (qrCodes != null) {
+                            count[0] = qrCodes.size();
+                            assertEquals(String.valueOf(count[0]), textView.getText());
+                        }
+                    } else {
+                        Log.d("No Doc", "No such document");
+                    }
+                } else {
+                    Log.d("Err", "get failed with ", task.getException());
+                }
+            }
+        });
+        solo.sleep(5000);
+        //solo.clickOnView(solo.getView(R.id.scanButton));
+        Intent intent = new Intent(solo.getCurrentActivity(), QRCodeScan.class);
+        // go to intent
+        intent.putExtra("qr_code", "qr_code");
+        solo.getCurrentActivity().startActivity(intent);
+        solo.waitForActivity("QRCodeScan");
+        solo.assertCurrentActivity("QRCodeScan", QRCodeScan.class);
+        // Button click give a result data
+        solo.sleep(5000);
+        solo.clickOnView(solo.getView(R.id.save_button));
+        solo.assertCurrentActivity("HomePage", HomePage.class);
+        solo.clickOnView(solo.getView(R.id.walletButton));
+        assertEquals(String.valueOf(count[0]), textView.getText());
+        solo.clickOnText("LuminOnyxLuminCrimVoltLumin");
+        solo.clickOnView(solo.getView(R.id.deleteIcon));
+        solo.clickOnButton(1);
     }
 
     /**
@@ -183,12 +272,22 @@ public class WalletPageTests {
                     } else {
                         Log.d("Error", "No data present");
                     }
-                    assertEquals(users_array.get(users_usernames.indexOf("bobtest")).get("Score") + " Points", textView.getText());
+                    assertEquals(users_array.get(users_usernames.indexOf("Sauron")).get("Score") + " Points", textView.getText());
                 } else {
                     Log.d("Error: ", "Couldn't get users");
                 }
             }
         });
+    }
+
+    /**
+     * Checks if switches to QRCodeScan
+     */
+    @Test
+    public void checkIfQRClick() {
+        solo.clickInList(1);
+        solo.waitForActivity("QRCodePage");
+        solo.assertCurrentActivity("QRCodePage", QRCodePage.class);
     }
 
     /**
@@ -199,6 +298,7 @@ public class WalletPageTests {
         solo.clickOnView(solo.getView(R.id.scanButton));
         solo.waitForActivity("CaptureActivity");
         solo.assertCurrentActivity("CaptureActivity", CaptureActivity.class);
+        solo.sleep(2000);
         solo.goBack();
         solo.waitForActivity("WalletPage");
         solo.assertCurrentActivity("WalletPage", WalletPage.class);
@@ -209,13 +309,47 @@ public class WalletPageTests {
      */
     @Test
     public void checkIfAscendingWorks() {
+        solo.sleep(2000);
         solo.clickOnView(solo.getView(R.id.ascendingChip));
-        solo.sleep(10000);
+        solo.sleep(2000);
         ListView listView = (ListView) solo.getView(R.id.qrCodeListView);
-        QRCode qrCode_top = (QRCode) listView.getAdapter().getItem(0);
-        QRCode qrCode_end = (QRCode) listView.getAdapter().getItem(5);
-        assertEquals("CrimKronVoltNyxNebuZax", qrCode_top.getQRName());
-        assertEquals("LuminOnyxLuminCrimVoltLumin", qrCode_end.getQRName());
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference docRef = db.collection("Users").document("Sauron");
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        ArrayList<Map<String, Object>> qrCodes = (ArrayList<Map<String, Object>>) document.get("QRCodes");
+                        ArrayList<Map<String, Object>> qrCodes2 = new ArrayList<>();
+                        if (qrCodes != null) {
+                            Integer count = qrCodes.size();
+                            for (int i = 0; i < count; i++){
+                                Integer key = 0;
+                                for (int j = 1; j < qrCodes.size(); j++){
+                                    if (new QRCode(qrCodes.get(key).get("hash").toString(), 0).getQRScore() > new QRCode(qrCodes.get(j).get("hash").toString(), 0).getQRScore())
+                                        key = j;
+                                }
+                                qrCodes2.add(qrCodes.get(key));
+                                qrCodes.remove(qrCodes.get(key));
+                            }
+                            for (int i = 0; i < count; i++){
+                                qrCodes.add(qrCodes2.get(i));
+                            }
+                            QRCode qrCode_top = (QRCode) listView.getAdapter().getItem(0);
+                            QRCode qrCode_end = (QRCode) listView.getAdapter().getItem(qrCodes.size() - 1);
+                            assertEquals(qrCodes.get(0).get("qrname"), qrCode_top.getQRName());
+                            assertEquals(qrCodes.get(qrCodes.size() - 1).get("qrname"), qrCode_end.getQRName());
+                        }
+                    } else {
+                        Log.d("No Doc", "No such document");
+                    }
+                } else {
+                    Log.d("Err", "get failed with ", task.getException());
+                }
+            }
+        });
     }
 
     /**
@@ -223,13 +357,47 @@ public class WalletPageTests {
      */
     @Test
     public void checkIfDescendingWorks() {
+        solo.sleep(2000);
         solo.clickOnView(solo.getView(R.id.descendingChip));
-        solo.sleep(10000);
+        solo.sleep(2000);
         ListView listView = (ListView) solo.getView(R.id.qrCodeListView);
-        QRCode qrCode_top = (QRCode) listView.getAdapter().getItem(0);
-        QRCode qrCode_end = (QRCode) listView.getAdapter().getItem(5);
-        assertEquals("LuminOnyxLuminCrimVoltLumin", qrCode_top.getQRName());
-        assertEquals("CrimKronVoltNyxNebuZax", qrCode_end.getQRName());
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference docRef = db.collection("Users").document("Sauron");
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        ArrayList<Map<String, Object>> qrCodes = (ArrayList<Map<String, Object>>) document.get("QRCodes");
+                        ArrayList<Map<String, Object>> qrCodes2 = new ArrayList<>();
+                        if (qrCodes != null) {
+                            Integer count = qrCodes.size();
+                            for (int i = 0; i < count; i++){
+                                Integer key = 0;
+                                for (int j = 1; j < qrCodes.size(); j++){
+                                    if (new QRCode(qrCodes.get(key).get("hash").toString(), 0).getQRScore() < new QRCode(qrCodes.get(j).get("hash").toString(), 0).getQRScore())
+                                        key = j;
+                                }
+                                qrCodes2.add(qrCodes.get(key));
+                                qrCodes.remove(qrCodes.get(key));
+                            }
+                            for (int i = 0; i < count; i++){
+                                qrCodes.add(qrCodes2.get(i));
+                            }
+                            QRCode qrCode_top = (QRCode) listView.getAdapter().getItem(0);
+                            QRCode qrCode_end = (QRCode) listView.getAdapter().getItem(qrCodes.size() - 1);
+                            assertEquals(qrCodes.get(0).get("qrname"), qrCode_top.getQRName());
+                            assertEquals(qrCodes.get(qrCodes.size() - 1).get("qrname"), qrCode_end.getQRName());
+                        }
+                    } else {
+                        Log.d("No Doc", "No such document");
+                    }
+                } else {
+                    Log.d("Err", "get failed with ", task.getException());
+                }
+            }
+        });
     }
 
     /**
@@ -237,21 +405,49 @@ public class WalletPageTests {
      */
     @Test
     public void checkIfDefaultWorks() {
+        solo.sleep(2000);
         solo.clickOnView(solo.getView(R.id.defaultChip));
-        solo.sleep(10000);
+        solo.sleep(2000);
         ListView listView = (ListView) solo.getView(R.id.qrCodeListView);
-        QRCode qrCode_top = (QRCode) listView.getAdapter().getItem(0);
-        QRCode qrCode_end = (QRCode) listView.getAdapter().getItem(5);
-        assertEquals("KinetCrimKronHexVexZax", qrCode_top.getQRName());
-        assertEquals("LuminOnyxLuminCrimVoltLumin", qrCode_end.getQRName());
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference docRef = db.collection("Users").document("Sauron");
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.e("data", document.get("QRCodes").toString());
+                        ArrayList<Map<String, Object>> qrCodes = (ArrayList<Map<String, Object>>) document.get("QRCodes");
+                        ArrayList<Map<String, Object>> qrCodes2 = new ArrayList<>();
+                        if (qrCodes != null) {
+                            QRCode qrCode_top = (QRCode) listView.getAdapter().getItem(0);
+                            QRCode qrCode_end = (QRCode) listView.getAdapter().getItem(qrCodes.size() - 1);
+                            assertEquals(qrCodes.get(0).get("qrname"), qrCode_top.getQRName());
+                            assertEquals(qrCodes.get(qrCodes.size() - 1).get("qrname"), qrCode_end.getQRName());
+                        }
+                    } else {
+                        Log.d("No Doc", "No such document");
+                    }
+                } else {
+                    Log.d("Err", "get failed with ", task.getException());
+                }
+            }
+        });
     }
 
     /**
-     * Close activity after each test, deletes the test user from firestore after each test
+     * Close activity after each test and log back to the user who was signed in before running the tests
      * @throws Exception
      */
     @After
     public void tearDown() throws Exception{
+        SharedPreferences sh1 = rule.getActivity().getSharedPreferences("sharedPrefs", 0);
+        SharedPreferences.Editor editor = sh1.edit();
+        editor.putString("username", username);
+        editor.apply();
+        Intent mainIntent = new Intent(solo.getCurrentActivity(), MainActivity.class);
+        solo.getCurrentActivity().startActivity(mainIntent);
         solo.finishOpenedActivities();
     }
 }

@@ -1,11 +1,14 @@
 package com.project.lordofthewings;
 
+import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
+
 import android.app.Activity;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.widget.ImageView;
@@ -13,6 +16,7 @@ import android.widget.ImageView;
 import com.journeyapps.barcodescanner.CaptureActivity;
 import com.project.lordofthewings.Views.HomePage;
 import com.project.lordofthewings.Views.LeaderBoardPage;
+import com.project.lordofthewings.Views.MainActivity;
 import com.project.lordofthewings.Views.MapsActivity;
 import com.project.lordofthewings.Views.ProfilePage;
 import com.project.lordofthewings.Views.StartUpPages.SignUpPage;
@@ -35,6 +39,8 @@ import static org.junit.Assert.assertFalse;
 @RunWith(AndroidJUnit4.class)
 public class HomePageTests {
     private Solo solo;
+    SharedPreferences savedUsername = getInstrumentation().getTargetContext().getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE);
+    String username = savedUsername.getString("username", "");
 
     @Rule
     public ActivityTestRule<SignUpPage> rule =
@@ -50,7 +56,7 @@ public class HomePageTests {
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
         SharedPreferences sh = rule.getActivity().getSharedPreferences("sharedPrefs", 0);
         SharedPreferences.Editor editor = sh.edit();
-        editor.putString("username", "bobtest");
+        editor.putString("username", "Sauron");
         editor.apply();
         Intent homeIntent = new Intent(solo.getCurrentActivity(), HomePage.class);
         solo.getCurrentActivity().startActivity(homeIntent);
@@ -123,11 +129,11 @@ public class HomePageTests {
      */
     @Test
     public void checkUsername(){
-        solo.searchText("bobtest");
+        solo.searchText("Sauron");
     }
 
     /**
-     * Close activity after each test, deletes the test user from firestore after each test
+     * Close activity after each test and log back to the user who was signed in before running the tests
      * @throws Exception
      */
 
@@ -151,6 +157,12 @@ public class HomePageTests {
 
     @After
     public void tearDown() throws Exception{
+        SharedPreferences sh1 = rule.getActivity().getSharedPreferences("sharedPrefs", 0);
+        SharedPreferences.Editor editor = sh1.edit();
+        editor.putString("username", username);
+        editor.apply();
+        Intent mainIntent = new Intent(solo.getCurrentActivity(), MainActivity.class);
+        solo.getCurrentActivity().startActivity(mainIntent);
         solo.finishOpenedActivities();
     }
 }

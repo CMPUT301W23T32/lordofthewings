@@ -35,7 +35,6 @@ import java.util.concurrent.ExecutionException;
 
 public class SignUpPageTests{
     private Solo solo;
-
     SharedPreferences savedUsername = getInstrumentation().getTargetContext().getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE);
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String username = savedUsername.getString("username", "");
@@ -45,7 +44,10 @@ public class SignUpPageTests{
     public ActivityTestRule<SignUpPage> rule =
             new ActivityTestRule<>(SignUpPage.class, true, true);
 
-
+    /**
+     * Basic setup for the tests to run
+     * @throws Exception
+     */
     @Before
     public void setUp() throws Exception {
         SharedPreferences sh = getInstrumentation().getTargetContext().getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE);
@@ -58,7 +60,9 @@ public class SignUpPageTests{
         solo.assertCurrentActivity("Wrong Activity", SignUpPage.class);
     }
 
-
+    /**
+     * Checks if the Fields were left empty and displays toast message if it was left empty
+     */
     @Test
     public void checkEmptyFields() {
         solo.clickOnView(solo.getView(R.id.username));
@@ -72,25 +76,28 @@ public class SignUpPageTests{
         assertFalse(checkIfUserExistsinDB("Tester"));
     }
 
-
+    /**
+     * Checks if Username was already taken and displays a Toast message if username was taken
+     */
     @Test
     public void checkUsernameTaken(){
         solo.clickOnView(solo.getView(R.id.username));
-        assertTrue(checkIfUserExistsinDB("ntt"));
-        solo.enterText((android.widget.EditText) solo.getView(R.id.username), "ntt");
+        assertTrue(checkIfUserExistsinDB("Sauron"));
+        solo.enterText((android.widget.EditText) solo.getView(R.id.username), "Sauron");
         solo.clickOnView(solo.getView(R.id.firstName));
-        solo.enterText((android.widget.EditText) solo.getView(R.id.firstName), "Bob");
+        solo.enterText((android.widget.EditText) solo.getView(R.id.firstName), "Sauron");
         solo.clickOnView(solo.getView(R.id.lastName));
-        solo.enterText((android.widget.EditText) solo.getView(R.id.lastName), "Test");
+        solo.enterText((android.widget.EditText) solo.getView(R.id.lastName), "Sauron");
         solo.clickOnView(solo.getView(R.id.email));
-        solo.enterText((android.widget.EditText) solo.getView(R.id.email), "ntt@gmail.com");
+        solo.enterText((android.widget.EditText) solo.getView(R.id.email), "Sauron");
         solo.clickOnButton(0);
         solo.waitForText("Username already exists!");
         solo.assertCurrentActivity("Wrong Activity", SignUpPage.class);
     }
 
-
-
+    /**
+     * Checks if the right user logged in
+     */
     @Test
     public void checkCorrectLogin(){
         solo.clickOnView(solo.getView(R.id.username));
@@ -107,8 +114,12 @@ public class SignUpPageTests{
         assertTrue(checkIfUserExistsinDB("UserTester"));
     }
 
+    /**
+     * Close activity after each test and log back to the user who was signed in before running the tests
+     * @throws Exception
+     */
     @After
-public void tearDown() throws Exception {
+    public void tearDown() throws Exception {
         deleteFromFB("UserTester");
         SharedPreferences sh1 = rule.getActivity().getSharedPreferences("sharedPrefs", 0);
         SharedPreferences.Editor editor = sh1.edit();
@@ -119,11 +130,19 @@ public void tearDown() throws Exception {
         solo.finishOpenedActivities();
     }
 
-
+    /**
+     * Deletes the user from Firebase
+     * @param user
+     */
     public void deleteFromFB(String user) {
         db.collection("Users").document(user).delete();
     }
 
+    /**
+     * Checks if the user exists in Firebase
+     * @param user
+     * @return
+     */
     public boolean checkIfUserExistsinDB(String user) {
         Task<DocumentSnapshot> documentSnapshotTask = db.collection("Users").document(user).get();
         DocumentSnapshot documentSnapshot = null;
@@ -140,12 +159,4 @@ public void tearDown() throws Exception {
             return false;
         }
     }
-
-
-
-
-
-
-
-
 }

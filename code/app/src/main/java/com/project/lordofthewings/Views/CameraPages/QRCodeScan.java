@@ -171,9 +171,58 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
                                 wallet = new Wallet(username, (ArrayList<QRCode>) document.get("QRCodes"), Math.toIntExact(((Long) document.get("Score"))), db);
                                 wallet.addQRCode(qr, latitude, longitude, comment.getText().toString());
                                 Intent intent = new Intent(QRCodeScan.this, HomePage.class);
-                                progressBar.setVisibility(ProgressBar.GONE);
-                                startActivity(intent);
-                                finish();
+                                FirebaseStorage storage = FirebaseStorage.getInstance();
+                                StorageReference storageRef = storage.getReference();
+                                StorageReference qrCodeimageRef = storageRef.child("images/qrcodes/"+qr.getHash()+".png");
+                                if (imageView.getDrawable() != null){
+                                    imageView.setDrawingCacheEnabled(true);
+                                    imageView.buildDrawingCache();
+                                    Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+                                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                                    byte[] data = baos.toByteArray();
+                                    UploadTask uploadTask = qrCodeimageRef.putBytes(data);
+                                    uploadTask.addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception exception) {
+                                            // Handle unsuccessful uploads
+                                            Intent intent = new Intent(QRCodeScan.this, HomePage.class);
+                                            progressBar.setVisibility(ProgressBar.GONE);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                        @Override
+                                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                            // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                                            // ...
+                                            Intent intent = new Intent(QRCodeScan.this, HomePage.class);
+                                            progressBar.setVisibility(ProgressBar.GONE);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                    });
+                                }else{
+                                    qrCodeimageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            // File deleted successfully
+                                            Intent intent = new Intent(QRCodeScan.this, HomePage.class);
+                                            progressBar.setVisibility(ProgressBar.GONE);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception exception) {
+                                            // Uh-oh, an error occurred!
+                                            Intent intent = new Intent(QRCodeScan.this, HomePage.class);
+                                            progressBar.setVisibility(ProgressBar.GONE);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                    });
+                                }
                             }
                             if (present == 1){
                                 Toast.makeText(getApplicationContext(), "QRCode already added!", Toast.LENGTH_SHORT).show();
@@ -189,58 +238,6 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
                     }
                 }
             });
-            FirebaseStorage storage = FirebaseStorage.getInstance();
-            StorageReference storageRef = storage.getReference();
-            StorageReference qrCodeimageRef = storageRef.child("images/qrcodes/"+qr.getHash()+".png");
-            if (imageView.getDrawable() != null){
-                imageView.setDrawingCacheEnabled(true);
-                imageView.buildDrawingCache();
-                Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-                byte[] data = baos.toByteArray();
-                UploadTask uploadTask = qrCodeimageRef.putBytes(data);
-                uploadTask.addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        // Handle unsuccessful uploads
-                        Intent intent = new Intent(QRCodeScan.this, HomePage.class);
-                        progressBar.setVisibility(ProgressBar.GONE);
-                        startActivity(intent);
-                        finish();
-                    }
-                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                        // ...
-                        Intent intent = new Intent(QRCodeScan.this, HomePage.class);
-                        progressBar.setVisibility(ProgressBar.GONE);
-                        startActivity(intent);
-                        finish();
-                    }
-                });
-            }else{
-                qrCodeimageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        // File deleted successfully
-                        Intent intent = new Intent(QRCodeScan.this, HomePage.class);
-                        progressBar.setVisibility(ProgressBar.GONE);
-                        startActivity(intent);
-                        finish();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        // Uh-oh, an error occurred!
-                        Intent intent = new Intent(QRCodeScan.this, HomePage.class);
-                        progressBar.setVisibility(ProgressBar.GONE);
-                        startActivity(intent);
-                        finish();
-                    }
-                });
-            }
 
         });
 
