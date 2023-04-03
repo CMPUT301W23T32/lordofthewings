@@ -12,7 +12,6 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.core.FirestoreClient;
 import com.project.lordofthewings.Controllers.FirebaseController;
-import com.project.lordofthewings.Models.Leaderboard.Leaderboard;
 import com.project.lordofthewings.Models.QRcode.QRCode;
 import com.project.lordofthewings.Models.Wallet.Wallet;
 
@@ -173,17 +172,5 @@ public class Player {
     public String getLastName(){
         return this.lastName;
     }
-    /**
-     * return the global rank of the Player
-     * @return : an integer representing the global rank of the player
-     */
-//    public int getGlobalRank(){
-//        Leaderboard leaderboard = new Leaderboard();
-//        this.globalRank = leaderboard.getGlobalRankingOfPlayer(this);
-//
-//        return this.globalRank;
-//    }
-
-
 
 }
