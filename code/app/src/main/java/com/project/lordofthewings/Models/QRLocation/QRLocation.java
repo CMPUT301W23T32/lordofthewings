@@ -175,6 +175,11 @@ public class QRLocation {
         return output;
     }
 
+    /**
+     * creates an icon for the custom marker from given Bitmap
+     * @param result
+     * @return
+     */
     private Bitmap makeIconFromBitmap(Bitmap result){
         ImageView mImageView = new ImageView(activity.getApplicationContext());
         IconGenerator mIconGenerator = new IconGenerator(activity.getApplicationContext());
@@ -189,7 +194,10 @@ public class QRLocation {
         return iconBitmap;
     }
 
-
+    /**
+     * Hashmap having icon with respective QRCode
+     * @return
+     */
     public HashMap<QRCode, Bitmap> locatedQRArraywithBitmap(){
         HashMap<QRCode, Bitmap> locatedQrswithbm = new HashMap<>();
         for (QRCode code: this.locatedQrs) {
@@ -203,6 +211,11 @@ public class QRLocation {
         return locatedQrswithbm;
     }
 
+    /**
+     * Returns a sorted array of QRCode objects based on distance from the given location
+     * @param fromLocation
+     * @return
+     */
     public ArrayList<HashMap<QRCode, Float>> sortLocatedQRArray(Location fromLocation){
         HashMap<QRCode, Float> sortedQrsMap = new HashMap();
 
