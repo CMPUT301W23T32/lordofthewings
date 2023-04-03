@@ -44,6 +44,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Class to display the profile page of a user
+ */
 public class ProfilePage extends AppCompatActivity {
     String url = "https://api.dicebear.com/5.x/pixel-art/png?seed=";
     private String url2 = "https://api.dicebear.com/5.x/bottts-neutral/png?seed=";
@@ -132,6 +135,9 @@ public class ProfilePage extends AppCompatActivity {
     }
 
 
+    /**
+     * Method that fetches the data from the database and refreshes the UI on state change
+     */
     public void fetchDataAndRefreshUI(){
         TextView name = findViewById(R.id.full_name_text);
         TextView score = findViewById(R.id.score_text);
@@ -345,6 +351,10 @@ public class ProfilePage extends AppCompatActivity {
         });
 
     }
+
+    /**
+     * Fetches the user's QRCodes from the database and displays them in a listview
+     */
     public void fetchQRCodes() {
         SharedPreferences sh = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
         qrCodeList = findViewById(R.id.qr_codes_list_profile);

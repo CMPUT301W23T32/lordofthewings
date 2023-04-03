@@ -43,18 +43,6 @@ public class Player {
     //private Leaderboard leaderboard;
     FirebaseFirestore db;
 
-//    public Player(String userName){
-//        this.userName = userName;
-//        db.collection("Users").document(userName).get().addOnCompleteListener(task -> {
-//            if (task.isSuccessful()) {
-//                Map<String, Object> data = task.getResult().getData();
-//                assert data != null;
-//                this.email = (String) data.get("email");
-//            }
-//        });
-//    }
-
-
     /**
      * Primary constructor to instantiate a new player during sign up
      * @param userName username of the player
@@ -106,6 +94,19 @@ public class Player {
             }
         });
     }
+
+
+
+
+
+    /**
+     * Constructor made to test the player class
+     * @param userName username of the player (already exists)
+     * @param email email of the player
+     * @param firstName first name of the player
+     * @param lastName last name of the player
+     * @throws Exception if the username does not exist
+     */
     public Player(String userName, String email, String firstName, String lastName) {
         this.score = 0;
         this.QRList = new ArrayList<QRCode>();

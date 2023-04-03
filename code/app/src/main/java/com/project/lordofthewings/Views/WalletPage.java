@@ -138,7 +138,6 @@ public class WalletPage extends AppCompatActivity {
     /**
      * Function to fetch data from Firestore and refresh the UI on data change
      *
-     *
      */
     public void fetchDataAndRefreshUIdefault() {
         progressBar.setVisibility(View.VISIBLE);
@@ -322,8 +321,5 @@ public class WalletPage extends AppCompatActivity {
                 });
             }
         });
-    }
-    private void runExitAnimation(){
-
     }
 }

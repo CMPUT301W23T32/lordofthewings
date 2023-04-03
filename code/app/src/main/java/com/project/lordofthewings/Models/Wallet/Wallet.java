@@ -149,14 +149,6 @@ public class Wallet {
         db.collection("Users").document(username)
                         .update(newData);
 
-        //user.setScore(score);
-        //or could access the firestore directly in this method and change
-        //Map<String, Object> newData = new HashMap<>();
-        //        newData.put("Score", score);
-        //        db.collection("Users").document(username)
-        //                .update(newData);
-
-
     }
 
 

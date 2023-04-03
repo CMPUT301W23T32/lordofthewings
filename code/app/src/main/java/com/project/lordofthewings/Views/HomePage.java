@@ -240,6 +240,10 @@ public class HomePage extends AppCompatActivity {
         editor.clear();
         editor.apply();
     }
+
+    /**
+     * Runs the exit animation for the home page
+     */
     private void runExitAnimation(){
         fade_out = AnimationUtils.loadAnimation(this, R.anim.fade_out);
         header = findViewById(R.id.header);
