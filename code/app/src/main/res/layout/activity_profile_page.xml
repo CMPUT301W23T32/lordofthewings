@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <LinearLayout
-        android:id="@+id/profileLayout"
+    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:backgroundTint="#e9ecef"
+        android:visibility="invisible"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:id="@+id/profileLayout"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:backgroundTint="#e9ecef">
 
         <RelativeLayout
             android:id="@+id/relativeLayout"
@@ -38,10 +38,10 @@
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@id/backIcon"
                 android:paddingLeft="5dp"
-                android:text="My Profile"
                 android:textColor="@color/orange_700"
-                android:textSize="22sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:text="My Profile"
+                android:textSize="22sp" />
 
             <ImageButton
                 android:id="@+id/editIcon"
@@ -50,7 +50,7 @@
                 android:layout_alignParentLeft="false"
                 android:layout_alignParentRight="true"
                 android:background="@drawable/edit_icon"
-                android:visibility="visible" />
+                android:visibility="invisible"/>
         </RelativeLayout>
 
         <View
@@ -65,12 +65,13 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="40sp"
             android:background="@drawable/profile_rounded"
             android:elevation="10dp"
             android:gravity="center"
             android:orientation="vertical"
-            android:padding="10dp">
+            android:padding="10dp"
+            android:layout_marginTop="40sp"
+            >
 
             <ImageView
                 android:id="@+id/profileImage"
@@ -139,26 +140,27 @@
                     android:text="0" />
             </LinearLayout>
         </LinearLayout>
-
         <LinearLayout
             android:id="@+id/linearLayout2"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="40sp"
             android:background="@drawable/profile_rounded"
             android:elevation="10dp"
             android:gravity="center"
             android:orientation="vertical"
-            android:padding="10dp">
+            android:padding="10dp"
+            android:layout_marginTop="40sp"
+            >
 
             <TextView
                 android:layout_width="227dp"
                 android:layout_height="35dp"
+                android:text="Highest QR Ranking"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="Highest QR Ranking"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                />
 
             <ImageView
                 android:id="@+id/qr_image"
@@ -173,8 +175,8 @@
                 android:id="@+id/qr_name_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:layout_marginTop="7dp"
+                android:layout_gravity="center"
                 android:text="Full Name"
                 android:textSize="15sp" />
 
@@ -213,15 +215,14 @@
 
             </LinearLayout>
         </LinearLayout>
-
         <ListView
             android:id="@+id/qr_codes_list_profile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:divider="@drawable/empty_tall_divider"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            android:divider="@drawable/empty_tall_divider"
+            android:layout_margin="20dp"/>
 
     </LinearLayout>
     <ProgressBar
