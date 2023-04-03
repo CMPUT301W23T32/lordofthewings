@@ -130,6 +130,13 @@ public class HomePageTests {
      * Close activity after each test, deletes the test user from firestore after each test
      * @throws Exception
      */
+
+    @Test
+//    public void profileClick(){
+//        solo.clickOnView(solo.getView(R.id.settingsButton));
+//        solo.searchText("");
+//
+//    }
     @After
     public void tearDown() throws Exception{
         solo.finishOpenedActivities();

@@ -244,7 +244,9 @@
             <AndroidTestResultsTableState>
               <option name="preferredColumnWidths">
                 <map>
+                  <entry key="49HQVGUSDUPNSS9L" value="120" />
                   <entry key="Duration" value="90" />
+                  <entry key="OPPO&#10; PCDM10" value="120" />
                   <entry key="Pixel_6_API_30" value="120" />
                   <entry key="Pixel_6_API_33" value="120" />
                   <entry key="Tests" value="360" />
