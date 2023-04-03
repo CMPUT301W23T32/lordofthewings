@@ -340,28 +340,6 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
             requestPermissions();
         }
     }
-//    @SuppressLint("MissingPermission")
-//    private void requestNewLocationData() {
-//        // Initializing LocationRequest
-//        // object with appropriate methods
-//        LocationRequest mLocationRequest = new LocationRequest();
-//        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-//        mLocationRequest.setInterval(5);
-//        mLocationRequest.setFastestInterval(0);
-//        mLocationRequest.setNumUpdates(1);
-//        // setting LocationRequest
-//        // on FusedLocationClient
-//        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-//        mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
-//    }
-//    private LocationCallback mLocationCallback = new LocationCallback() {
-//        @Override
-//        public void onLocationResult(LocationResult locationResult) {
-//            Location mLastLocation = locationResult.getLastLocation();
-//            latitude = String.valueOf(mLastLocation.getLatitude());
-//            longitude = String.valueOf(mLastLocation.getLongitude());
-//        }
-//    };
     /**
      * Method to check if location is enabled or not
      * @return
@@ -377,7 +355,6 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
      * @param permissions The requested permissions. Never null.
      * @param grantResults The grant results for the corresponding permissions
      *
-     *
      */
     @Override
     public void
@@ -389,6 +366,9 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
             }
         }
     }
+    /**
+     * Method to enable save button if location is loading
+     */
     @Override
     public void onCallback() {
 
@@ -397,7 +377,6 @@ public class QRCodeScan extends AppCompatActivity implements walletCallback {
         //we enable the button here
         save_button.setClickable(true);
         save_button.setBackgroundColor(Color.parseColor("#FFFFFF"));
-//        save_button.setEnabled(true);
-        //save_button.setAllowClickWhenDisabled(true);
+
     }
 }
