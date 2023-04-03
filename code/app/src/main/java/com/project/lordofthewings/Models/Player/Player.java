@@ -95,17 +95,13 @@ public class Player {
         });
     }
 
-
-
-
-
     /**
      * Constructor made to test the player class
      * @param userName username of the player (already exists)
      * @param email email of the player
      * @param firstName first name of the player
      * @param lastName last name of the player
-     * @throws Exception if the username does not exist
+     * NOTE: This constructor is only used for testing purposes
      */
     public Player(String userName, String email, String firstName, String lastName) {
         this.score = 0;
@@ -139,11 +135,9 @@ public class Player {
     public int getScore(){
         return this.score;
     }
-
     public int getNumOfQRCode(){
         return this.QRList.size();
     }
-
     public void setEmail(String email){
         this.email = email;
     }
