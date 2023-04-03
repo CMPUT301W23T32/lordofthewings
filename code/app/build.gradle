@@ -45,7 +45,7 @@ android.applicationVariants.all { variant ->
     task("generate${variant.name.capitalize()}Javadoc", type: Javadoc) {
         description "Generates Javadoc for $variant.name."
         source = variant.javaCompile.source
-        destinationDir = new File("${projectDir}/../doc")
+        destinationDir = new File("${projectDir}/../doc/")
         ext.androidJar = "${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar"
         doFirst {
             classpath = files(variant.javaCompile.classpath.files) + files(ext.androidJar)
