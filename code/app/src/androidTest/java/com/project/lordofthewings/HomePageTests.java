@@ -138,6 +138,16 @@ public class HomePageTests {
 
     }
 
+    @Test
+    public void checkLogout(){
+        solo.clickOnView(solo.getView(R.id.settingsButton));
+        solo.clickOnText("Logout");
+        solo.clickOnText("Confirm");
+        solo.assertCurrentActivity("HomePage", HomePage.class);
+
+
+    }
+
 
     @After
     public void tearDown() throws Exception{
