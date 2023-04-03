@@ -202,7 +202,6 @@ public class HomePage extends AppCompatActivity {
                                     if (document.exists()) {
                                         Intent intent = new Intent(HomePage.this, ProfilePage.class);
                                         intent.putExtra("username", finalQr_code);
-                                        finish();
                                         startActivity(intent);
                                     } else {
                                         Log.d("MainActivity", "No such document");
@@ -216,13 +215,11 @@ public class HomePage extends AppCompatActivity {
                         Log.e("error is", String.valueOf(e));
                         Intent intent = new Intent(HomePage.this, QRCodeScan.class);
                         intent.putExtra("qr_code", qr_code);
-                        finish();
                         startActivity(intent);
                     }
                 }else{
                     Intent intent = new Intent(HomePage.this, QRCodeScan.class);
                     intent.putExtra("qr_code", qr_code);
-                    finish();
                     startActivity(intent);
                 }
             }
