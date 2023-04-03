@@ -1,5 +1,6 @@
 com.project.lordofthewings
 com.project.lordofthewings.Controllers
+com.project.lordofthewings.Models.Authors
 com.project.lordofthewings.Models.Player
 com.project.lordofthewings.Models.QRcode
 com.project.lordofthewings.Models.QRLocation
